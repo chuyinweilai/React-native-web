@@ -1,0 +1,95 @@
+import React,{ Component } from 'react';
+import{
+	Text,
+	View,
+	Image,
+	Navigator,
+	StyleSheet,
+	TouchableOpacity,
+} from 'react-native';
+
+const peruri = "http://cloudapi.famesmart.com";
+const appData = require('./../../components/Ajax')
+
+const pxToDp =require('../responsive/px');
+// const deviceWidthDp = Dimensions.get('window').width;
+// const deviceHeightDp = Dimensions.get('window').height;
+
+export default class open extends Component {
+	constructor(props){
+		super(props);
+	}
+	
+	componentWillMount(){
+		// appData._dataGet('api/func/A', this.callback.bind(this));
+	}
+
+	//保存到相册
+	savePhoto(){
+		console.log('保存相册')
+	}
+
+	//分享到微信
+	shareWex(){
+		console.log('分享')
+	}
+	
+	//作废
+	dropCard(){
+		console.log('作废')
+	}
+	render() {
+		return (
+		<View style={{flex: 1}}>
+			<View style={{height:pxToDp(86), flexDirection:'row', justifyContent:'space-between'}}>
+				<TouchableOpacity style={{width:pxToDp(120), alignItems: 'center', justifyContent: 'center'}} onPress={()=>this.props.backCtrl(false)}>
+					<Text style={{fontSize:pxToDp(30)}}>返回</Text>
+				</TouchableOpacity>
+				<View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+					<Text>邀请码</Text>
+				</View>
+				<TouchableOpacity style={{width:pxToDp(120), alignItems: 'center', justifyContent: 'center'}} onPress={() => this.dropCard()} >
+					<Text style={{fontSize:pxToDp(30)}}>作废</Text>
+				</TouchableOpacity>
+			</View>
+			<View style={{flex: 1, backgroundColor: '#ddd',}}>
+					<View style={{flex: 1, marginHorizontal:pxToDp(55), marginVertical:pxToDp(56), borderRadius: '3%', backgroundColor: 'white'}}>
+						<Image  style={{flex: 1, backgroundColor: '#6fc', margin:pxToDp(40)}} resizeMode='cover'>二维码部分</Image>
+						<View style={{borderBottomWidth:pxToDp(2),borderBottomColor:'black', height:pxToDp(50)}}>
+							<Text style={{textAlign:'center', fontSize: pxToDp(26), color: '#595959', }}>
+								上海市闵行区马桥智慧社区34号1901室
+							</Text>
+						</View>
+						<View style={{height:pxToDp(250)}}>
+							<Text style={{textAlign:'center', fontSize: pxToDp(26), color: '#595959'}}>2/24h</Text>
+							<Image style={{height:pxToDp(56),backgroundColor: '#5fc', margin:pxToDp(16)}}/>
+							<View style={{flexDirection: 'row', alignItems:'baseline', justifyContent:'center', paddingHorizontal: pxToDp(24), borderBottomWidth:pxToDp(2),borderBottomColor:'black'}}>
+								<Text style={{fontSize:pxToDp(22), color: '#bbb'}}>有效期至</Text>
+								<View style={{flex: 1}}></View>
+								<Text style={{fontSize:pxToDp(22), color: '#bbb'}}>2017年04月01日 10:53</Text>
+							</View>
+							<View style={{flex: 1, alignItems:'center', justifyContent:'center'}}>
+								<Text style={{fontSize:pxToDp(34), color:'#595959'}}>请在门禁处出示二维码并扫描</Text>
+							</View>
+						</View>
+					</View>
+					<View style={{flexDirection: 'row',height: pxToDp(126)}}>
+						<TouchableOpacity style={{flex: 1,backgroundColor:'#6abdcf', alignItems:'center', justifyContent:'center'}} onPress={()=>this.savePhoto()}>
+							<Text style={{fontSize:pxToDp(36), color:'white'}}>保存到相册</Text>
+						</TouchableOpacity>
+						<TouchableOpacity style={{flex: 1, backgroundColor: '#b1cd2a', alignItems:'center', justifyContent:'center'}} onPress={()=>this.shareWex()}>
+							<Text style={{fontSize:pxToDp(36), color:'white'}}>分享到微信</Text>
+						</TouchableOpacity>
+					</View>
+			</View>
+		</View>
+		)
+	}
+
+
+}
+
+// const styles = StyleSheet.create({
+
+// })
+module.exports = open;
