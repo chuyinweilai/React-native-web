@@ -32,7 +32,6 @@ export default class Lifing extends Component {
       op4: 0.5,
       show: true,
     };
-      this.AStars=['../../assets/stars.svg','../../assets/stars.svg','../../assets/stars.svg','../../assets/stars.svg','../../assets/stars.svg']
   }
   componentWillMount(){
     this.setState({

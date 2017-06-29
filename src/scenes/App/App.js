@@ -35,7 +35,11 @@ export default class App extends Component {
 		super();
 		this.state={
 			_Pctrl: true,
-			tag: <Home  router={(key) => this._HomeRouterCtrl(key)}/>,
+			tag: <Home  router={(key) => this._RouterCtrl(key)}/>,
+			homePic:require('./../../assets/首页-2.png'),
+			LifingPic:require('./../../assets/生活2.png'),
+			CommunityPic:require('./../../assets/社区2.png'),
+			MypagePic:require('./../../assets/我的2.png')
 		}
 		this.nowPage = 'Home';
 		this.HomeRouterPage = ''
@@ -46,7 +50,7 @@ export default class App extends Component {
 		this.setPage()
 	}
 
-	_HomeRouterCtrl(control){
+	_RouterCtrl(control){
 		if(control){
 			this.HomeRouterPage = control;
 			this.setState({
@@ -63,34 +67,20 @@ export default class App extends Component {
 	pageChose(tagName){ 
 		if(tagName != this.nowPage){
 			if(this.nowPage == 'Home'){
-				this.refs.HomeBtn.setNativeProps({
-					style:{
-						background:'#FFFFFF',
-					}
-				})
-			}else if(this.nowPage == 'Accumulate'){
-				this.refs.AccumulateBtn.setNativeProps({
-					style:{
-						background:'#FFFFFF',
-					}
+				this.setState({
+					homePic: require('./../../assets/首页-2.png')
 				})
 			}else if(this.nowPage == 'Lifing'){
-				this.refs.LifingBtn.setNativeProps({
-					style:{
-						background:'#FFFFFF',
-					}
+				this.setState({
+					LifingPic: require('./../../assets/生活2.png')
 				})
 			}else if(this.nowPage == 'Community'){
-				this.refs.CommunityBtn.setNativeProps({
-					style:{
-						background:'#FFFFFF',
-					}
+				this.setState({
+					CommunityPic: require('./../../assets/社区2.png')
 				})
 			}else if(this.nowPage == 'Mypage'){
-				this.refs.MypageBtn.setNativeProps({
-					style:{
-						background:'#FFFFFF',
-					}
+				this.setState({
+					MypagePic: require('./../../assets/我的2.png')
 				})
 			}
 			this.nowPage = tagName;
@@ -101,29 +91,28 @@ export default class App extends Component {
 	setPage(){
 		let tagName = this.nowPage
 		if(tagName == 'Home'){
-			this.refs.HomeBtn.setNativeProps({style:{background:'#599bab', }});
 			this.setState({
-				tag: <Home router={(test) => this._HomeRouterCtrl(test)}/>
+				tag: <Home router={(value)=>this._RouterCtrl(value)}/>,
+				homePic: require('./../../assets/首页-1.png'),
 			})
 		}else if(tagName == 'Accumulate'){
-			this.refs.AccumulateBtn.setNativeProps({style:{background:'#599bab', }});
 			this.setState({
-				tag: <Accumulate/>
+				tag: <Accumulate router={(value)=>this._RouterCtrl(value)}/>,
 			})
 		}else if(tagName == 'Lifing'){
-			this.refs.LifingBtn.setNativeProps({style:{background:'#599bab', }});
 			this.setState({
-				tag: <Lifing/>
+				tag: <Lifing router={(value)=>this._RouterCtrl(value)}/>,
+				LifingPic: require('./../../assets/生活1.png'),
 			})
 		}else if(tagName == 'Community'){
-			this.refs.CommunityBtn.setNativeProps({style:{background:'#599bab', }});
 			this.setState({
-				tag: <Community/>
+				tag: <Community router={(value)=>this._RouterCtrl(value)}/>,
+				CommunityPic: require('./../../assets/社区1.png'),
 			})
 		}else if(tagName == 'Mypage'){
-			this.refs.MypageBtn.setNativeProps({style:{background:'#599bab', }});
 			this.setState({
-				tag: <Mypage/>
+				tag: <Mypage router={(value)=>this._RouterCtrl(value)}/>,
+				MypagePic: require('./../../assets/我的1.png'),
 			})
 		}
 	}
@@ -137,28 +126,31 @@ export default class App extends Component {
 					</View>
 					<View style={styles.touchableBox}>
 
-						<TouchableOpacity ref={'HomeBtn'} style={[styles.touchable,{backgroundColor:'#599BAB'}]} onPress={this.pageChose.bind(this,'Home')} >
-							<Image style={{flex: 1}}/>
+						<TouchableOpacity ref={'HomeBtn'} style={styles.touchable} onPress={this.pageChose.bind(this,'Home')} >
+							<Image style={{width:pxToDp(80), height: pxToDp(80),}} resizeMode="contain" source={this.state.homePic}/>
 							<Text style= {styles.touchableText}>首页</Text>
 						</TouchableOpacity>
 
-						<TouchableOpacity ref={'AccumulateBtn'}  style={styles.touchable} onPress={this.pageChose.bind(this,'Accumulate')}>
-							<Image style={{flex: 1}}/>
-							<Text style= {styles.touchableText}>积分</Text>
-						</TouchableOpacity>
-
 						<TouchableOpacity ref={'LifingBtn'} style={styles.touchable} onPress={this.pageChose.bind(this,'Lifing')}>
-							<Image style={{flex: 1}}/>
+							
+							<Image style={{width:pxToDp(80), height: pxToDp(80),}} resizeMode="contain" source={this.state.LifingPic}/>
 							<Text style= {styles.touchableText}>生活</Text>
 						</TouchableOpacity>
+
+						<TouchableOpacity ref={'AccumulateBtn'}  style={styles.touchable} onPress={this.pageChose.bind(this,'Accumulate')}>
+							<Image style={{width:pxToDp(110), height: pxToDp(110), borderRadius:pxToDp(20), alignItems:'center', justifyContent:'center'}} resizeMode="cover" source={require('./../../assets/志愿者背景.png')}>
+								<Image style={{width:pxToDp(80), height: pxToDp(80)}} resizeMode="contain" source={require('./../../assets/志愿者.png')}/>
+							</Image>
+						</TouchableOpacity>
+
 						
 						<TouchableOpacity ref={'CommunityBtn'} style={styles.touchable} onPress={this.pageChose.bind(this,'Community')}>
-							<Image style={{flex: 1}}/>
+							<Image style={{width:pxToDp(80), height: pxToDp(80),}} resizeMode="contain" source={this.state.CommunityPic}/>
 							<Text style= {styles.touchableText}>社区</Text>
 						</TouchableOpacity>
 
 						<TouchableOpacity ref={'MypageBtn'}  style={styles.touchable} onPress={this.pageChose.bind(this,'Mypage')}>
-							<Image style={{flex: 1}}/>
+							<Image style={{width:pxToDp(80), height: pxToDp(80),}} resizeMode="contain" source={this.state.MypagePic}/>
 							<Text style= {styles.touchableText}>我的</Text>
 						</TouchableOpacity>
 					</View>
@@ -169,27 +161,14 @@ export default class App extends Component {
 			console.log(name)
 			if(name == 'open'){
 				return (
-						<Open backCtrl = {(bol)=> this._HomeRouterCtrl(bol)}/>
+						<Open backCtrl = {(bol)=> this._RouterCtrl(bol)}/>
 				)
 			} 
 			else if(name == 'invite'){
 				return (
-						<Invite backCtrl = {(bol)=> this._HomeRouterCtrl(bol)}/>
+						<Invite backCtrl = {(bol)=> this._RouterCtrl(bol)}/>
 				)
 			} 
-			// else if(name == 'serve'){
-			// 	return (
-			// 		<View>
-			// 			<Open />
-			// 		</View>
-			// 	)
-			// } else if(name == 'cemera'){
-			// 	return (
-			// 		<View>
-			// 			<Open />
-			// 		</View>
-			// 	)
-			// }
 		}
 	}
 
@@ -220,15 +199,16 @@ const styles = StyleSheet.create({
 	touchableBox:{
 		borderTopColor:'#9a9a9a', 
 		borderTopWidth:1, 
-		height:pxToDp(116), 
+		height:pxToDp(130), 
 		flexDirection: 'row',
-		backgroundColor:'white'
+		backgroundColor:'white',
 	},
 	touchable: {
 		flex: 1, 
 		alignItems:'center', 
 		borderRightColor:'#4b4b4b',
 		borderRightWidth:pxToDp(1), 
+		paddingTop:pxToDp(10)
 	},
 	touchableText:{
 		fontSize:pxToDp(26), 

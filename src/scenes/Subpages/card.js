@@ -15,49 +15,29 @@ const pxToDp =require('../responsive/px');
 // const deviceWidthDp = Dimensions.get('window').width;
 // const deviceHeightDp = Dimensions.get('window').height;
 
-export default class open extends Component {
+export default class card extends Component {
 	constructor(props){
 		super(props);
 		this.state={
-			imageUri: ' ',
-			Remain: '',
+			cardId: "",
+			number: "",
+			imageUri:'',
+			Remain:'',
 		}
 	}
 	
 	componentWillMount(){
-		this._pulldata()
+		this._turnNum(this.props.cardMess)
 	}
 
-	//提交用户数据
-	_pulldata(){
-		let uri = '/api/cards/take';
-		let _data = {
-			"wx_id": "18912342933",		//openId
-			"card_type": '00',		  //00单次，01月卡，02季卡
-			"user_type": '0',			//0本人，1租户，2访客
-			"memo": ''				       //备注
-		}
-
-		appData._dataPost(uri,_data,(ref)=>{
-			if(ref[1] < 0){
-				this._fail(ref)
-			} else {
-				this._success(ref)
-			}
-		})
-	}
-
-	//成功返回
-	_success(arry){
-		this._turnNum(arry)
-	}
-
-	//失败返回
-	_fail(mess){
-		// console.log(mess)
-	}
-
-	//生成二维码
+	/*
+		维根算法
+		x+(y*256+z)*65536	
+		card = 25560000
+		z:255
+		x:60000
+		y:100~500
+	*/
 	_turnNum(cardMess){
 		let num = cardMess[0].toString();
 		let x = Number(num.substr(3,5));
@@ -65,14 +45,12 @@ export default class open extends Component {
 		let z = Number(num.substr(0,3))	
 		
 		let number = x+(y*256+z)*65536
-		let uri = 'http://famesmart.com/phpqrcode/qrcode.php?size=78&data=' + number;
-		// +4893828329;
+		let uri = 'http://famesmart.com/phpqrcode/qrcode.php?size=78&data='+number;
 		this.setState({
 			imageUri:uri,
 			Remain: cardMess[1]
 		})
 	}
-
 	//保存到相册
 	savePhoto(){
 		console.log('保存相册')
@@ -87,7 +65,7 @@ export default class open extends Component {
 	dropCard(){
 		console.log('作废')
 	}
-	
+
 	render() {
 		return (
 		<View style={{flex: 1}}>
@@ -104,9 +82,9 @@ export default class open extends Component {
 			</View>
 
 			<View style={{flex: 1, backgroundColor: '#ddd',}}>
-					<View style={{flex: 1, marginHorizontal:pxToDp(45), marginVertical:pxToDp(56), borderRadius: pxToDp(20),backgroundColor: 'white'}}>
-						<Image  style={[{flex: 1, margin:pxToDp(40)},{backgroundColor: this.state.colors}]} resizeMode='contain' source={{uri: this.state.imageUri}}></Image>
-						
+					<View style={{flex: 1, marginHorizontal:pxToDp(45), marginVertical:pxToDp(56), borderRadius: pxToDp(20), backgroundColor: 'white'}}>
+						<Image  style={{flex: 1, margin:pxToDp(40)}} resizeMode='contain' source={{uri: this.state.imageUri}}></Image>
+
 						<View style={{borderBottomWidth:pxToDp(2),borderBottomColor:'black', height:pxToDp(50)}}>
 							<Text style={{textAlign:'center', fontSize: pxToDp(26), color: '#595959', }}>
 								上海市闵行区马桥智慧社区34号1901室
@@ -132,14 +110,17 @@ export default class open extends Component {
 						</View>
 					</View>
 			</View>
+
+			<View style={{height: pxToDp(120), flexDirection:'row',}}>
+				<TouchableOpacity style={{flex: 1,  justifyContent:'center', backgroundColor:'#69bdd0',alignItems:'center'}}>
+					<Text style={{width: pxToDp(210), textAlign :'center', fontWeight:'600', color: 'white'}}>保存到相册</Text>
+				</TouchableOpacity>
+				<TouchableOpacity style={{flex: 1, backgroundColor:'#b1cd29', alignItems:'center', justifyContent:'center',}}>
+					<Text style={{width: pxToDp(210), textAlign :'center', fontWeight:'600', color: 'white'}}>分享微信</Text>
+				</TouchableOpacity>
+			</View>
 		</View>
 		)
 	}
-
-
 }
-
-// const styles = StyleSheet.create({
-
-// })
-module.exports = open;
+module.exports = card;

@@ -194,6 +194,7 @@ export default class Home extends Component {
 			)
 		}
 	}
+	
 	//社区动态 内容部分
 	newsText(rowData){
 		return(
