@@ -7,7 +7,9 @@
         "dev": "webpack-dev-server --port 3000 --config web/webpack.config.dev.js --inline --hot --colors --quiet",
         "storybook": "start-storybook -p 9001 -c web/.storybook",
         "build": "webpack --config web/webpack.config.dev.js",
-        "lint": "eslint src"
+        "lint": "eslint src",
+        "start": "npm run dev",
+        "build": "npm run build"
     },
     "keywords": [],
     "author": "",
