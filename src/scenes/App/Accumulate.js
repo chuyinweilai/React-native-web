@@ -47,85 +47,21 @@ export default class Accumulate extends Component {
 		)
 	}
 	
-	//与我相关
-	aboutMe(){
-		return(
-			<View>
-				<View style={{height:pxToDp(80), flexDirection:'row', alignItems:'center', borderBottomColor:'#bbb',borderBottomWidth: pxToDp(4)}}>
-					<Image style={{width: pxToDp(50), height: pxToDp(50), marginHorizontal:pxToDp(20), backgroundColor:'#6fc',}} />
-					<Text style={{fontSize:pxToDp(28)}}>我的房屋</Text>
-				</View>
-				
-				<View style={{height:pxToDp(80), flexDirection:'row', alignItems:'center', borderBottomColor:'#bbb',borderBottomWidth: pxToDp(4)}}>
-					<Image style={{width: pxToDp(50), height: pxToDp(50), marginHorizontal:pxToDp(20), backgroundColor:'#6fc',}} />
-					<Text style={{fontSize:pxToDp(28)}}>我的订单</Text>
-				</View>
-				
-				<View style={{height:pxToDp(80), flexDirection:'row', alignItems:'center', borderBottomColor:'#bbb',borderBottomWidth: pxToDp(4)}}>
-					<Image style={{width: pxToDp(50), height: pxToDp(50), marginHorizontal:pxToDp(20), backgroundColor:'#6fc',}} />
-					<Text style={{fontSize:pxToDp(28)}}>我的活动</Text>
-				</View>
-				
-				<View style={{height:pxToDp(80), flexDirection:'row', alignItems:'center', borderBottomColor:'#bbb',borderBottomWidth: pxToDp(4)}}>
-					<Image style={{width: pxToDp(50), height: pxToDp(50), marginHorizontal:pxToDp(20), backgroundColor:'#6fc',}} />
-					<Text style={{fontSize:pxToDp(28)}}>我的主题</Text>
-				</View>
-			</View>
-		)
-	}
-
-	//系统设置
-	setting(){
-		return(
-			<View>
-				<View style={{height:pxToDp(80), flexDirection:'row', alignItems:'center', borderBottomColor:'#bbb',borderBottomWidth: pxToDp(4)}}>
-					<Image style={{width: pxToDp(50), height: pxToDp(50), marginHorizontal:pxToDp(20), backgroundColor:'#6fc',}} />
-					<Text style={{fontSize:pxToDp(28)}}>通知设置</Text>
-				</View>
-				
-				<View style={{height:pxToDp(80), flexDirection:'row', alignItems:'center', borderBottomColor:'#bbb',borderBottomWidth: pxToDp(4)}}>
-					<Image style={{width: pxToDp(50), height: pxToDp(50), marginHorizontal:pxToDp(20), backgroundColor:'#6fc',}} />
-					<Text style={{fontSize:pxToDp(28)}}>意见反馈</Text>
-				</View>
-				
-				<View style={{height:pxToDp(80), flexDirection:'row', alignItems:'center', borderBottomColor:'#bbb',borderBottomWidth: pxToDp(4)}}>
-					<Image style={{width: pxToDp(50), height: pxToDp(50), marginHorizontal:pxToDp(20), backgroundColor:'#6fc',}} />
-					<Text style={{fontSize:pxToDp(28)}}>关于我们</Text>
-				</View>
-			</View>
-		)
-	}
 
 	render() {
 		return (
 			<ScrollView style={styles.container}>
-				{this.bannerPart()}
-				<View style={{flexDirection: 'row', height:pxToDp(100),}}>
-					<View style={{flex: 1,  borderRightColor:'#888', borderRightWidth:pxToDp(1), justifyContent: 'center', alignItems: 'center'}}>
-						<Text style={{fontSize:pxToDp(16),color:'#ccc'}}>身份</Text>
-						<Text style={{width: pxToDp(150), textAlign: 'center', fontSize:pxToDp(32),color:'#78b7c0'}}>二手租户</Text>
+				<View style={{height:pxToDp(86), flexDirection:'row', justifyContent:'space-between'}}>
+					<View style={{width:pxToDp(120), alignItems: 'center', justifyContent: 'center'}}>
 					</View>
-					<View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-						<Text style={{fontSize:pxToDp(16),color:'#ccc'}}>信誉</Text>
-						<Text style={{width: pxToDp(150), textAlign: 'center', fontSize:pxToDp(32),color:'#78b7c0'}}>98分</Text>
+					<View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+						<Text>志愿者</Text>
 					</View>
-				</View>
-				<View style={{borderTopColor:'#bbb', borderTopWidth: pxToDp(4)}}>
-					<View style={{height:pxToDp(80), backgroundColor:'#ddd', flexDirection: 'row', alignItems:'center'}}>
-						<Image style={{width: pxToDp(60), height: pxToDp(60), marginHorizontal:pxToDp(20)}} source={require('../../assets/user.svg')}/>
-						<Text style={{color: '#f4f4f4' ,fontSize: pxToDp(36), fontWeight:'600'}}>与我相关</Text>
-					</View>
-					{this.aboutMe()}
+					<TouchableOpacity style={{width:pxToDp(120), alignItems: 'center', justifyContent: 'center'}}>
+						<Text style={{fontSize:pxToDp(30)}}></Text>
+					</TouchableOpacity>
 				</View>
 
-				
-				<View style={{marginTop:pxToDp(10)}}>
-					<View style={{height:pxToDp(80), backgroundColor:'#ddd', flexDirection: 'row', alignItems:'center'}}>
-						<Image style={{width: pxToDp(60), height: pxToDp(60), marginHorizontal:pxToDp(20)}} source={require('../../assets/setting.svg')}/>
-						<Text style={{color: '#f4f4f4' ,fontSize: pxToDp(36), fontWeight:'600'}}>系统设置</Text>
-					</View>
-					{this.setting()}
-				</View>
 			</ScrollView>
 		);
 	}

@@ -17,82 +17,69 @@ import {
 	Dimensions
 } from 'react-native';
 
-const pxToDp =require('../responsive/px');
-const deviceWidthDp = Dimensions.get('window').width;
+const peruri = "http://cloudapi.famesmart.com";
+const appData = require('./../../components/Ajax')
+const pxToDp = require('../responsive/px');
 
 export default class Lifing extends Component {
 	constructor(props) {
 		super(props);
 		const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 		this.state = {
-			ds: ds.cloneWithRows([]),
-			op1: 1,
-			op2: 0.5,
-			op3: 0.5,
-			op4: 0.5,
-			show: true,
+			ds: ds,
+			dataSource:([]),
 		};
-		this.AStars=['../../assets/stars.svg','../../assets/stars.svg','../../assets/stars.svg','../../assets/stars.svg','../../assets/stars.svg']
 	}
 	componentWillMount(){
+		appData._dataGet('/api/events', this._getEvent.bind(this));
+	}
+
+	_getEvent(json){
+		console.log(json)
 		this.setState({
-			ds:this.state.ds.cloneWithRows(this.AStars)
+    		dataSource: json.data
 		})
 	}
 
-	starsShow(rowData,){
-		// console.log(this.state.ds)
-		return(
-			<View>
-				<Image style={{width: pxToDp(45), height: pxToDp(45), marginHorizontal:pxToDp(10)}} 
-				source={require('../../assets/starsYellow.svg')}
-				/>
-			</View>
-		)
-	}
-
-
 	//社区动态
 	news(){
+		const aData = this.state.dataSource;
+		if(aData.length){
+			return(
+					<ListView
+							dataSource={this.state.ds.cloneWithRows(this.state.dataSource)}
+							enableEmptySections = {true}
+							renderRow={this.newsText.bind(this)}
+					/>
+			)
+		}
+	}
+
+	//社区动态 内容部分
+	newsText(rowData){
+		let pic =  rowData.pic_path
+		let ss = pic.split(',')
 		return(
-			<View style={{marginTop:pxToDp(20), marginHorizontal:pxToDp(10),}}>
-				<View style={{paddingBottom:pxToDp(20), borderBottomColor: '#888', borderBottomWidth:1}}>
-					<View style={{height: pxToDp(78),flexDirection:'row', alignItems: 'center', paddingLeft: pxToDp(8)}}>
-						<Image style={{height: pxToDp(56),width: pxToDp(56), borderRadius:'50%',backgroundColor: 'gray'}}/>
-						<Text style={{fontSize: pxToDp(24), color:'#464646',paddingLeft:pxToDp(15)}}>爱自拍美妞</Text>
-					</View>
-					<View style={{paddingLeft: pxToDp(13),paddingRight:pxToDp(10)}}>
-						<Text style={{color:'#444444', fontSize:pxToDp(16), lineHeight:pxToDp(29), paddingLeft: pxToDp(4), paddingRight: pxToDp(17)}}>
-						本周有老年人舞蹈和小学生安全教育志愿者活动，可以带上自己的家人和小伙伴一起为社区增添活力吧。详情咨询范小组，也就是我。号码是15655371512 微信号是1314zxt。报名成功后可免费领取社区纪念品一份，送完为止哦~~~
-						</Text>
-						<View style={{flexDirection: 'row', marginTop:pxToDp(8)}}>
-							<Image style={{width:pxToDp(340), height:pxToDp(210), backgroundColor: '#66ffcc'}} resizeMode='stretch'/>
-							<View style={{width:pxToDp(16)}}></View>
-							<Image style={{width:pxToDp(340), height:pxToDp(210), backgroundColor: '#66ffcc'}} resizeMode='stretch'/>
-						</View>
-						<Text style={{paddingTop:pxToDp(10), fontSize:pxToDp(14), color: '#888',}}>1小时前</Text>
-					</View>
+			<View style={{ borderBottomColor:'#9a9a9a', borderBottomWidth:1,}}>
+				<View style={{height: pxToDp(78),flexDirection:'row', alignItems: 'center', paddingLeft: pxToDp(18)}}>
+					<Image style={{height: pxToDp(56),width: pxToDp(56), borderRadius: pxToDp(28),backgroundColor: 'gray'}} source={{uri: peruri + rowData.pic_path_face}}/>
+					<Text style={{fontSize: pxToDp(17), color:'#464646',paddingLeft:pxToDp(15)}}>{rowData.provider_name}</Text>
 				</View>
-				
-				<View style={{paddingBottom:pxToDp(20), borderBottomColor: '#888', borderBottomWidth:1}}>
-					<View style={{height: pxToDp(78),flexDirection:'row', alignItems: 'center', paddingLeft: pxToDp(8)}}>
-						<Image style={{height: pxToDp(56),width: pxToDp(56), borderRadius:'50%',backgroundColor: 'gray'}}/>
-						<Text style={{fontSize: pxToDp(24), color:'#464646',paddingLeft:pxToDp(15)}}>爱自拍美妞</Text>
+				<View style={{paddingLeft: pxToDp(23),paddingRight:pxToDp(20)}}>
+					<Text style={{fontSize:pxToDp(21), lineHeight:pxToDp(29), paddingLeft: pxToDp(4), paddingRight: pxToDp(17)}}>
+							{rowData.detail}
+					</Text>
+					<View style={{flexDirection: 'row', marginVertical:pxToDp(16)}}>
+						<Image style={{width:pxToDp(342), height:pxToDp(212)}} resizeMode="stretch" source={{uri:peruri+ ss[0]}}/>
+						<View style={{width:pxToDp(16)}}></View>
+						<Image style={{width:pxToDp(342), height:pxToDp(212)}} resizeMode="stretch" source={{uri:peruri+ ss[1]}}/>
 					</View>
-					<View style={{paddingLeft: pxToDp(13),paddingRight:pxToDp(10)}}>
-						<Text style={{color:'#444444', fontSize:pxToDp(16), lineHeight:pxToDp(29), paddingLeft: pxToDp(4), paddingRight: pxToDp(17)}}>
-						本周有老年人舞蹈和小学生安全教育志愿者活动，可以带上自己的家人和小伙伴一起为社区增添活力吧。详情咨询范小组，也就是我。号码是15655371512 微信号是1314zxt。报名成功后可免费领取社区纪念品一份，送完为止哦~~~
-						</Text>
-						<View style={{flexDirection: 'row', marginTop:pxToDp(8)}}>
-							<Image style={{width:pxToDp(340), height:pxToDp(210), backgroundColor: '#66ffcc'}} resizeMode='stretch'/>
-							<View style={{width:pxToDp(16)}}></View>
-							<Image style={{width:pxToDp(340), height:pxToDp(210), backgroundColor: '#66ffcc'}} resizeMode='stretch'/>
-						</View>
-						<Text style={{paddingTop:pxToDp(10), fontSize:pxToDp(14), color: '#888',}}>1小时前</Text>
+					<View style={{paddingBottom:pxToDp(10), flexDirection:'row',justifyContent:'flex-end'}}>
+					<Text style={{ textAlign:'right',fontSize:pxToDp(14), color:'#9c9c9c',marginRight:pxToDp(20)}}>热度：{rowData.point}</Text>
+					<Text style={{textAlign:'right',fontSize:pxToDp(14), color:'#9c9c9c'}}>上传时间：{rowData.vld_start}</Text>
 					</View>
 				</View>
 			</View>
-		
 		)
 	}
 	
@@ -116,11 +103,11 @@ export default class Lifing extends Component {
 				</View>
 			
 				<View style={{borderTopWidth:2,borderTopColor:'black', paddingTop:pxToDp(10), paddingBottom:pxToDp(20), backgroundColor:'#dcdcdc'}}>
-					<TouchableOpacity style={{height:pxToDp(160),marginBottom:pxToDp(10), backgroundColor:'pink', justifyContent: 'center'}}>
-						<Text style={{fontSize:  pxToDp(32), color: 'white'}}>随手拍</Text>
+					<TouchableOpacity style={{height:pxToDp(160),marginBottom:pxToDp(10), backgroundColor:'pink', justifyContent: 'center'}} disabled>
+						<Image style={{flex: 1}} resizeMode="stretch" source={require('./../../assets/随手拍.png')}></Image>
 					</TouchableOpacity>
-					<TouchableOpacity style={{height:pxToDp(160), backgroundColor:'pink', justifyContent: 'center'}}>
-						<Text style={{fontSize: pxToDp(32), color: 'white'}}>问卷调查</Text>
+					<TouchableOpacity style={{height:pxToDp(160), backgroundColor:'pink', justifyContent: 'center'}} disabled>
+						<Image style={{flex: 1}} resizeMode="stretch" source={require('./../../assets/问卷调查bg.png')}></Image>
 					</TouchableOpacity>
 				</View>
 				{this.news()}

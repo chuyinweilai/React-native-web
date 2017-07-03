@@ -98,9 +98,7 @@ export default class open extends Component {
 				<View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
 					<Text>邀请码</Text>
 				</View>
-				<TouchableOpacity style={{width:pxToDp(120), alignItems: 'center', justifyContent: 'center'}} onPress={() => this.dropCard()} >
-					<Text style={{fontSize:pxToDp(30)}}>作废</Text>
-				</TouchableOpacity>
+				<View style={{width:pxToDp(120), alignItems: 'center', justifyContent: 'center'}}/>
 			</View>
 
 			<View style={{flex: 1, backgroundColor: '#ddd',}}>
@@ -114,17 +112,16 @@ export default class open extends Component {
 						</View>
 
 						<View style={{height:pxToDp(300)}}>
-							<Text style={{textAlign:'center', fontSize: pxToDp(26), color: '#595959'}}>2/24h</Text>
-							<Image style={{height:pxToDp(56),backgroundColor: '#5fc', margin:pxToDp(16)}}/>
+							<Image style={{height:pxToDp(56), margin:pxToDp(16)}}/>
 							<View style={{flexDirection: 'row', alignItems:'baseline', justifyContent:'center', paddingHorizontal: pxToDp(24), paddingBottom:pxToDp(10)}}>
 								<Text style={{fontSize:pxToDp(22), color: '#bbb'}}>有效期至</Text>
 								<View style={{flex: 1}}></View>
 								<Text style={{fontSize:pxToDp(22), color: '#bbb'}}>2017年04月01日 10:53</Text>
 							</View>
 							<View style={{flexDirection: 'row', alignItems:'baseline', justifyContent:'center', paddingHorizontal: pxToDp(24), paddingBottom:pxToDp(10), borderBottomWidth:pxToDp(2),borderBottomColor:'black'}}>
-								<Text style={{fontSize:pxToDp(22), color: '#bbb'}}>剩余次数</Text>
+								<Text style={{fontSize:pxToDp(22), color: '#bbb'}}>剩余次卡</Text>
 								<View style={{flex: 1}}></View>
-								<Text style={{fontSize:pxToDp(22), color: '#bbb'}}>{this.state.Remain}</Text>
+								<Text style={{fontSize:pxToDp(22), color: '#bbb'}}>{this.state.Remain} 张</Text>
 							</View>
 							<View style={{flex: 1, alignItems:'center', justifyContent:'center'}}>
 								<Text style={{fontSize:pxToDp(34), color:'#595959'}}>请在门禁处出示二维码并扫描</Text>

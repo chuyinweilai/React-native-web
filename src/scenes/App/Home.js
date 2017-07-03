@@ -42,18 +42,18 @@ export default class Home extends Component {
 	}
 
 	componentWillMount(){
-		appData._dataGet('/api/func/A', this.getFunc.bind(this));
-		appData._dataGet('/api/events', this.getEvent.bind(this));
+		appData._dataGet('/api/func/A', this._getIcon.bind(this));
+		appData._dataGet('/api/events', this._getEvent.bind(this));
 		// this._dataPost('api/cards');
 	}
 
-	getFunc(json){
+	_getIcon(json){
 		this.setState({
 			funcData:json.funcs
 		})
 	}
 
-	getEvent(json){
+	_getEvent(json){
 		this.setState({
     		dataSource: json.data
 		})
@@ -97,12 +97,12 @@ export default class Home extends Component {
 						</TouchableOpacity>
 
 						<View style={{height:pxToDp(110), flexDirection: 'row'}}>
-							<TouchableOpacity style={{ backgroundColor:'#c7a76c',  flexDirection: 'row'}} onPress={() => this._nimbleBtn('serve')}>
+							<TouchableOpacity style={{ backgroundColor:'#c7a76c',  flexDirection: 'row'}} disabled>
 								<Image style={{height:pxToDp(110), width: pxToDp(178), }} resizeMode='stretch' source={{uri: peruri+ data[2].icon}}>
 								</Image>
 							</TouchableOpacity>
 							<View style={{width:pxToDp(10)}}></View>
-							<TouchableOpacity style={{ backgroundColor:'#c7a76c', flexDirection: 'row'}} onPress={() => this._nimbleBtn('cemera')}>
+							<TouchableOpacity style={{ backgroundColor:'#c7a76c', flexDirection: 'row'}} onPress={()=>{this.props.mainRouter('Accumulate')}}>
 								<Image style={{height:pxToDp(110), width: pxToDp(178)}} resizeMode='stretch' source={{uri: peruri+ data[3].icon}}>
 								</Image>
 							</TouchableOpacity>
@@ -124,12 +124,9 @@ export default class Home extends Component {
 		const  data = this.state.funcData;
 		return (
 			<View style={{marginTop:pxToDp(18)}}>
-				<View style={{height:pxToDp(20),backgroundColor: '#dcdcdc', flexDirection:'row'}}>
-					<View style={{flex: 1}}></View>
-					<Image style={{width:pxToDp(28), height:pxToDp(32), margin:0, marginTop: pxToDp(8),}}resizeMode='stretch'/>  
-				</View>
+				<View style={{height:pxToDp(30), backgroundColor: '#dcdcdc', flexDirection:'row'}}></View>
 					{this.aboutContent()}
-				<View style={{height: pxToDp(20),backgroundColor:'#dcdcdc'}}></View>
+				<View style={{height: pxToDp(30),backgroundColor:'#dcdcdc'}}></View>
 			</View>
 		)
 	}
@@ -144,19 +141,19 @@ export default class Home extends Component {
 						<View style={{width:pxToDp(164) ,height: pxToDp(142), borderRadius:pxToDp(22), alignItems:'center', justifyContent:'center'}}>
 							<Image resizeMode='stretch' style={{width: pxToDp(164), height: pxToDp(142)}} source={{uri: peruri+ data[4].icon}}/>
 						</View>
-						<Text style={{textAlign:'center', fontSize:pxToDp(26), color: '#525252',paddingVertical: pxToDp(10)}}>党建天地</Text>
+						<Text style={{textAlign:'center', fontSize:pxToDp(26), color: '#525252',paddingTop: pxToDp(10)}}>党建天地</Text>
 					</TouchableOpacity>
 					<TouchableOpacity style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
 						<View style={{width:pxToDp(164) ,height: pxToDp(142), borderRadius:pxToDp(22), alignItems:'center', justifyContent:'center'}}>
 							<Image resizeMode='stretch' style={{width: pxToDp(164), height: pxToDp(142)}} source={{uri: peruri+ data[5].icon}}/>
 						</View>
-						<Text style={{textAlign:'center', fontSize:pxToDp(26), color: '#525252',paddingVertical: pxToDp(10)}}>问卷调查</Text>
+						<Text style={{textAlign:'center', fontSize:pxToDp(26), color: '#525252',paddingTop: pxToDp(10)}}>问卷调查</Text>
 					</TouchableOpacity>
 					<TouchableOpacity style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
 						<View style={{width:pxToDp(164) ,height: pxToDp(142), borderRadius:pxToDp(22), alignItems:'center', justifyContent:'center'}}>
 							<Image resizeMode='contain' style={{width: pxToDp(164), height: pxToDp(142)}} source={{uri: peruri+ data[6].icon}}/>
 						</View>
-						<Text style={{textAlign:'center', fontSize:pxToDp(26), color: '#525252',paddingVertical: pxToDp(10)}}>周边商城</Text>
+						<Text style={{textAlign:'center', fontSize:pxToDp(26), color: '#525252',paddingTop: pxToDp(10)}}>周边商城</Text>
 					</TouchableOpacity>
 				</View>
 			)
@@ -180,9 +177,9 @@ export default class Home extends Component {
 					<View style={{paddingHorizontal:pxToDp(19), borderBottomColor:'#4b4b4b', borderBottomWidth:1, flexDirection:'row',     
 					justifyContent:'space-between'}}>
 						<Text style={{lineHeight:pxToDp(48), fontSize:pxToDp(32)}}>社区动态</Text>
-						<TouchableOpacity style={{flexDirection:'row'}}>
-							<Text style={{lineHeight:pxToDp(32), fontSize:pxToDp(26),paddingTop: pxToDp(8)}}>more</Text>
-							<Image style={{width:pxToDp(28), height:pxToDp(32), margin:0, marginTop: pxToDp(8)}} resizeMode='stretch'  source={require('../../assets/more.svg')}/>
+						<TouchableOpacity style={{flexDirection:'row'}} onPress={()=>{this.props.mainRouter('Community')}}>
+							<Text style={{lineHeight:pxToDp(32), fontSize:pxToDp(26),paddingTop: pxToDp(8)}}>更多</Text>
+							<Image style={{width:pxToDp(28), height:pxToDp(32), margin:0, marginTop: pxToDp(8)}} resizeMode='stretch'  source={require('../../assets/more.png')}/>
 						</TouchableOpacity>
 					</View>
 					<ListView
@@ -194,13 +191,15 @@ export default class Home extends Component {
 			)
 		}
 	}
-	
+
 	//社区动态 内容部分
 	newsText(rowData){
+		let pic =  rowData.pic_path
+		let ss = pic.split(',')
 		return(
 			<View style={{ borderTopColor:'#9a9a9a', borderTopWidth:1,}}>
 				<View style={{height: pxToDp(78),flexDirection:'row', alignItems: 'center', paddingLeft: pxToDp(18)}}>
-					<Image style={{height: pxToDp(56),width: pxToDp(56), borderRadius: pxToDp(28),backgroundColor: 'gray'}}/>
+					<Image style={{height: pxToDp(56),width: pxToDp(56), borderRadius: pxToDp(28),backgroundColor: 'gray'}} source={{uri: peruri + rowData.pic_path_face}}/>
 					<Text style={{fontSize: pxToDp(17), color:'#464646',paddingLeft:pxToDp(15)}}>{rowData.provider_name}</Text>
 					<Text style={{fontSize: pxToDp(14), color:'#9c9c9c', paddingLeft:pxToDp(10),paddingRight:pxToDp(6)}}>来自</Text>
 					<Text style={{fontSize: pxToDp(18), color:'#ffc575'}}>{rowData.type}</Text>
@@ -210,9 +209,13 @@ export default class Home extends Component {
 							{rowData.detail}
 					</Text>
 					<View style={{flexDirection: 'row', marginVertical:pxToDp(16)}}>
-						<Image style={{width:pxToDp(342), height:pxToDp(322), backgroundColor: '#66ffcc'}}/>
+						<Image style={{width:pxToDp(342), height:pxToDp(212)}} resizeMode="stretch" source={{uri:peruri+ ss[0]}}/>
 						<View style={{width:pxToDp(16)}}></View>
-						<Image style={{width:pxToDp(342), height:pxToDp(322), backgroundColor: '#66ffcc'}}/>
+						<Image style={{width:pxToDp(342), height:pxToDp(212)}} resizeMode="stretch" source={{uri:peruri+ ss[1]}}/>
+					</View>
+					<View style={{paddingBottom:pxToDp(10), flexDirection:'row',justifyContent:'flex-end'}}>
+					<Text style={{ textAlign:'right',fontSize:pxToDp(14), color:'#9c9c9c',marginRight:pxToDp(20)}}>热度：{rowData.point}</Text>
+					<Text style={{textAlign:'right',fontSize:pxToDp(14), color:'#9c9c9c'}}>上传时间：{rowData.vld_start}</Text>
 					</View>
 				</View>
 			</View>

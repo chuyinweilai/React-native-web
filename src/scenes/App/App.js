@@ -36,10 +36,12 @@ export default class App extends Component {
 		this.state={
 			_Pctrl: true,
 			tag: <Home  router={(key) => this._RouterCtrl(key)}/>,
-			homePic:require('./../../assets/首页-2.png'),
-			LifingPic:require('./../../assets/生活2.png'),
-			CommunityPic:require('./../../assets/社区2.png'),
-			MypagePic:require('./../../assets/我的2.png')
+			//导航图标
+			homePic:require('./../../assets/首页灰色.png'),
+			LifingPic:require('./../../assets/生活灰色.png'),
+			AccumulatePic:require('./../../assets/志愿者灰.png'),
+			CommunityPic:require('./../../assets/社区灰色.png'),
+			MypagePic:require('./../../assets/我的灰色.png'),
 		}
 		this.nowPage = 'Home';
 		this.HomeRouterPage = ''
@@ -63,24 +65,28 @@ export default class App extends Component {
 		}
 	}
 
-	//简单页面跳转
+	//未选中
 	pageChose(tagName){ 
 		if(tagName != this.nowPage){
 			if(this.nowPage == 'Home'){
 				this.setState({
-					homePic: require('./../../assets/首页-2.png')
+					homePic: require('./../../assets/首页灰色.png'),
 				})
 			}else if(this.nowPage == 'Lifing'){
 				this.setState({
-					LifingPic: require('./../../assets/生活2.png')
+					LifingPic: require('./../../assets/生活灰色.png'),
+				})
+			}else if(this.nowPage == 'Accumulate'){
+				this.setState({
+					AccumulatePic:require('./../../assets/志愿者灰.png'),
 				})
 			}else if(this.nowPage == 'Community'){
 				this.setState({
-					CommunityPic: require('./../../assets/社区2.png')
+					CommunityPic: require('./../../assets/社区灰色.png'),
 				})
 			}else if(this.nowPage == 'Mypage'){
 				this.setState({
-					MypagePic: require('./../../assets/我的2.png')
+					MypagePic: require('./../../assets/我的灰色.png'),
 				})
 			}
 			this.nowPage = tagName;
@@ -88,31 +94,33 @@ export default class App extends Component {
 		}
 	}
 
+	//选中
 	setPage(){
 		let tagName = this.nowPage
 		if(tagName == 'Home'){
 			this.setState({
-				tag: <Home router={(value)=>this._RouterCtrl(value)}/>,
-				homePic: require('./../../assets/首页-1.png'),
+				tag: <Home router={(value)=>this._RouterCtrl(value)} mainRouter={(page) => this.pageChose(page)}/>,
+				homePic: require('./../../assets/首页彩色.png'),
 			})
 		}else if(tagName == 'Accumulate'){
 			this.setState({
-				tag: <Accumulate router={(value)=>this._RouterCtrl(value)}/>,
+				tag: <Accumulate/>,
+				AccumulatePic:require('./../../assets/志愿者选中.png'),
 			})
 		}else if(tagName == 'Lifing'){
 			this.setState({
-				tag: <Lifing router={(value)=>this._RouterCtrl(value)}/>,
-				LifingPic: require('./../../assets/生活1.png'),
+				tag: <Lifing/>,
+				LifingPic: require('./../../assets/生活彩色.png'),
 			})
 		}else if(tagName == 'Community'){
 			this.setState({
-				tag: <Community router={(value)=>this._RouterCtrl(value)}/>,
-				CommunityPic: require('./../../assets/社区1.png'),
+				tag: <Community/>,
+				CommunityPic: require('./../../assets/社区彩色.png'),
 			})
 		}else if(tagName == 'Mypage'){
 			this.setState({
-				tag: <Mypage router={(value)=>this._RouterCtrl(value)}/>,
-				MypagePic: require('./../../assets/我的1.png'),
+				tag: <Mypage/>,
+				MypagePic: require('./../../assets/我的彩色.png'),
 			})
 		}
 	}
@@ -127,31 +135,24 @@ export default class App extends Component {
 					<View style={styles.touchableBox}>
 
 						<TouchableOpacity ref={'HomeBtn'} style={styles.touchable} onPress={this.pageChose.bind(this,'Home')} >
-							<Image style={{width:pxToDp(80), height: pxToDp(80),}} resizeMode="contain" source={this.state.homePic}/>
-							<Text style= {styles.touchableText}>首页</Text>
+							<Image style={[styles.Icon,{width:pxToDp(77),height:pxToDp(112)}]} resizeMode="stretch" source={this.state.homePic}/>
 						</TouchableOpacity>
 
 						<TouchableOpacity ref={'LifingBtn'} style={styles.touchable} onPress={this.pageChose.bind(this,'Lifing')}>
 							
-							<Image style={{width:pxToDp(80), height: pxToDp(80),}} resizeMode="contain" source={this.state.LifingPic}/>
-							<Text style= {styles.touchableText}>生活</Text>
+							<Image style={[styles.Icon,{width: pxToDp(75)}]} resizeMode="stretch" source={this.state.LifingPic}/>
 						</TouchableOpacity>
 
 						<TouchableOpacity ref={'AccumulateBtn'}  style={styles.touchable} onPress={this.pageChose.bind(this,'Accumulate')}>
-							<Image style={{width:pxToDp(110), height: pxToDp(110), borderRadius:pxToDp(20), alignItems:'center', justifyContent:'center'}} resizeMode="cover" source={require('./../../assets/志愿者背景.png')}>
-								<Image style={{width:pxToDp(80), height: pxToDp(80)}} resizeMode="contain" source={require('./../../assets/志愿者.png')}/>
-							</Image>
+								<Image style={[styles.Icon, {width: pxToDp(100), height: pxToDp(100)}]} resizeMode="stretch" source={this.state.AccumulatePic}/>
 						</TouchableOpacity>
-
 						
 						<TouchableOpacity ref={'CommunityBtn'} style={styles.touchable} onPress={this.pageChose.bind(this,'Community')}>
-							<Image style={{width:pxToDp(80), height: pxToDp(80),}} resizeMode="contain" source={this.state.CommunityPic}/>
-							<Text style= {styles.touchableText}>社区</Text>
+							<Image style={styles.Icon} resizeMode="stretch" source={this.state.CommunityPic}/>
 						</TouchableOpacity>
 
 						<TouchableOpacity ref={'MypageBtn'}  style={styles.touchable} onPress={this.pageChose.bind(this,'Mypage')}>
-							<Image style={{width:pxToDp(80), height: pxToDp(80),}} resizeMode="contain" source={this.state.MypagePic}/>
-							<Text style= {styles.touchableText}>我的</Text>
+							<Image style={[styles.Icon,{width: pxToDp(65)}]} resizeMode="stretch" source={this.state.MypagePic}/>
 						</TouchableOpacity>
 					</View>
 				</View>
@@ -187,9 +188,9 @@ const styles = StyleSheet.create({
 		flex: 1,
 		// backgroundColor: '#F5FCFF'
 	},
-	logo: {
-		alignSelf: 'center',
-		marginBottom: 10
+	Icon: {
+		width:pxToDp(70), 
+		height: pxToDp(110),
 	},
 	content: {
 		flex:1, 
@@ -202,18 +203,21 @@ const styles = StyleSheet.create({
 		height:pxToDp(130), 
 		flexDirection: 'row',
 		backgroundColor:'white',
+		overflow:'hidden',
 	},
 	touchable: {
 		flex: 1, 
 		alignItems:'center', 
+		justifyContent:'center',
 		borderRightColor:'#4b4b4b',
 		borderRightWidth:pxToDp(1), 
 		paddingTop:pxToDp(10)
 	},
 	touchableText:{
-		fontSize:pxToDp(26), 
-		lineHeight:pxToDp(36)
+		width: pxToDp(75),
+		height: pxToDp(26),
+		marginTop:pxToDp(10)
 	}
 });
 
-// module.exports = App;
+module.exports = App;
