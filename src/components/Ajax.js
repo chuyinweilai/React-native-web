@@ -1,3 +1,7 @@
+import{
+	AsyncStorage,
+} from 'react-native'
+
 const peruri = "http://cloudapi.famesmart.com";
 
 let appData  = {
@@ -8,12 +12,19 @@ let appData  = {
 				'Accept': 'application/json', 'Content-Type': 'application/json', 'Cache-Control':'no-cache', 
 			},
 		})
-		.then(res => res.status == 200 && res.json()) //判断res.state == 200 并进行json转换 
+		.then(res => {
+			if(res.status == 200){
+				console.log('get',res)
+				return res.json();
+			} else {
+				console.log('get',res)
+			}
+		}) //判断res.state == 200 并进行json转换 
 		.then(data => {
 			callback(data)
 		}).
 		catch( error => {
-			alert('data报错 :' + error)
+			alert('get报错 :' + error)
 		})
 	},
 	_dataPost(afteruri,data,callback){
@@ -42,8 +53,23 @@ let appData  = {
 			}
 		}).
 		catch( error => {
-			alert('data报错 :' + error)
+			alert('post报错 :' + error)
 		})
+	},
+	_Storage(type,id,data){
+		if(type == 'set'){
+			AsyncStorage.setItem(id,JSON.stringify(data))
+		}
+		else if(type == 'get'){
+			AsyncStorage.getItem(id,(error,mess)=>{
+				if(error){
+					alert(error);
+				}else {
+					data(mess)
+				}
+			})
+
+		}
 	}
 }
 //在其他页面引用： let appData = require('./../data')

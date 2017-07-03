@@ -6,97 +6,214 @@
 
 import React, { Component } from 'react';
 import {
-  Text,
-  View,
-  Image,
-  Button,
+	Text,
+	View,
+	Image,
+  	Button,
 	ScrollView,
-  StyleSheet,
+	StyleSheet,
 	TouchableOpacity,
 	Dimensions
 } from 'react-native';
 
+const peruri = "http://cloudapi.famesmart.com";
+const appData = require('./../../components/Ajax');
 const pxToDp =require('../responsive/px');
 
+const Exchange = require('./../Subpages/exchange');
+
+
 export default class Accumulate extends Component {
-  constructor() {
-    super();
-    this.state = {
-      op1: 1,
-      op2: 0.5,
-      op3: 0.5,
-      op4: 0.5,
-      show: true
-    };
-  }
-  componentWillMount(){
-  }
-
-	//用户信息部分
-	bannerPart() {
-		return(
-			<View>
-				<View style={styles.userMess} >
-					<Image style={{width:pxToDp(140), height:pxToDp(140), marginHorizontal:pxToDp(30), borderRadius:'50%', borderColor:'white', borderWidth:pxToDp(3)}} source={require('../../assets/main.png')}/>
-					<View style={{}}>
-						<Text style={{color: 'white',fontSize:pxToDp(26),marginTop:pxToDp(20)}}>路飞lufei</Text>
-						<Text style={{color: 'white',fontSize:pxToDp(26),marginTop:pxToDp(20)}}>闵行区马桥智慧社区34号楼5单元1902室</Text>
-					</View>
-				</View>
-			</View>
-		)
+	constructor() {
+		super();
+		this.state = {
+			changePage: false,
+		};
 	}
-	
 
-	render() {
+	componentWillMount(){
+		appData._dataGet('/api/events', this._getEvent.bind(this));
+	}
+
+	_getEvent(json){
+		console.log(json.data)
+	}
+
+	_nowPage() {
 		return (
 			<ScrollView style={styles.container}>
-				<View style={{height:pxToDp(86), flexDirection:'row', justifyContent:'space-between'}}>
-					<View style={{width:pxToDp(120), alignItems: 'center', justifyContent: 'center'}}>
+				<View style={{height: pxToDp(80),flexDirection:'row', alignItems: 'center', justifyContent:'center', backgroundColor:'#f2f2f2', borderBottomColor:'#B4B4B4', borderBottomWidth:pxToDp(2)}}>
+					<View style={{width:pxToDp(50)}}>
 					</View>
-					<View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-						<Text>志愿者</Text>
+					<View style={{flex: 1, alignItems:'center', justifyContent:'center',}}>
+						<Text style={{fontSize: pxToDp(36)}}>志愿者</Text>
 					</View>
-					<TouchableOpacity style={{width:pxToDp(120), alignItems: 'center', justifyContent: 'center'}}>
-						<Text style={{fontSize:pxToDp(30)}}></Text>
+					<TouchableOpacity style={{width:pxToDp(50),marginRight: pxToDp(40)}}>
+						<Image style={{width: pxToDp(50), height: pxToDp(50)}} source={require('./../../assets/积分细则icon.png')}></Image>
 					</TouchableOpacity>
 				</View>
+				
+				<View style={{flexDirection:'row', height: pxToDp(264),marginVertical:pxToDp(22)}}>
+					<View>
+						<Image style={{height: pxToDp(216), width: pxToDp(216), marginHorizontal:pxToDp(62), paddingTop: pxToDp(90), justifyContent:'center', alignItems:'center'}} resizeMode='contain' source={require('./../../assets/icon.png')}>	
+							<Text style={{fontSize:pxToDp(20), color: 'white'}}>
+								当前积分
+							</Text>
+							<Text style={{fontSize:pxToDp(48), fontWeight:'600', color: 'white'}}>
+								260
+							</Text>
+						</Image>
+						<View style={{flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
+							<Text style={{fontSize: pxToDp(24), fontWeight:'600', color:'#69dbcf'}}>
+								LV3
+							</Text>
+							<View>
+								<Image></Image>
+							</View>
+						</View>
+					</View>
 
+					<View>
+						
+						<View style={{flex: 1, justifyContent:'center'}}>
+							<Text style={{fontSize: pxToDp(26)}}>
+								还差10积分可领取自行车
+							</Text>
+						</View>
+						<View style={{flex: 1, justifyContent:'center'}}>
+							<Text style={{fontSize: pxToDp(26)}}>
+								当前积分可领取食用油一瓶
+							</Text>
+						</View>
+						<View style={{flex: 1, justifyContent:'center'}}>
+							<Text style={{fontSize: pxToDp(26)}}>
+								……
+							</Text>
+						</View>
+						<View style={{flex: 1, flexDirection:'row', alignItems:'center'}}>
+							<View style={{flex: 1}}></View>
+							<Text style={{fontSize: pxToDp(24), color:'#ccc'}}>查看更多>></Text>
+						</View>
+					</View>
+				</View>
+
+				<View style={{height: pxToDp(118), flexDirection:'row', backgroundColor:'#e6e6e6',paddingBottom:pxToDp(26)}}>
+					<Image style={styles.list} source={require('./../../assets/我参与的@2x.png')}>
+						<Text style={styles.listText}>我参与的</Text>
+					</Image>
+					<Image style={styles.list} source={require('./../../assets/往期活动@2x.png')} >
+						<Text style={styles.listText}>往期活动</Text>
+					</Image>
+					<Image style={{flex: 1, flexDirection:'row', alignItems:'center', justifyContent:'center', backgroundColor:'#d96475'}} source={require('./../../assets/积分兑换@2x.png')} >
+						<Text style={styles.listText}>积分兑换</Text>
+					</Image>
+				</View>
+				<View>
+					<View style={{paddingHorizontal:pxToDp(18), borderBottomColor:'#4b4b4b', borderBottomWidth:1, flexDirection:'row',justifyContent:'space-between'}}>
+						<Text style={{lineHeight:pxToDp(48), fontSize:pxToDp(26)}}>最新活动</Text>
+						<TouchableOpacity style={{flexDirection:'row'}}>
+							<Text style={{lineHeight:pxToDp(32), fontSize:pxToDp(26),paddingTop: pxToDp(8)}}>更多</Text>
+							<Image style={{width:pxToDp(28), height:pxToDp(32), margin:0, marginTop: pxToDp(8)}} resizeMode='stretch'  source={require('../../assets/more.png')}/>
+						</TouchableOpacity>
+					</View>
+					
+					<View>
+						<View style={{flexDirection:'row', alignItems:'center'}}>
+							<Image style={{width: pxToDp(41), height:pxToDp(41), margin:pxToDp(16)}} source={require('./../../assets/社区服务icon@2x.png')}/>
+							<Text style={{color:'#fdac41'}}>#社区服务#</Text>
+						</View>
+
+						<View style={{alignItems:'center'}}>
+							<Text style={{ textAlign:'justify',width:pxToDp(684), fontSize:pxToDp(21), lineHeight:pxToDp(29)}}>
+								闵行区马桥镇开展以“社区共建共享”为主题的志愿服务活动，项目有义务维修、专家义诊、清洁社区、社区读书日、日用品派送等系列活动，倡导居民我爱人人，人人爱我的奉献精神；社区居民积极响应，活动取得圆满成功。
+							</Text>
+							<View style={{flexDirection: 'row', marginVertical:pxToDp(16), justifyContent:'center'}}>
+								<Image style={{width:pxToDp(342), height:pxToDp(212), backgroundColor:'#6fc'}} resizeMode="stretch" />
+								<View style={{width:pxToDp(16)}}></View>
+								<Image style={{width:pxToDp(342), height:pxToDp(212), backgroundColor:'#6fc'}} resizeMode="stretch" />
+							</View>
+						</View>
+
+						<View style={{paddingBottom:pxToDp(10), flexDirection:'row',justifyContent:'space-between', paddingHorizontal:pxToDp(30)}}>
+							<View >
+								<Text style={{ textAlign:'right',fontSize:pxToDp(14), color:'#9c9c9c',marginRight:pxToDp(20)}}>2017-06-31 09:02</Text>
+							</View>
+							<View style={{flexDirection:'row'}}>
+								<Image style={{width: pxToDp(32), height:pxToDp(32),marginRight:pxToDp(10)}} resizeMode='contain' source={require('./../../assets/热度icon@2x.png')}/>
+								<Text style={{ textAlign:'right',fontSize:pxToDp(14), color:'#9c9c9c',marginRight:pxToDp(20)}}>50</Text>
+								<Image style={{width: pxToDp(32), height:pxToDp(32),marginRight:pxToDp(10)}} resizeMode='contain' source={require('./../../assets/加分icon@2x.png')}/>
+								<Text style={{textAlign:'right',fontSize:pxToDp(14), color:'#9c9c9c'}}>12</Text>
+							</View>
+						</View>
+					</View>
+
+					<View>
+						<View style={{flexDirection:'row', alignItems:'center'}}>
+							<Image style={{width: pxToDp(41), height:pxToDp(41), margin:pxToDp(16)}} source={require('./../../assets/公益活动icon@2x.png')}/>
+							<Text style={{color:'#fdac41'}}>#公益活动#</Text>
+						</View>
+
+						<View style={{alignItems:'center'}}>
+							<Text style={{ textAlign:'justify',width:pxToDp(684), fontSize:pxToDp(21), lineHeight:pxToDp(29)}}>
+								闵行区马桥镇开展以“社区共建共享”为主题的志愿服务活动，项目有义务维修、专家义诊、清洁社区、社区读书日、日用品派送等系列活动，倡导居民我爱人人，人人爱我的奉献精神；社区居民积极响应，活动取得圆满成功。
+							</Text>
+							<View style={{flexDirection: 'row', marginVertical:pxToDp(16), justifyContent:'center'}}>
+								<Image style={{width:pxToDp(342), height:pxToDp(212), backgroundColor:'#6fc'}} resizeMode="stretch" />
+								<View style={{width:pxToDp(16)}}></View>
+								<Image style={{width:pxToDp(342), height:pxToDp(212), backgroundColor:'#6fc'}} resizeMode="stretch" />
+							</View>
+						</View>
+
+						<View style={{paddingBottom:pxToDp(10), flexDirection:'row',justifyContent:'space-between', paddingHorizontal:pxToDp(30)}}>
+							<View >
+								<Text style={{ textAlign:'right',fontSize:pxToDp(14), color:'#9c9c9c',marginRight:pxToDp(20)}}>2017-06-31 09:02</Text>
+							</View>
+							<View style={{flexDirection:'row'}}>
+								<Image style={{width: pxToDp(32), height:pxToDp(32),marginRight:pxToDp(10)}} resizeMode='contain' source={require('./../../assets/热度icon@2x.png')}/>
+								<Text style={{ textAlign:'right',fontSize:pxToDp(14), color:'#9c9c9c',marginRight:pxToDp(20)}}>50</Text>
+								<Image style={{width: pxToDp(32), height:pxToDp(32),marginRight:pxToDp(10)}} resizeMode='contain' source={require('./../../assets/加分icon@2x.png')}/>
+								<Text style={{textAlign:'right',fontSize:pxToDp(14), color:'#9c9c9c'}}>12</Text>
+							</View>
+						</View>
+
+					</View>
+
+				</View>
 			</ScrollView>
 		);
 	}
+	_nextPage(){
+		return <Exchange/>
 	}
+	
+	_choosePage(){
+		if(this.state.changePage){
+			return this._nextPage();
+		} else {
+			return this._nowPage()
+		}
+	}
+
+	render(){
+		return this._choosePage()
+	}
+}
 
 const styles = StyleSheet.create({
 	container: {
-			flex: 1,
-	},
-	userMess:{
-		height:pxToDp(320),
-		flexDirection: 'row',
-		backgroundColor:'rgba(237,221,161,0.8)',
-		justifyContent:'center',
-		alignItems:'center'
-	},
-	logo: {
 		flex: 1,
-		flexDirection:'row',
-		height: pxToDp(232),
-		paddingVertical: pxToDp(22)
 	},
-	welcome: {
-		fontSize: pxToDp(20),
-		textAlign: 'center',
-		margin: pxToDp(10)
+	list:{
+		flex: 1, 
+		flexDirection:'row', 
+		alignItems:'center', 
+		justifyContent:'center'
 	},
-	instructions: {
-		textAlign: 'center',
-		color: '#333333',
-		marginBottom: 5
+	listText:{
+		paddingLeft:pxToDp(80), 
+		color: 'white', 
+		fontSize:pxToDp(28)
 	},
-	touchable: {
-		backgroundColor: '#CAE6FE'
-	}
 });
 
 module.exports = Accumulate;

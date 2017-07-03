@@ -23,10 +23,17 @@ export default class card extends Component {
 			number: "",
 			imageUri:'',
 			Remain:'',
+			address:'',
 		}
 	}
 	
 	componentWillMount(){
+		appData._Storage('get','userMess',(data)=>{
+			let json = JSON.parse(data)
+			this.setState({
+				address:json.comm_name,
+			})
+		})
 		this._turnNum(this.props.cardMess)
 	}
 
@@ -39,6 +46,7 @@ export default class card extends Component {
 		y:100~500
 	*/
 	_turnNum(cardMess){
+		console.log(cardMess)	
 		let num = cardMess[0].toString();
 		let x = Number(num.substr(3,5));
 		let y = Math.floor(Math.random()*400+100);
@@ -51,6 +59,7 @@ export default class card extends Component {
 			Remain: cardMess[1]
 		})
 	}
+
 	//保存到相册
 	savePhoto(){
 		console.log('保存相册')
@@ -60,13 +69,18 @@ export default class card extends Component {
 	shareWex(){
 		console.log('分享')
 	}
-	
-	//作废
-	dropCard(){
-		console.log('作废')
-	}
 
 	render() {
+		let type = this.props.cardMess[3];
+		let mess = '';
+		console.log(type)
+		if(type == '00'){
+			mess = '剩余次卡'
+		} else if(type == '01'){
+			mess = '剩余月卡'
+		} else if(type == '02'){
+			mess = '剩余季卡'
+		}
 		return (
 		<View style={{flex: 1}}>
 			<View style={{height:pxToDp(86), flexDirection:'row', justifyContent:'space-between'}}>
@@ -85,7 +99,7 @@ export default class card extends Component {
 
 						<View style={{borderBottomWidth:pxToDp(2),borderBottomColor:'black', height:pxToDp(50)}}>
 							<Text style={{textAlign:'center', fontSize: pxToDp(26), color: '#595959', }}>
-								上海市闵行区马桥智慧社区34号1901室
+								{this.state.address}
 							</Text>
 						</View>
 
@@ -94,10 +108,10 @@ export default class card extends Component {
 							<View style={{flexDirection: 'row', alignItems:'baseline', justifyContent:'center', paddingHorizontal: pxToDp(24), paddingBottom:pxToDp(10)}}>
 								<Text style={{fontSize:pxToDp(22), color: '#bbb'}}>有效期至</Text>
 								<View style={{flex: 1}}></View>
-								<Text style={{fontSize:pxToDp(22), color: '#bbb'}}>2017年04月01日 10:53</Text>
+								<Text style={{fontSize:pxToDp(22), color: '#bbb'}}>{this.props.cardMess[2]}</Text>
 							</View>
 							<View style={{flexDirection: 'row', alignItems:'baseline', justifyContent:'center', paddingHorizontal: pxToDp(24), paddingBottom:pxToDp(10), borderBottomWidth:pxToDp(2),borderBottomColor:'black'}}>
-								<Text style={{fontSize:pxToDp(22), color: '#bbb'}}>剩余卡数</Text>
+								<Text style={{fontSize:pxToDp(22), color: '#bbb'}}>{mess}</Text>
 								<View style={{flex: 1}}></View>
 								<Text style={{fontSize:pxToDp(22), color: '#bbb'}}>{this.state.Remain} 张</Text>
 							</View>

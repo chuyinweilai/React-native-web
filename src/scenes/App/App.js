@@ -20,6 +20,7 @@ const Accumulate =require('./Accumulate');
 const Lifing =require('./Lifing');
 const Community =require('./Community');
 const Mypage =require('./Mypage');
+const appData = require('./../../components/Ajax')
 
 //子页面
 const Open = require('./../Subpages/open');
@@ -49,7 +50,11 @@ export default class App extends Component {
 
 
 	componentDidMount(){
+		let data = new Date();
 		this.setPage()
+		appData._Storage('get','userMess',(data)=>{
+			console.log(JSON.parse(data))
+		})
 	}
 
 	_RouterCtrl(control){
@@ -159,7 +164,6 @@ export default class App extends Component {
 			)
 		} else {
 			const name = this.HomeRouterPage;
-			console.log(name)
 			if(name == 'open'){
 				return (
 						<Open backCtrl = {(bol)=> this._RouterCtrl(bol)}/>

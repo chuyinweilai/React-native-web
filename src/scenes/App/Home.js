@@ -204,8 +204,8 @@ export default class Home extends Component {
 					<Text style={{fontSize: pxToDp(14), color:'#9c9c9c', paddingLeft:pxToDp(10),paddingRight:pxToDp(6)}}>来自</Text>
 					<Text style={{fontSize: pxToDp(18), color:'#ffc575'}}>{rowData.type}</Text>
 				</View>
-				<View style={{paddingLeft: pxToDp(23),paddingRight:pxToDp(20)}}>
-					<Text style={{fontSize:pxToDp(21), lineHeight:pxToDp(29), paddingLeft: pxToDp(4), paddingRight: pxToDp(17)}}>
+				<View style={{alignItems:'center'}}>
+					<Text style={{textAlign:'justify',width:pxToDp(684), fontSize:pxToDp(21), lineHeight:pxToDp(29)}}>
 							{rowData.detail}
 					</Text>
 					<View style={{flexDirection: 'row', marginVertical:pxToDp(16)}}>
@@ -214,8 +214,8 @@ export default class Home extends Component {
 						<Image style={{width:pxToDp(342), height:pxToDp(212)}} resizeMode="stretch" source={{uri:peruri+ ss[1]}}/>
 					</View>
 					<View style={{paddingBottom:pxToDp(10), flexDirection:'row',justifyContent:'flex-end'}}>
-					<Text style={{ textAlign:'right',fontSize:pxToDp(14), color:'#9c9c9c',marginRight:pxToDp(20)}}>热度：{rowData.point}</Text>
-					<Text style={{textAlign:'right',fontSize:pxToDp(14), color:'#9c9c9c'}}>上传时间：{rowData.vld_start}</Text>
+						<Text style={{ textAlign:'right',fontSize:pxToDp(14), color:'#9c9c9c',marginRight:pxToDp(20)}}>热度：{rowData.point}</Text>
+						<Text style={{textAlign:'right',fontSize:pxToDp(14), color:'#9c9c9c'}}>上传时间：{rowData.vld_start}</Text>
 					</View>
 				</View>
 			</View>

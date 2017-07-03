@@ -21,11 +21,18 @@ export default class open extends Component {
 		this.state={
 			imageUri: ' ',
 			Remain: '',
+			address:'',
 		}
 	}
 	
 	componentWillMount(){
 		this._pulldata()
+		appData._Storage('get','userMess',(data)=>{
+			let json = JSON.parse(data)
+			this.setState({
+				address:json.comm_name,
+			})
+		})
 	}
 
 	//提交用户数据
@@ -35,7 +42,7 @@ export default class open extends Component {
 			"wx_id": "18912342933",		//openId
 			"card_type": '00',		  //00单次，01月卡，02季卡
 			"user_type": '0',			//0本人，1租户，2访客
-			"memo": ''				       //备注
+			"memo": '一键开门'				       //备注
 		}
 
 		appData._dataPost(uri,_data,(ref)=>{
@@ -69,7 +76,8 @@ export default class open extends Component {
 		// +4893828329;
 		this.setState({
 			imageUri:uri,
-			Remain: cardMess[1]
+			Remain: cardMess[1],
+			date: cardMess[2],
 		})
 	}
 
@@ -85,7 +93,6 @@ export default class open extends Component {
 	
 	//作废
 	dropCard(){
-		console.log('作废')
 	}
 	
 	render() {
@@ -107,7 +114,7 @@ export default class open extends Component {
 						
 						<View style={{borderBottomWidth:pxToDp(2),borderBottomColor:'black', height:pxToDp(50)}}>
 							<Text style={{textAlign:'center', fontSize: pxToDp(26), color: '#595959', }}>
-								上海市闵行区马桥智慧社区34号1901室
+								{this.state.address}
 							</Text>
 						</View>
 
@@ -116,7 +123,7 @@ export default class open extends Component {
 							<View style={{flexDirection: 'row', alignItems:'baseline', justifyContent:'center', paddingHorizontal: pxToDp(24), paddingBottom:pxToDp(10)}}>
 								<Text style={{fontSize:pxToDp(22), color: '#bbb'}}>有效期至</Text>
 								<View style={{flex: 1}}></View>
-								<Text style={{fontSize:pxToDp(22), color: '#bbb'}}>2017年04月01日 10:53</Text>
+								<Text style={{fontSize:pxToDp(22), color: '#bbb'}}>{this.state.date}</Text>
 							</View>
 							<View style={{flexDirection: 'row', alignItems:'baseline', justifyContent:'center', paddingHorizontal: pxToDp(24), paddingBottom:pxToDp(10), borderBottomWidth:pxToDp(2),borderBottomColor:'black'}}>
 								<Text style={{fontSize:pxToDp(22), color: '#bbb'}}>剩余次卡</Text>

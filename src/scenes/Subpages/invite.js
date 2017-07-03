@@ -3,6 +3,7 @@ import{
 	Text,
 	View,
 	Image,
+	ListView,
 	Navigator,
 	StyleSheet,
 	TouchableOpacity,
@@ -16,9 +17,61 @@ const Addvisitor =require('./addvisitor');
 export default class invite extends Component{
 	constructor(props){
 		super(props);
+		const ds = new ListView.DataSource({rowHasChanged:(r1,r2) => r1 !== r2});
 		this.state = {
-			_page: 'recording'
+			ds: ds,
+			_page: 'recording',
+			visitor: '',
 		}
+		this.userMess = '';
+	}
+
+	componentWillMount(){
+		appData._Storage('get','userMess',(data)=>{
+			let json = JSON.parse(data);
+			this.userMess = json;
+			this._getVisitor()
+		})
+	}
+
+	//获取访客记录
+	_getVisitor(num){
+		let afteruri = '/api/cards/list/' + this.userMess.mobile;
+		appData._dataPost(afteruri,'',(data)=>{
+			let arr = data.cards;
+			this.setState({
+				visitor: arr,
+			})
+		})
+	}
+
+	_render(rowData){
+		// console.log(rowData)
+		let num = rowData.card_type;
+		let type = '';
+		if(num == '00'){
+			type = '次卡'
+		} else if(num == '01'){
+			type = '月卡'
+		} else if(num == '02'){
+			type = '季卡'
+		} 
+		return (
+			<View style={{ backgroundColor: 'white', height: pxToDp(170),paddingHorizontal: pxToDp(36), }}>
+				<View style={{flex: 1, flexDirection:'row', borderBottomColor:'#bebebe', borderBottomWidth: pxToDp(2),}}>
+					<View style={{flex: 1, justifyContent:'space-around'}}>
+						<Text style={{fontSize: pxToDp(40), color: '#474747'}}>{rowData.memo ? rowData.memo:rowData.mobile}</Text>
+						<Text style={{fontSize: pxToDp(26), color: '#bbb'}}>申请时间： {rowData.vld_start}</Text>
+						<Text style={{fontSize: pxToDp(26), color: '#bbb'}}>有效期至： {rowData.vld_end}</Text>
+					</View>
+					<View style={{width: pxToDp(120), alignItems:'center', justifyContent:'center'}}>
+						<Text style={{fontSize: pxToDp(38), color:'#c3d94a'}}>
+							{type}
+						</Text>
+					</View>
+				</View>
+			</View>
+		)
 	}
 
 	//记录
@@ -37,30 +90,14 @@ export default class invite extends Component{
 				</View>
 				<View style={{flex: 1, backgroundColor:'#efefef', paddingVertical:pxToDp(20)}}>
 					<View style={{paddingBottom: pxToDp(14),paddingHorizontal: pxToDp(36), flexDirection:'row', alignItems:'center'}}>
-						<Text style={{fontSize:pxToDp(28), color: '#5a5a5a'}}>上海闵行区马桥智慧社区34号1901室</Text>
+						<Text style={{fontSize:pxToDp(28), color: '#5a5a5a'}}>{this.userMess.comm_name}</Text>
 						<Image style={{height:pxToDp(48), width: pxToDp(48)}} source={require('./../../assets/wxb定位.png')} resizeMode="contain"/>
 					</View>
-
-					<View style={{backgroundColor: 'white', flexDirection:'row', height: pxToDp(170), borderBottomColor:'#bebebe', borderBottomWidth: pxToDp(2), paddingHorizontal: pxToDp(36), }}>
-						<View style={{flex: 1, justifyContent:'space-around'}}>
-							<Text style={{fontSize: pxToDp(40), color: '#474747'}}>小萌姐</Text>
-							<Text style={{fontSize: pxToDp(26), color: '#bbb'}}>有效期至： 2017年3月31日 21:53</Text>
-						</View>
-						<View style={{alignItems:'center', justifyContent:'center'}}>
-							<Text style={{fontSize:pxToDp(40), color: '#b1cd29'}}>生效中</Text>
-						</View>
-					</View>
-
-					<View style={{backgroundColor: 'white', flexDirection:'row', height: pxToDp(170), borderBottomColor:'#bebebe', borderBottomWidth: pxToDp(2), paddingHorizontal: pxToDp(36), }}>
-						<View style={{flex: 1, justifyContent:'space-around'}}>
-							<Text style={{fontSize: pxToDp(40), color: '#474747'}}>小萌姐</Text>
-							<Text style={{fontSize: pxToDp(26), color: '#bbb'}}>有效期至： 2017年3月31日 21:53</Text>
-						</View>
-						<View style={{alignItems:'center', justifyContent:'center'}}>
-							<Text style={{fontSize:pxToDp(40), color: '#a0a0a0'}}>已过期</Text>
-						</View>
-					</View>
-
+					<ListView
+						dataSource={this.state.ds.cloneWithRows(this.state.visitor)}
+						enableEmptySections={true}
+						renderRow={this._render.bind(this)}
+					/>
 				</View>
 				<View>
 					<TouchableOpacity style={{height:pxToDp(86), backgroundColor: '#69bdd0', alignItems:'center', justifyContent:'center'}} onPress={()=> this._addvisitor(true)}>
@@ -78,6 +115,7 @@ export default class invite extends Component{
 				_page: 'addVisitor'
 			})
 		}else {
+			this._getVisitor()
 			this.setState({
 				_page: 'recording'
 			})
@@ -89,7 +127,7 @@ export default class invite extends Component{
 			let page = this.recording();
 			return page;
 		} else if(this.state._page == 'addVisitor'){
-			return <Addvisitor backCtrl={()=>this._addvisitor(false)}/>
+			return <Addvisitor address={this.userMess.comm_name} backCtrl={()=>this._addvisitor(false)}/>
 		}
 	}
 

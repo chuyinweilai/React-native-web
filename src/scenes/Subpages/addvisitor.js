@@ -40,6 +40,7 @@ export default class invite extends Component{
 
 	_RouterCtrl(control){
 		if(control){
+			this._cleanData()
 			this.setState({
 				page: false,
 			})
@@ -48,6 +49,22 @@ export default class invite extends Component{
 				page: true,
 			})
 		}
+	}
+
+	//清除
+	_cleanData(){
+		this.setState = {
+			//用户类型单选
+			color1: "#c9c9c9",
+			color2: "#69add0",
+			visitType:'2',				
+			card1: "#69add0",
+			card2: "#c9c9c9",
+			card3: "#c9c9c9",
+			cardType:'00',
+		};
+		this.text = '';
+		this.message;
 	}
 
 	//改变按钮背景颜色
@@ -111,10 +128,10 @@ export default class invite extends Component{
 
 		let uri = '/api/cards/take';
 		let _data = {
-			"wx_id": "18912342933",		//openId
-			"card_type": cardType,		  //00单次，01月卡，02季卡
+			"wx_id": "18912342933",			//openId
+			"card_type": cardType,		  	//00单次，01月卡，02季卡
 			"user_type": visitType,			//0本人，1租户，2访客
-			"memo": text				       //备注
+			"memo": text				    //备注
 		}
 		appData._dataPost(uri,_data,(ref)=>{
 			if(ref[1] < 0){
@@ -151,7 +168,6 @@ export default class invite extends Component{
 	_nowPage(){
 		return (
 			<View style={{flex: 1}}>
-
 				<View style={{height:pxToDp(86), flexDirection:'row', justifyContent:'space-between', borderBottomColor:'#bebebe', borderBottomWidth: pxToDp(2)}}>
 					<TouchableOpacity style={{width:pxToDp(120), alignItems: 'center',  flexDirection:'row'}} onPress={()=>this.props.backCtrl(false)}>
 						<Image style={{height:pxToDp(48), width: pxToDp(48)}} source={require('./../../assets/arrow-left.png')} 	resizeMode="contain"></Image>
@@ -165,7 +181,7 @@ export default class invite extends Component{
 
 				<View style={{flex: 1, backgroundColor:'#efefef', paddingVertical:pxToDp(20)}}>
 					<View style={{paddingBottom: pxToDp(14), paddingHorizontal: pxToDp(36), flexDirection:'row', alignItems:'center'}}>
-						<Text style={{fontSize:pxToDp(28), color: '#5a5a5a'}}>上海闵行区马桥智慧社区34号1901室</Text>
+						<Text style={{fontSize:pxToDp(28), color: '#5a5a5a'}}>{this.props.address}</Text>
 						<Image style={{height:pxToDp(48), width: pxToDp(48)}} source={require('./../../assets/wxb定位.png')} resizeMode="contain"/>
 					</View>
 
@@ -217,10 +233,10 @@ export default class invite extends Component{
 						</View>
 					</View>
 					
-					<View style={{backgroundColor:'#efefef',paddingHorizontal: pxToDp(36),}}>
-						<Text style={{fontSize:pxToDp(28), color:'#bbb'}}>次卡可在当月内使用一次</Text>
-						<Text style={{fontSize:pxToDp(28), color:'#bbb'}}>月卡可在当月内使用</Text>
-						<Text style={{fontSize:pxToDp(28), color:'#bbb'}}>季卡可在当季度内使用</Text>
+					<View style={{backgroundColor:'#efefef',paddingHorizontal: pxToDp(36),paddingTop:pxToDp(10)}}>
+						<Text style={{marginVertical:pxToDp(10),fontSize:pxToDp(28), color:'#bbb'}}>次卡可在当月内使用一次</Text>
+						<Text style={{marginVertical:pxToDp(10),fontSize:pxToDp(28), color:'#bbb'}}>月卡可在当月内使用</Text>
+						<Text style={{marginVertical:pxToDp(10),fontSize:pxToDp(28), color:'#bbb'}}>季卡可在当季度内使用</Text>
 					</View>
 					<View style={{flex: 1, justifyContent:'center',alignItems:'center'}}>
 						<TouchableOpacity style={{width:pxToDp(660), height:pxToDp(86), backgroundColor: '#69bdd0', alignItems:'center', justifyContent:'center', borderRadius:pxToDp(20)}} onPress={() => this._pulldata()}>
