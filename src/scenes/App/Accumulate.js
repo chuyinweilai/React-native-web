@@ -20,23 +20,32 @@ const peruri = "http://cloudapi.famesmart.com";
 const appData = require('./../../components/Ajax');
 const pxToDp =require('../responsive/px');
 
+/*
+const Join = require('./../Subpages/join');
+const Active = require('./../Subpages/active');
 const Exchange = require('./../Subpages/exchange');
-
-
+const Details = require('./../Subpages/active_details');
+*/
 export default class Accumulate extends Component {
 	constructor() {
 		super();
 		this.state = {
-			changePage: false,
+			changePage: 'home',
 		};
 	}
-
+	
 	componentWillMount(){
 		appData._dataGet('/api/events', this._getEvent.bind(this));
 	}
 
 	_getEvent(json){
-		console.log(json.data)
+		// console.log(json.data)
+	}
+
+	_RouterCtrl(ctrl){
+		this.setState({
+			changePage:ctrl
+		})
 	}
 
 	_nowPage() {
@@ -64,7 +73,7 @@ export default class Accumulate extends Component {
 							</Text>
 						</Image>
 						<View style={{flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
-							<Text style={{fontSize: pxToDp(24), fontWeight:'600', color:'#69dbcf'}}>
+							<Text style={{fontSize: pxToDp(36), fontWeight:'600', color:'#69dbcf'}}>
 								LV3
 							</Text>
 							<View>
@@ -74,19 +83,18 @@ export default class Accumulate extends Component {
 					</View>
 
 					<View>
-						
-						<View style={{flex: 1, justifyContent:'center'}}>
-							<Text style={{fontSize: pxToDp(26)}}>
+						<View style={{justifyContent:'center'}}>
+							<Text style={{width: pxToDp(380), fontSize: pxToDp(32),marginVertical:pxToDp(10)}}>
 								还差10积分可领取自行车
 							</Text>
 						</View>
-						<View style={{flex: 1, justifyContent:'center'}}>
-							<Text style={{fontSize: pxToDp(26)}}>
+						<View style={{justifyContent:'center'}}>
+							<Text style={{width: pxToDp(380), fontSize: pxToDp(32),marginVertical:pxToDp(10)}}>
 								当前积分可领取食用油一瓶
 							</Text>
 						</View>
-						<View style={{flex: 1, justifyContent:'center'}}>
-							<Text style={{fontSize: pxToDp(26)}}>
+						<View style={{ justifyContent:'center'}}>
+							<Text style={{width: pxToDp(380), fontSize: pxToDp(32),marginVertical:pxToDp(10)}}>
 								……
 							</Text>
 						</View>
@@ -99,22 +107,28 @@ export default class Accumulate extends Component {
 
 				<View style={{height: pxToDp(118), flexDirection:'row', backgroundColor:'#e6e6e6',paddingBottom:pxToDp(26)}}>
 					<Image style={styles.list} source={require('./../../assets/我参与的@2x.png')}>
-						<Text style={styles.listText}>我参与的</Text>
+						<TouchableOpacity style={{flex: 1}} onPress={()=>this.props.backCtrl('join')}>
+							<Text style={styles.listText}>我参与的</Text>
+						</TouchableOpacity>
 					</Image>
 					<Image style={styles.list} source={require('./../../assets/往期活动@2x.png')} >
-						<Text style={styles.listText}>往期活动</Text>
+						<TouchableOpacity style={{flex: 1}} onPress={()=>this.props.backCtrl('active')}>
+							<Text style={styles.listText}>往期活动</Text>
+						</TouchableOpacity>
 					</Image>
 					<Image style={{flex: 1, flexDirection:'row', alignItems:'center', justifyContent:'center', backgroundColor:'#d96475'}} source={require('./../../assets/积分兑换@2x.png')} >
-						<Text style={styles.listText}>积分兑换</Text>
+						<TouchableOpacity style={{flex: 1}} onPress={()=>this.props.backCtrl('exchange')}>
+							<Text style={styles.listText}>积分兑换</Text>
+						</TouchableOpacity>
 					</Image>
 				</View>
 				<View>
 					<View style={{paddingHorizontal:pxToDp(18), borderBottomColor:'#4b4b4b', borderBottomWidth:1, flexDirection:'row',justifyContent:'space-between'}}>
-						<Text style={{lineHeight:pxToDp(48), fontSize:pxToDp(26)}}>最新活动</Text>
-						<TouchableOpacity style={{flexDirection:'row'}}>
+						<Text style={{lineHeight:pxToDp(58), fontSize:pxToDp(32)}}>最新活动</Text>
+						{/*<TouchableOpacity style={{flexDirection:'row'}}>
 							<Text style={{lineHeight:pxToDp(32), fontSize:pxToDp(26),paddingTop: pxToDp(8)}}>更多</Text>
 							<Image style={{width:pxToDp(28), height:pxToDp(32), margin:0, marginTop: pxToDp(8)}} resizeMode='stretch'  source={require('../../assets/more.png')}/>
-						</TouchableOpacity>
+						</TouchableOpacity>*/}
 					</View>
 					
 					<View>
@@ -123,7 +137,7 @@ export default class Accumulate extends Component {
 							<Text style={{color:'#fdac41'}}>#社区服务#</Text>
 						</View>
 
-						<View style={{alignItems:'center'}}>
+						<TouchableOpacity style={{alignItems:'center'}} onPress={()=>this.props.backCtrl('accumulate_details')}>
 							<Text style={{ textAlign:'justify',width:pxToDp(684), fontSize:pxToDp(21), lineHeight:pxToDp(29)}}>
 								闵行区马桥镇开展以“社区共建共享”为主题的志愿服务活动，项目有义务维修、专家义诊、清洁社区、社区读书日、日用品派送等系列活动，倡导居民我爱人人，人人爱我的奉献精神；社区居民积极响应，活动取得圆满成功。
 							</Text>
@@ -132,9 +146,9 @@ export default class Accumulate extends Component {
 								<View style={{width:pxToDp(16)}}></View>
 								<Image style={{width:pxToDp(342), height:pxToDp(212), backgroundColor:'#6fc'}} resizeMode="stretch" />
 							</View>
-						</View>
+						</TouchableOpacity>
 
-						<View style={{paddingBottom:pxToDp(10), flexDirection:'row',justifyContent:'space-between', paddingHorizontal:pxToDp(30)}}>
+						<View style={{paddingBottom:pxToDp(10), flexDirection:'row',justifyContent:'space-between', marginHorizontal:pxToDp(26),borderBottomWidth:pxToDp(1), borderBottomColor:'#9c9c9c'}}>
 							<View >
 								<Text style={{ textAlign:'right',fontSize:pxToDp(14), color:'#9c9c9c',marginRight:pxToDp(20)}}>2017-06-31 09:02</Text>
 							</View>
@@ -153,7 +167,7 @@ export default class Accumulate extends Component {
 							<Text style={{color:'#fdac41'}}>#公益活动#</Text>
 						</View>
 
-						<View style={{alignItems:'center'}}>
+						<TouchableOpacity style={{alignItems:'center'}} onPress={()=>this.props.backCtrl('goods_details')}>
 							<Text style={{ textAlign:'justify',width:pxToDp(684), fontSize:pxToDp(21), lineHeight:pxToDp(29)}}>
 								闵行区马桥镇开展以“社区共建共享”为主题的志愿服务活动，项目有义务维修、专家义诊、清洁社区、社区读书日、日用品派送等系列活动，倡导居民我爱人人，人人爱我的奉献精神；社区居民积极响应，活动取得圆满成功。
 							</Text>
@@ -162,9 +176,9 @@ export default class Accumulate extends Component {
 								<View style={{width:pxToDp(16)}}></View>
 								<Image style={{width:pxToDp(342), height:pxToDp(212), backgroundColor:'#6fc'}} resizeMode="stretch" />
 							</View>
-						</View>
+						</TouchableOpacity>
 
-						<View style={{paddingBottom:pxToDp(10), flexDirection:'row',justifyContent:'space-between', paddingHorizontal:pxToDp(30)}}>
+						<View style={{paddingBottom:pxToDp(10), flexDirection:'row',justifyContent:'space-between', paddingHorizontal:pxToDp(30),borderBottomWidth:pxToDp(1), borderBottomColor:'#9c9c9c'}}>
 							<View >
 								<Text style={{ textAlign:'right',fontSize:pxToDp(14), color:'#9c9c9c',marginRight:pxToDp(20)}}>2017-06-31 09:02</Text>
 							</View>
@@ -182,20 +196,26 @@ export default class Accumulate extends Component {
 			</ScrollView>
 		);
 	}
-	_nextPage(){
-		return <Exchange/>
-	}
 	
-	_choosePage(){
-		if(this.state.changePage){
-			return this._nextPage();
-		} else {
+	/*
+	_choosePage(name){
+		if(this.state.changePage == 'home'){
+			appData._dataGet('/api/events', this._getEvent.bind(this));
 			return this._nowPage()
+		} else if(this.state.changePage == 'join') {
+			return <Join backCtrl={(ctrl) => this._RouterCtrl(ctrl)}/>
+		} else if(this.state.changePage == 'active') {
+			return <Active backCtrl={(ctrl) => this._RouterCtrl(ctrl)}/>
+		} else if(this.state.changePage == 'exchange') {
+			return <Exchange backCtrl={(ctrl) => this._RouterCtrl(ctrl)}/>
+		} else if(this.state.changePage == 'details') {
+			return <Details backCtrl={(ctrl) => this._RouterCtrl(ctrl)}/>
 		}
 	}
+	*/
 
 	render(){
-		return this._choosePage()
+		return this._nowPage()
 	}
 }
 
@@ -210,7 +230,7 @@ const styles = StyleSheet.create({
 		justifyContent:'center'
 	},
 	listText:{
-		paddingLeft:pxToDp(80), 
+		paddingLeft:pxToDp(110), 
 		color: 'white', 
 		fontSize:pxToDp(28)
 	},

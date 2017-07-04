@@ -27,11 +27,18 @@ export default class Mypage extends Component {
 		super();    
 
 		this.state = {
+			userMess:{},
 			dataSource1:ds.cloneWithRows([]),
 			dataSource2:ds.cloneWithRows([]),
 		};
 	}
 	componentWillMount(){
+		appData._Storage('get','userMess',(json)=>{
+			let data = JSON.parse(json)
+			this.setState({
+				userMess: data,
+			})
+		})
 		appData._dataGet('/api/func/E', this._getIcon.bind(this));
 	}
 	
@@ -60,8 +67,8 @@ export default class Mypage extends Component {
 			<View>
 				<Image style={styles.userMess} resizeMode="stretch" source={require('./../../assets/我的背景.png')}>
 					<Image style={{width:pxToDp(140), height:pxToDp(140), borderRadius:'50%', borderColor:'white', borderWidth:pxToDp(3)}} source={require('../../assets/main.png')}/>
-					<Text style={{color: 'white',fontSize:pxToDp(26),marginTop:pxToDp(20)}}>路飞lufei</Text>
-					<Text style={{color: 'white',fontSize:pxToDp(26),marginTop:pxToDp(20)}}>闵行区马桥智慧社区34号楼5单元1902室</Text>
+					<Text style={{color: 'white',fontSize:pxToDp(26),marginTop:pxToDp(20)}}>{this.state.userMess.nickname}</Text>
+					<Text style={{color: 'white',fontSize:pxToDp(26),marginTop:pxToDp(20)}}>{this.state.userMess.comm_name}</Text>
 				</Image>
 			</View>
 		)

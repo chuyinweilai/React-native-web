@@ -14,10 +14,10 @@ let appData  = {
 		})
 		.then(res => {
 			if(res.status == 200){
-				console.log('get',res)
+				// console.log('get',res)
 				return res.json();
 			} else {
-				console.log('get',res)
+				// console.log('get',res)
 			}
 		}) //判断res.state == 200 并进行json转换 
 		.then(data => {

@@ -99,7 +99,8 @@ export default class open extends Component {
 		return (
 		<View style={{flex: 1}}>
 			<View style={{height:pxToDp(86), flexDirection:'row', justifyContent:'space-between'}}>
-				<TouchableOpacity style={{width:pxToDp(120), alignItems: 'center', justifyContent: 'center'}} onPress={()=>this.props.backCtrl(false)}>
+				<TouchableOpacity style={{width:pxToDp(120),flexDirection:'row', alignItems: 'center', justifyContent: 'center'}} onPress={()=>this.props.backCtrl(false)}>
+					<Image style={{height:pxToDp(48), width: pxToDp(48)}} source={require('./../../assets/arrow-left.png')} 	resizeMode="contain"/>
 					<Text style={{fontSize:pxToDp(30)}}>返回</Text>
 				</TouchableOpacity>
 				<View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>

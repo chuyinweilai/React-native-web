@@ -22,11 +22,16 @@ const Community =require('./Community');
 const Mypage =require('./Mypage');
 const appData = require('./../../components/Ajax')
 
-//子页面
+//首页子页面
 const Open = require('./../Subpages/open');
 const Invite = require('./../Subpages/invite');
 
-
+//积分子页面
+const Join = require('./../Subpages/join');
+const Active = require('./../Subpages/active');
+const Exchange = require('./../Subpages/exchange');
+const Goods_Details = require('./../Subpages/goods_details');
+const Accumulate_Details = require('./../Subpages/accumulate_details');
 
 const pxToDp =require('../responsive/px');
 // const _Wx = require('./../../wx/wx')
@@ -47,7 +52,6 @@ export default class App extends Component {
 		this.nowPage = 'Home';
 		this.HomeRouterPage = ''
 	}
-
 
 	componentDidMount(){
 		let data = new Date();
@@ -109,7 +113,7 @@ export default class App extends Component {
 			})
 		}else if(tagName == 'Accumulate'){
 			this.setState({
-				tag: <Accumulate/>,
+				tag: <Accumulate  backCtrl={(data)=>this._RouterCtrl(data)}/>,
 				AccumulatePic:require('./../../assets/志愿者选中.png'),
 			})
 		}else if(tagName == 'Lifing'){
@@ -144,12 +148,11 @@ export default class App extends Component {
 						</TouchableOpacity>
 
 						<TouchableOpacity ref={'LifingBtn'} style={styles.touchable} onPress={this.pageChose.bind(this,'Lifing')}>
-							
 							<Image style={[styles.Icon,{width: pxToDp(75)}]} resizeMode="stretch" source={this.state.LifingPic}/>
 						</TouchableOpacity>
 
 						<TouchableOpacity ref={'AccumulateBtn'}  style={styles.touchable} onPress={this.pageChose.bind(this,'Accumulate')}>
-								<Image style={[styles.Icon, {width: pxToDp(100), height: pxToDp(100)}]} resizeMode="stretch" source={this.state.AccumulatePic}/>
+							<Image style={[styles.Icon, {width: pxToDp(100), height: pxToDp(100)}]} resizeMode="stretch" source={this.state.AccumulatePic}/>
 						</TouchableOpacity>
 						
 						<TouchableOpacity ref={'CommunityBtn'} style={styles.touchable} onPress={this.pageChose.bind(this,'Community')}>
@@ -166,17 +169,34 @@ export default class App extends Component {
 			const name = this.HomeRouterPage;
 			if(name == 'open'){
 				return (
-						<Open backCtrl = {(bol)=> this._RouterCtrl(bol)}/>
+					<Open backCtrl = {(bol)=> this._RouterCtrl(bol)}/>
 				)
 			} 
 			else if(name == 'invite'){
 				return (
-						<Invite backCtrl = {(bol)=> this._RouterCtrl(bol)}/>
+					<Invite backCtrl = {(bol)=> this._RouterCtrl(bol)}/>
 				)
+			}
+			else if(name == 'Accumulate'){
+				return <Accumulate backCtrl={(bol)=>this._RouterCtrl(bol)}/>
 			} 
+			else if(name == 'join') {
+				return <Join backCtrl={(bol) => this._RouterCtrl(bol)}/>
+			} 
+			else if(name == 'active') {
+				return <Active backCtrl={(bol) => this._RouterCtrl(bol)}/>
+			} 
+			else if(name == 'exchange') {
+				return <Exchange backCtrl={(bol) => this._RouterCtrl(bol)}/>
+			} 
+			else if(name == 'goods_details') {
+				return <Goods_Details backCtrl={(bol) => this._RouterCtrl(bol)}/>
+			}
+			else if(name == 'accumulate_details'){
+				return <Accumulate_Details backCtrl={(bol) => this._RouterCtrl(bol)}/>
+			}
 		}
 	}
-
 
 	render() {
 		return (

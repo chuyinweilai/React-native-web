@@ -213,10 +213,10 @@ export default class Home extends Component {
 						<View style={{width:pxToDp(16)}}></View>
 						<Image style={{width:pxToDp(342), height:pxToDp(212)}} resizeMode="stretch" source={{uri:peruri+ ss[1]}}/>
 					</View>
-					<View style={{paddingBottom:pxToDp(10), flexDirection:'row',justifyContent:'flex-end'}}>
-						<Text style={{ textAlign:'right',fontSize:pxToDp(14), color:'#9c9c9c',marginRight:pxToDp(20)}}>热度：{rowData.point}</Text>
-						<Text style={{textAlign:'right',fontSize:pxToDp(14), color:'#9c9c9c'}}>上传时间：{rowData.vld_start}</Text>
-					</View>
+				</View>
+				<View style={{paddingBottom:pxToDp(10), flexDirection:'row',justifyContent:'flex-end', paddingRight: pxToDp(18)}}>
+					<Text style={{ textAlign:'right',fontSize:pxToDp(14), color:'#9c9c9c',marginRight:pxToDp(20)}}>热度：{rowData.point}</Text>
+					<Text style={{textAlign:'right',fontSize:pxToDp(14), color:'#9c9c9c'}}>上传时间：{rowData.vld_start}</Text>
 				</View>
 			</View>
 		)
