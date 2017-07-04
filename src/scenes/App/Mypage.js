@@ -27,17 +27,24 @@ export default class Mypage extends Component {
 		super();    
 
 		this.state = {
+			userMess:{},
 			dataSource1:ds.cloneWithRows([]),
 			dataSource2:ds.cloneWithRows([]),
 		};
 	}
 	componentWillMount(){
+		appData._Storage('get','userMess',(json)=>{
+			let data = JSON.parse(json)
+			console.log(data)
+			this.setState({
+				userMess: data,
+			})
+		})
 		appData._dataGet('/api/func/E', this._getIcon.bind(this));
 	}
 	
   	//内容
 	_getIcon(_data){		
-		console.log(_data)
 		let arr1 = [];
 		let arr2 = [];
 		_data.funcs.forEach((data,index)=>{
@@ -47,7 +54,6 @@ export default class Mypage extends Component {
 				arr2.push(data)
 			}
 		})
-		console.log(arr1,arr2)
 		this.setState({
 			dataSource1: this.state.dataSource1.cloneWithRows(arr1),
 			dataSource2: this.state.dataSource2.cloneWithRows(arr2)
@@ -60,8 +66,8 @@ export default class Mypage extends Component {
 			<View>
 				<Image style={styles.userMess} resizeMode="stretch" source={require('./../../assets/我的背景.png')}>
 					<Image style={{width:pxToDp(140), height:pxToDp(140), borderRadius:'50%', borderColor:'white', borderWidth:pxToDp(3)}} source={require('../../assets/main.png')}/>
-					<Text style={{color: 'white',fontSize:pxToDp(26),marginTop:pxToDp(20)}}>路飞lufei</Text>
-					<Text style={{color: 'white',fontSize:pxToDp(26),marginTop:pxToDp(20)}}>闵行区马桥智慧社区34号楼5单元1902室</Text>
+					<Text style={{color: 'white',fontSize:pxToDp(26),marginTop:pxToDp(20)}}>{this.state.userMess.name}</Text>
+					<Text style={{color: 'white',fontSize:pxToDp(26),marginTop:pxToDp(20)}}>{this.state.userMess.comm_name}</Text>
 				</Image>
 			</View>
 		)
@@ -89,17 +95,24 @@ export default class Mypage extends Component {
 	}
 
 	render() {
+		let idType = this.state.userMess.type;
+		let id = ''
+		if(idType == 'Z'){
+			id = '租户'
+		} else if(idType == 'Y'){
+			id = '业主'
+		}
 		return (
 			<ScrollView style={styles.container}>
 				{this._userMess()}
 				<View style={{flexDirection: 'row', height:pxToDp(100),}}>
 					<View style={{flex: 1,  borderRightColor:'#888', borderRightWidth:pxToDp(1), justifyContent: 'center', alignItems: 'center'}}>
 						<Text style={styles.pointTitle}>身份</Text>
-						<Text style={styles.IdPoint}>二手租户</Text>
+						<Text style={styles.IdPoint}>{id}</Text>
 					</View>
 					<View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
 						<Text style={styles.pointTitle}>信誉</Text>
-						<Text style={styles.IdPoint}>98分</Text>
+						<Text style={styles.IdPoint}>{this.state.userMess.credit}分</Text>
 					</View>
 				</View>
 				<View style={{borderTopColor:'#bbb', borderTopWidth: pxToDp(4)}}>
