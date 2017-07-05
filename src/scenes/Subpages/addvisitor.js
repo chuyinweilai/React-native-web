@@ -40,7 +40,6 @@ export default class invite extends Component{
 
 	_RouterCtrl(control){
 		if(control){
-			this._cleanData()
 			this.setState({
 				page: false,
 			})
@@ -53,7 +52,7 @@ export default class invite extends Component{
 
 	//清除
 	_cleanData(){
-		this.setState = {
+		this.setState({
 			//用户类型单选
 			color1: "#c9c9c9",
 			color2: "#69add0",
@@ -62,9 +61,8 @@ export default class invite extends Component{
 			card2: "#c9c9c9",
 			card3: "#c9c9c9",
 			cardType:'00',
-		};
+		});
 		this.text = '';
-		this.message;
 	}
 
 	//改变按钮背景颜色
@@ -137,6 +135,7 @@ export default class invite extends Component{
 			if(ref[1] < 0){
 				this._fail(ref)
 			} else {
+				this._cleanData()
 				this._success(ref)
 			}
 		})
@@ -213,7 +212,7 @@ export default class invite extends Component{
 								<Text style={{fontSize: pxToDp(36), color: '#474747'}}>备注</Text>
 							</View>
 							<View style={{flex: 1}}>
-									<TextInput onChangeText={(value)=> this._textType(value)} style={{height: pxToDp(46), fontSize: pxToDp(26), color: '#474747', }} maxLength={14} placeholder ='可填写姓名等信息'/>
+								<TextInput onChangeText={(value)=> this._textType(value)} style={{height: pxToDp(46), fontSize: pxToDp(26), color: '#474747', }} maxLength={14} placeholder ='可填写姓名等信息'/>
 							</View>
 						</View>
 						

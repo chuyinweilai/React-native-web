@@ -21,6 +21,7 @@ import {
 const peruri = "http://cloudapi.famesmart.com";
 const appData = require('./../../components/Ajax')
 const pxToDp = require('../responsive/px');
+const deviceWidthDp = Dimensions.get('window').width;
 
 export default class Home extends Component {
 	constructor(props) {
@@ -63,12 +64,27 @@ export default class Home extends Component {
 	bannerPart() {
 		return(
 			<View style={{height: pxToDp(336),}}>
-				<ScrollView style={styles.banners} horizontal={true} ref={(scrollView) => { _scrollView = scrollView; }}>
+				<ScrollView style={styles.banners} 
+					horizontal={true}
+					pagingEnabled ={true}
+					ref={(scrollView) => { _scrollView = scrollView; }}
+					onScroll={this.bannerTurn.bind(this)}
+					scrollEventThrottle={200}
+					>
 					<View style={{height: pxToDp(336), width:pxToDp(750),}} >
-
+						<Image style={{height: pxToDp(326), width:pxToDp(750),}} resizeMode='stretch' source={require('../../assets/main.png')}/>
+					</View>
+					<View style={{height: pxToDp(336), width:pxToDp(750),}} >
+						<Image style={{height: pxToDp(326), width:pxToDp(750),}} resizeMode='stretch' source={require('../../assets/main.png')}/>
+					</View>
+					<View style={{height: pxToDp(336), width:pxToDp(750),}} >
 						<Image style={{height: pxToDp(326), width:pxToDp(750),}} resizeMode='stretch' source={require('../../assets/main.png')}/>
 					</View>
 				</ScrollView>
+				{/*<TouchableOpacity
+					onPress={() => {_scrollView.scrollTo({x:100, animated: true}); }}>
+					<Text>Scroll to top</Text>
+				</TouchableOpacity>*/}
 				<View style={{position:'relative',right:pxToDp(4), bottom:pxToDp(29), flexDirection:'row', justifyContent: 'center', alignItems: 'center', }}>
 					<View style={[styles.BScontrol,{opacity: this.state.op1}]}></View>
 					<View style={[styles.BScontrol,{opacity: this.state.op2}]}></View>
@@ -78,7 +94,24 @@ export default class Home extends Component {
 			</View>
 		)
 	}
-  
+	
+	bannerTurn(ref){
+		console.log('setTimout')
+		let a = pxToDp(750);
+		let x = pxToDp(ref.nativeEvent.contentOffset.x) 
+		let y = ref.nativeEvent.contentOffset.y
+		// console.log(x,deviceWidthDp)
+		// this._setTime(x)
+	}
+
+	_setTime(now_x){
+		let move_x = now_x + pxToDp(750);
+		setTimeout(()=>{
+			console.log('setTimin')
+			_scrollView.scrollTo({x: move_x, animated: true})
+		},1000)
+	}
+
   //快捷按钮功能
 	buttonPart(){
 		const  data = this.state.funcData;
