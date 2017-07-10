@@ -11,6 +11,7 @@ import {
 	Image,
   	Button,
 	Switch,
+	ListView,
 	ScrollView,
 	StyleSheet,
 	TouchableOpacity,
@@ -24,24 +25,39 @@ const pxToDp =require('../responsive/px');
 export default class details extends Component {
 	constructor(props) {
 		super(props);
+		const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 		this.state = {
+			ds:ds,
+			joinColor:'#d0d0d0',
 			SwitchIsOn:false,
 		};
 	}
 
 	componentWillMount(){
-		appData._dataGet('/api/events', this._getEvent.bind(this));
 	}
 
-	_getEvent(json){
-		// this.setState({
-    	// 	dataSource: json.data
-		// })
-	}
-
-	render() {
+	_imageRow(rowData){
 		return (
-			<View style={styles.container}>
+			<Image style={{width:pxToDp(342), height:pxToDp(212), margin:pxToDp(8)}} resizeMode="stretch"  source={{uri:peruri+rowData}}/>
+		)
+	}
+
+	_details(){
+		let rowData = this.props.mess;
+		let imgUri  = rowData.pic_path;
+		let ss = imgUri.split(',');
+		let type='';
+		let title='';
+		if(rowData.type == 1) {
+			type='社区服务'
+		} else if(rowData.type == 2) {
+			type='公益活动'
+		} else if(rowData.type == 3) {
+			type='其他'
+		} 
+		return (
+			<View>
+
 				<View style={{height:pxToDp(86), flexDirection:'row',backgroundColor:'#f2f2f2',  justifyContent:'space-between'}}>
 					<TouchableOpacity style={{flexDirection:'row',width:pxToDp(120), alignItems: 'center', justifyContent: 'center'}} onPress={()=>this.props.backCtrl(false)}>
 						<Image style={{height:pxToDp(48), width: pxToDp(48)}} source={require('./../../assets/arrow-left.png')} 	resizeMode="contain"/>
@@ -52,41 +68,41 @@ export default class details extends Component {
 					</View>
 					<View style={{width:pxToDp(120), alignItems: 'center', justifyContent: 'center'}}/>
 				</View>
-
 				<View>
 					<View style={{flexDirection:'row', alignItems:'center'}}>
 						<Image style={{width: pxToDp(41), height:pxToDp(41), margin:pxToDp(16)}} source={require('./../../assets/公益活动icon@2x.png')}/>
-						<Text style={{color:'#fdac41'}}>#公益活动#</Text>
+						<Text style={{color:'#fdac41'}}>#{type}#</Text>
+						<Text style={{color:'#333', marginLeft: pxToDp(32), fontSize:pxToDp(32)}} numberOfLines={1}>{rowData.title}</Text>
 					</View>
 
-					<TouchableOpacity style={{alignItems:'center'}} onPress={()=>this.props.backCtrl('goods_details')}>
+					<View style={{alignItems:'center'}}>
 						<Text style={{ textAlign:'justify',width:pxToDp(684), fontSize:pxToDp(21), lineHeight:pxToDp(29)}}>
-							闵行区马桥镇开展以“社区共建共享”为主题的志愿服务活动，项目有义务维修、专家义诊、清洁社区、社区读书日、日用品派送等系列活动，倡导居民我爱人人，人人爱我的奉献精神；社区居民积极响应，活动取得圆满成功。
+							{rowData.detail}
 						</Text>
-						<View style={{flexDirection: 'row', marginVertical:pxToDp(16), justifyContent:'center'}}>
-							<Image style={{width:pxToDp(342), height:pxToDp(212), backgroundColor:'#6fc'}} resizeMode="stretch" />
-							<View style={{width:pxToDp(16)}}></View>
-							<Image style={{width:pxToDp(342), height:pxToDp(212), backgroundColor:'#6fc'}} resizeMode="stretch" />
-						</View>
-					</TouchableOpacity>
+						<ListView
+								contentContainerStyle={{flexDirection: 'row', marginVertical:pxToDp(8), }}
+								dataSource={this.state.ds.cloneWithRows(ss)}
+								enableEmptySections = {true}
+								renderRow = {this._imageRow.bind(this)}
+						/>
+					</View>
 
 					<View style={{paddingBottom:pxToDp(10), flexDirection:'row',justifyContent:'space-between', paddingHorizontal:pxToDp(30),borderBottomWidth:pxToDp(34), borderBottomColor:'#f2f2f2'}}>
 						<View >
-							<Text style={{ textAlign:'right',fontSize:pxToDp(14), color:'#9c9c9c',marginRight:pxToDp(20)}}>2017-06-31 09:02</Text>
+							<Text style={{ textAlign:'right',fontSize:pxToDp(14), color:'#9c9c9c',marginRight:pxToDp(20)}}>{rowData.pub_date}</Text>
 						</View>
 						<View style={{flexDirection:'row'}}>
 							<Image style={{width: pxToDp(32), height:pxToDp(32),marginRight:pxToDp(10)}} resizeMode='contain' source={require('./../../assets/热度icon@2x.png')}/>
-							<Text style={{ textAlign:'right',fontSize:pxToDp(14), color:'#9c9c9c',marginRight:pxToDp(20)}}>50</Text>
+							<Text style={{ textAlign:'right',fontSize:pxToDp(14), color:'#9c9c9c',marginRight:pxToDp(20)}}>{rowData.score}</Text>
 							<Image style={{width: pxToDp(32), height:pxToDp(32),marginRight:pxToDp(10)}} resizeMode='contain' source={require('./../../assets/加分icon@2x.png')}/>
-							<Text style={{textAlign:'right',fontSize:pxToDp(14), color:'#9c9c9c'}}>12</Text>
+							<Text style={{textAlign:'right',fontSize:pxToDp(14), color:'#9c9c9c'}}>{rowData.join_limit}</Text>
 						</View>
 					</View>
-
 				</View>
-				<View>
+				<View style={styles.container}>
 					<View style={{height: pxToDp(86), marginHorizontal:pxToDp(20), flexDirection:'row', borderBottomColor:'#b6b6b6', borderBottomWidth: pxToDp(2), alignItems:'center', justifyContent:'space-between'}}>
-						<Text style={{fontSize:pxToDp(32), color: '#69bdd0'}}>已有32人报名</Text>
-						<TouchableOpacity style={{width: pxToDp(164), height: pxToDp(64), backgroundColor:'#d0d0d0', borderRadius:pxToDp(20), alignItems:'center', justifyContent:'center'}}>
+						<Text style={{fontSize:pxToDp(32), color: '#69bdd0'}}>已有{rowData.join_cnt}人报名</Text>
+						<TouchableOpacity style={[{width: pxToDp(164), height: pxToDp(64),borderRadius:pxToDp(20), alignItems:'center', justifyContent:'center'},{ backgroundColor:this.state.joinColor, }]}>
 							<Text style={{fontSize:pxToDp(40), color: 'white'}}>报名</Text>
 						</TouchableOpacity>
 					</View>
@@ -99,6 +115,14 @@ export default class details extends Component {
 						value={this.state.SwitchIsOn} />
 					</View>
 				</View>
+			</View>
+		)
+	}
+
+	render() {
+		return (
+			<View>
+				{this._details()}
 			</View>
 		);
 	}

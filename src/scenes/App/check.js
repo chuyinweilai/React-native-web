@@ -20,6 +20,7 @@ export default class check extends Component{
 	}
 	componentWillMount(){
 		this._login(777)
+		appData._Storage('set','openId',777)
 	}
 
 	_login(openId){
@@ -27,13 +28,13 @@ export default class check extends Component{
 		appData._dataGet(afturi, (data) => {
 			if(data){
 				this.setState({
-					pageTurn: true,
 					userMess: data,
+					pageTurn: true,
 				})
 			}else {
 				this.setState({
-					pageTurn: false,
 					userMess: openId,
+					pageTurn: false,
 				})
 			}
 		});
@@ -43,9 +44,11 @@ export default class check extends Component{
 		let userMess = this.state.userMess
 		if(this.state.pageTurn){
 			if(userMess.length >1){
-				return <Areas_choose userMess={userMess}/>
+				// return <Areas_choose userMess={userMess}/>
+				appData._Storage('set','userMess',userMess[0])
+				return <Routers/>
 			} else {
-				appData._Storage('set','userMess',data[0])
+				appData._Storage('set','userMess',userMess[0])
 				return <Routers/>
 			}
 		} else {

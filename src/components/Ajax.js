@@ -47,7 +47,8 @@ let appData  = {
 		}) //判断res.state == 200 并进行json转换 
 		.then(data => {
 			if(data.message){
-				alert(data.message)
+				console.log(data)
+				callback(data)
 			}else {
 				callback(data)
 			}

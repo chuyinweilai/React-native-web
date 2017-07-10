@@ -31,7 +31,7 @@ export default class card extends Component {
 		appData._Storage('get','userMess',(data)=>{
 			let json = JSON.parse(data)
 			this.setState({
-				address:json.comm_name,
+				address:json.comm_name+json.apt_info,
 			})
 		})
 		this._turnNum(this.props.cardMess)
@@ -73,13 +73,17 @@ export default class card extends Component {
 	render() {
 		let type = this.props.cardMess[3];
 		let mess = '';
+		let typeTips=''
 		console.log(type)
 		if(type == '00'){
-			mess = '剩余次卡'
+			mess = '剩余次卡';
+			typeTips = '次卡：可在当月内使用一次';
 		} else if(type == '01'){
 			mess = '剩余月卡'
+			typeTips = '月卡：可在当月内使用多次';
 		} else if(type == '02'){
 			mess = '剩余季卡'
+			typeTips = '季卡：可在当季内使用多次';
 		}
 		return (
 		<View style={{flex: 1}}>
@@ -105,7 +109,10 @@ export default class card extends Component {
 						</View>
 
 						<View style={{height:pxToDp(300)}}>
-							<Image style={{height:pxToDp(56), margin:pxToDp(16)}}/>
+							{/*<Image style={{height:pxToDp(56), margin:pxToDp(16)}}/>*/}
+							<View style={{flexDirection:'row', height: pxToDp(56), alignItems:'center', justifyContent:'center'}}>
+								<Text style={{fontSize:pxToDp(32), color: '#c3d94a'}}>{typeTips}</Text>
+							</View>
 							<View style={{flexDirection: 'row', alignItems:'baseline', justifyContent:'center', paddingHorizontal: pxToDp(24), paddingBottom:pxToDp(10)}}>
 								<Text style={{fontSize:pxToDp(22), color: '#bbb'}}>有效期至</Text>
 								<View style={{flex: 1}}></View>

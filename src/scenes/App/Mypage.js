@@ -32,10 +32,10 @@ export default class Mypage extends Component {
 			dataSource2:ds.cloneWithRows([]),
 		};
 	}
+
 	componentWillMount(){
 		appData._Storage('get','userMess',(json)=>{
 			let data = JSON.parse(json)
-			console.log(data)
 			this.setState({
 				userMess: data,
 			})
@@ -67,18 +67,23 @@ export default class Mypage extends Component {
 				<Image style={styles.userMess} resizeMode="stretch" source={require('./../../assets/我的背景.png')}>
 					<Image style={{width:pxToDp(140), height:pxToDp(140), borderRadius:'50%', borderColor:'white', borderWidth:pxToDp(3)}} source={require('../../assets/main.png')}/>
 					<Text style={{color: 'white',fontSize:pxToDp(26),marginTop:pxToDp(20)}}>{this.state.userMess.name}</Text>
-					<Text style={{color: 'white',fontSize:pxToDp(26),marginTop:pxToDp(20)}}>{this.state.userMess.comm_name}</Text>
+					<Text style={{color: 'white',fontSize:pxToDp(26),marginTop:pxToDp(20)}}>{this.state.userMess.comm_name}{this.state.userMess.apt_info}</Text>
 				</Image>
 			</View>
 		)
 	}
 	
 	_renderRow(rowData){
+		let pageName = '';
+		if(rowData.func_id == 9){pageName = 'my_house'	}
+		else if(rowData.func_id == 10){	pageName = 'my_invite'	} 
+		else if(rowData.func_id == 11){	pageName = 'my_share'	} 
+		else if(rowData.func_id == 12){ pageName = 'my_collect'}
 		return (
-				<TouchableOpacity style={{height:pxToDp(80), flexDirection:'row', alignItems:'center', borderBottomColor:'#bbb',borderBottomWidth: pxToDp(4)}}>
-					<Image style={{width: pxToDp(50), height: pxToDp(50), marginHorizontal:pxToDp(20),}} resizeMode='stretch' source={{uri: peruri + rowData.icon}}/>
-					<Text style={{fontSize:pxToDp(28)}}>{rowData.func_name}</Text>
-				</TouchableOpacity>
+			<TouchableOpacity style={{height:pxToDp(80), flexDirection:'row', alignItems:'center', borderBottomColor:'#bbb',borderBottomWidth: pxToDp(4)}} onPress={()=>this.props.backCtrl(pageName)}>
+				<Image style={{width: pxToDp(50), height: pxToDp(50), marginHorizontal:pxToDp(20),}} resizeMode='stretch' source={{uri: peruri + rowData.icon}}/>
+				<Text style={{fontSize:pxToDp(28)}}>{rowData.func_name}</Text>
+			</TouchableOpacity>
 		)
 	}
 	

@@ -22,16 +22,32 @@ const Community =require('./Community');
 const Mypage =require('./Mypage');
 const appData = require('./../../components/Ajax')
 
-//首页子页面
+//首页 子页面
 const Open = require('./../Subpages/open');
-const Invite = require('./../Subpages/invite');
+const Addvisitor = require('./../Subpages/addvisitor');
+const Lifing_Convenient = require('./../Subpages/lifing_convenient');
+
+//生活 子页面
+const Lifing_Build = require('./../Subpages/lifing_build');
+const Lifing_Ask = require('./../Subpages/lifing_ask');
+const Lifing_Neighbourhood = require('./../Subpages/lifing_neighbourhood');
 
 //积分 子页面
-const Join = require('./../Subpages/join');
-const Active = require('./../Subpages/active');
-const Exchange = require('./../Subpages/exchange');
-const Goods_Details = require('./../Subpages/goods_details');
+const Accumulate_Ruler = require('./../Subpages/accumulate_ruler');
+const Accumulate_Join = require('./../Subpages/accumulate_join');
+const Accumulate_Active = require('./../Subpages/accumulate_active');
+const Accumulate_Exchange = require('./../Subpages/accumulate_exchange');
+const Accumulate_Goods_Details = require('./../Subpages/accumulate_goods_details');
 const Accumulate_Details = require('./../Subpages/accumulate_details');
+const Accumulate_History = require('./../Subpages/accumulate_history');
+const Accumulate_More_activity = require('./../Subpages/accumulate_more_activity');
+
+//我的 子页面
+const My_House = require('./../Subpages/my_house');
+const My_Invite = require('./../Subpages/my_invite');
+const My_Collect = require('./../Subpages/my_collect')
+const My_Share = require('./../Subpages/my_share')
+
 
 const pxToDp =require('../responsive/px');
 // const _Wx = require('./../../wx/wx')
@@ -52,85 +68,12 @@ export default class routers extends Component {
 		}
 		this.nowPage = 'Home';
 		this.HomeRouterPage = ''
+		this.sendMess;
 	}
 
 	componentDidMount(){
 		let data = new Date();
 		this.setPage()
-	}
-	
-	//底部控制条未选中
-	pageChose(tagName){ 
-		if(tagName != this.nowPage){
-			if(this.nowPage == 'Home'){
-				this.setState({
-					homePic: require('./../../assets/首页灰色.png'),
-				})
-			}else if(this.nowPage == 'Lifing'){
-				this.setState({
-					LifingPic: require('./../../assets/生活灰色.png'),
-				})
-			}else if(this.nowPage == 'Accumulate'){
-				this.setState({
-					AccumulatePic:require('./../../assets/志愿者灰.png'),
-				})
-			}else if(this.nowPage == 'Community'){
-				this.setState({
-					CommunityPic: require('./../../assets/社区灰色.png'),
-				})
-			}else if(this.nowPage == 'Mypage'){
-				this.setState({
-					MypagePic: require('./../../assets/我的灰色.png'),
-				})
-			}
-			this.nowPage = tagName;
-			this.setPage()
-		}
-	}
-
-	//底部控制条选中
-	setPage(){
-		let tagName = this.nowPage
-		if(tagName == 'Home'){
-			this.setState({
-				tag: <Home router={(value)=>this._RouterCtrl(value)} mainRouter={(page) => this.pageChose(page)}/>,
-				homePic: require('./../../assets/首页彩色.png'),
-			})
-		}else if(tagName == 'Accumulate'){
-			this.setState({
-				tag: <Accumulate  backCtrl={(data)=>this._RouterCtrl(data)}/>,
-				AccumulatePic:require('./../../assets/志愿者选中.png'),
-			})
-		}else if(tagName == 'Lifing'){
-			this.setState({
-				tag: <Lifing/>,
-				LifingPic: require('./../../assets/生活彩色.png'),
-			})
-		}else if(tagName == 'Community'){
-			this.setState({
-				tag: <Community/>,
-				CommunityPic: require('./../../assets/社区彩色.png'),
-			})
-		}else if(tagName == 'Mypage'){
-			this.setState({
-				tag: <Mypage/>,
-				MypagePic: require('./../../assets/我的彩色.png'),
-			})
-		}
-	}
-
-	//路由控制
-	_RouterCtrl(control){
-		if(control){
-			this.HomeRouterPage = control;
-			this.setState({
-				_Pctrl: false,
-			})
-		}else {
-			this.setState({
-				_Pctrl: true,
-			})
-		}
 	}
 
 	//页面切换
@@ -167,30 +110,122 @@ export default class routers extends Component {
 			)
 		} else {
 			const name = this.HomeRouterPage;
-			if(name == 'open'){
-				return <Open backCtrl = {(bol)=> this._RouterCtrl(bol)}/>
-			} 
-			else if(name == 'invite'){
-				return <Invite backCtrl = {(bol)=> this._RouterCtrl(bol)}/>
+			//首页--一键开门
+			if(name == 'open'){return <Open backCtrl = {(bol)=> this._RouterCtrl(bol)}/>} 
+			//首页--访问邀请
+			else if(name == 'addvisitor'){return <Addvisitor backCtrl = {(bol)=> this._RouterCtrl(bol)}/>}
+			//首页--便民服务
+			else if(name == 'lifing_convenient'){return <Lifing_Convenient backCtrl = {(bol)=> this._RouterCtrl(bol)}/>}
+			
+			//生活--党建天地
+			else if(name == 'lifing_build') {return <Lifing_Build backCtrl={(bol) => this._RouterCtrl(bol)}/>}
+			//生活--党建天地
+			else if(name == 'lifing_ask') {return <Lifing_Ask backCtrl={(bol) => this._RouterCtrl(bol)}/>} 
+			//生活--党建天地
+			else if(name == 'lifing_neighbourhood') {return <Lifing_Neighbourhood backCtrl={(bol) => this._RouterCtrl(bol)}/>}  
+
+			//志愿者--规则
+			else if(name == 'accumulate_ruler') {return <Accumulate_Ruler backCtrl={(bol) => this._RouterCtrl(bol)}/>} 
+			//志愿者--我的参与
+			else if(name == 'accumulate_join') {return <Accumulate_Join backCtrl={(bol) => this._RouterCtrl(bol)}/>} 
+			//志愿者--往期活动
+			else if(name == 'accumulate_active') {return <Accumulate_Active backCtrl={(bol) => this._RouterCtrl(bol)}/>} 
+			//志愿者--积分兑换
+			else if(name == 'accumulate_exchange') {return <Accumulate_Exchange backCtrl={(bol) => this._RouterCtrl(bol)}/>} 
+			//志愿者--兑换详情
+			else if(name == 'accumulate_goods_details') {return <Accumulate_Goods_Details backCtrl={(bol) => this._RouterCtrl(bol)}/>}
+			//志愿者--活动详情
+			else if(name == 'accumulate_details'){return <Accumulate_Details backCtrl={(bol) => this._RouterCtrl(bol)} mess={this.sendMess}/>}
+			//志愿者--活动详情
+			else if(name == 'accumulate_history'){return <Accumulate_History backCtrl={(bol) => this._RouterCtrl(bol)}/>}
+			//志愿者--最新活动
+			else if(name == 'accumulate_more_activity'){return <Accumulate_More_activity backCtrl={(bol,message) => this._RouterCtrl(bol,message)}/>}
+		
+			//我的--访问记录
+			else if(name == 'my_invite'){return <My_Invite backCtrl = {(bol)=> this._RouterCtrl(bol)}/>}
+			//我的--房屋
+			else if(name == 'my_house'){return <My_House backCtrl = {(bol)=> this._RouterCtrl(bol)}/>}
+			//我的--分享
+			else if(name == 'my_share'){return <My_Share backCtrl = {(bol)=> this._RouterCtrl(bol)}/>}
+			//我的--收藏
+			else if(name == 'my_collect'){return <My_Collect backCtrl = {(bol)=> this._RouterCtrl(bol)}/>}
+		}
+	}
+	
+	//路由控制
+	_RouterCtrl(control, data){
+		console.log(data)
+		if(control){
+			this.HomeRouterPage = control;
+			this.setState({
+				_Pctrl: false,
+			})
+			this.sendMess = data
+		}else {
+			this.setState({
+				_Pctrl: true,
+			})
+			this.sendMess = data
+		}
+	}
+
+	//底部控制条选中
+	setPage(){
+		let tagName = this.nowPage
+		if(tagName == 'Home'){
+			this.setState({
+				tag: <Home backCtrl={(value)=>this._RouterCtrl(value)} mainRouter={(page) => this.pageChose(page)}/>,
+				homePic: require('./../../assets/首页彩色.png'),
+			})
+		}else if(tagName == 'Accumulate'){
+			this.setState({
+				tag: <Accumulate  backCtrl={(bol, data) => this._RouterCtrl(bol, data)}/>,
+				AccumulatePic:require('./../../assets/志愿者选中.png'),
+			})
+		}else if(tagName == 'Lifing'){
+			this.setState({
+				tag: <Lifing backCtrl={(value)=>this._RouterCtrl(value)} />,
+				LifingPic: require('./../../assets/生活彩色.png'),
+			})
+		}else if(tagName == 'Community'){
+			this.setState({
+				tag: <Community/>,
+				CommunityPic: require('./../../assets/社区彩色.png'),
+			})
+		}else if(tagName == 'Mypage'){
+			this.setState({
+				tag: <Mypage backCtrl={(value)=>this._RouterCtrl(value)} />,
+				MypagePic: require('./../../assets/我的彩色.png'),
+			})
+		}
+	}
+
+	//底部控制条未选中
+	pageChose(tagName){ 
+		if(tagName != this.nowPage){
+			if(this.nowPage == 'Home'){
+				this.setState({
+					homePic: require('./../../assets/首页灰色.png'),
+				})
+			}else if(this.nowPage == 'Lifing'){
+				this.setState({
+					LifingPic: require('./../../assets/生活灰色.png'),
+				})
+			}else if(this.nowPage == 'Accumulate'){
+				this.setState({
+					AccumulatePic:require('./../../assets/志愿者灰.png'),
+				})
+			}else if(this.nowPage == 'Community'){
+				this.setState({
+					CommunityPic: require('./../../assets/社区灰色.png'),
+				})
+			}else if(this.nowPage == 'Mypage'){
+				this.setState({
+					MypagePic: require('./../../assets/我的灰色.png'),
+				})
 			}
-			else if(name == 'Accumulate'){
-				return <Accumulate backCtrl={(bol)=>this._RouterCtrl(bol)}/>
-			} 
-			else if(name == 'join') {
-				return <Join backCtrl={(bol) => this._RouterCtrl(bol)}/>
-			} 
-			else if(name == 'active') {
-				return <Active backCtrl={(bol) => this._RouterCtrl(bol)}/>
-			} 
-			else if(name == 'exchange') {
-				return <Exchange backCtrl={(bol) => this._RouterCtrl(bol)}/>
-			} 
-			else if(name == 'goods_details') {
-				return <Goods_Details backCtrl={(bol) => this._RouterCtrl(bol)}/>
-			}
-			else if(name == 'accumulate_details'){
-				return <Accumulate_Details backCtrl={(bol) => this._RouterCtrl(bol)}/>
-			}
+			this.nowPage = tagName;
+			this.setPage()
 		}
 	}
 

@@ -35,8 +35,15 @@ export default class invite extends Component{
 			};
 			this.text = '';
 			this.message;
+			this.userMess={};
 	}
 
+	componentWillMount(){
+		appData._Storage('get','userMess',(data) => {
+			let json = JSON.parse(data);
+			this.userMess = json;			
+		})
+	}
 
 	_RouterCtrl(control){
 		if(control){
@@ -125,8 +132,12 @@ export default class invite extends Component{
 		let text = this.text;
 
 		let uri = '/api/cards/take';
+		let json  = this.userMess;
 		let _data = {
-			"wx_id": "18912342933",			//openId
+			'comm_code': json.comm_code,
+			'apt_code': json.apt_code,
+			'unit_code': json.unit_code,
+			'mobile': json.mobile,
 			"card_type": cardType,		  	//00单次，01月卡，02季卡
 			"user_type": visitType,			//0本人，1租户，2访客
 			"memo": text				    //备注
@@ -165,6 +176,7 @@ export default class invite extends Component{
 
 	//当前页内容
 	_nowPage(){
+		console.log(this.userMess)
 		return (
 			<View style={{flex: 1}}>
 				<View style={{height:pxToDp(86), flexDirection:'row', justifyContent:'space-between', borderBottomColor:'#bebebe', borderBottomWidth: pxToDp(2)}}>
@@ -173,15 +185,15 @@ export default class invite extends Component{
 						<Text style={{fontSize:pxToDp(30)}}>返回</Text>
 					</TouchableOpacity>
 					<View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-						<Text>访客邀请</Text>
+						<Text>访问邀请</Text>
 					</View>
 					<View style={{width:pxToDp(120)}}></View>
 				</View>
 
 				<View style={{flex: 1, backgroundColor:'#efefef', paddingVertical:pxToDp(20)}}>
 					<View style={{paddingBottom: pxToDp(14), paddingHorizontal: pxToDp(36), flexDirection:'row', alignItems:'center'}}>
-						<Text style={{fontSize:pxToDp(28), color: '#5a5a5a'}}>{this.props.address}</Text>
 						<Image style={{height:pxToDp(48), width: pxToDp(48)}} source={require('./../../assets/wxb定位.png')} resizeMode="contain"/>
+						<Text style={{fontSize:pxToDp(28), color: '#5a5a5a'}}>{this.userMess.comm_name}{this.userMess.apt_info}</Text>
 					</View>
 
 					<View style={{height:pxToDp(380), backgroundColor: 'white', paddingHorizontal: pxToDp(36), paddingVertical: pxToDp(20) }}>

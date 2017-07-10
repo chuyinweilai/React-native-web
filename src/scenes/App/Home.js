@@ -38,14 +38,24 @@ export default class Home extends Component {
 			rotate: '0',
 			funcData:[],
 			eventData:{},
+			bannerUri:' ',
 		};
-		this._data = []
+		this._data = [];
+		this.oldPoint = 0;
 	}
 
 	componentWillMount(){
 		appData._dataGet('/api/func/A', this._getIcon.bind(this));
-		appData._dataGet('/api/events', this._getEvent.bind(this));
-		// this._dataPost('api/cards');
+		appData._dataPost('/api/events', {"comm_code":"M0001"},this._getEvent.bind(this));
+		appData._Storage('get','userMess',(data)=>{
+			let json  = JSON.parse(data)
+			let abody = {
+				"comm_code": json.comm_code,
+				"page_id":"A",
+				"type":1
+			}
+			appData._dataPost('/api/showpic/select',abody,this._getBannerImg.bind(this))
+		})
 	}
 
 	_getIcon(json){
@@ -60,56 +70,20 @@ export default class Home extends Component {
 		})
 	}
 
+	_getBannerImg(json){
+		let arr = json[0];
+		this.setState({
+    		bannerUri:  peruri + arr[0].pic_path
+		})
+	}
+	
   //banner图部分
 	bannerPart() {
 		return(
 			<View style={{height: pxToDp(336),}}>
-				<ScrollView style={styles.banners} 
-					horizontal={true}
-					pagingEnabled ={true}
-					ref={(scrollView) => { _scrollView = scrollView; }}
-					onScroll={this.bannerTurn.bind(this)}
-					scrollEventThrottle={200}
-					>
-					<View style={{height: pxToDp(336), width:pxToDp(750),}} >
-						<Image style={{height: pxToDp(326), width:pxToDp(750),}} resizeMode='stretch' source={require('../../assets/main.png')}/>
-					</View>
-					<View style={{height: pxToDp(336), width:pxToDp(750),}} >
-						<Image style={{height: pxToDp(326), width:pxToDp(750),}} resizeMode='stretch' source={require('../../assets/main.png')}/>
-					</View>
-					<View style={{height: pxToDp(336), width:pxToDp(750),}} >
-						<Image style={{height: pxToDp(326), width:pxToDp(750),}} resizeMode='stretch' source={require('../../assets/main.png')}/>
-					</View>
-				</ScrollView>
-				{/*<TouchableOpacity
-					onPress={() => {_scrollView.scrollTo({x:100, animated: true}); }}>
-					<Text>Scroll to top</Text>
-				</TouchableOpacity>*/}
-				<View style={{position:'relative',right:pxToDp(4), bottom:pxToDp(29), flexDirection:'row', justifyContent: 'center', alignItems: 'center', }}>
-					<View style={[styles.BScontrol,{opacity: this.state.op1}]}></View>
-					<View style={[styles.BScontrol,{opacity: this.state.op2}]}></View>
-					<View style={[styles.BScontrol,{opacity: this.state.op3}]}></View>
-					<View style={[styles.BScontrol,{opacity: this.state.op4}]}></View>
-				</View>
+				<Image style={{height: pxToDp(326), width:pxToDp(750),}} resizeMode='stretch' source={{uri: this.state.bannerUri}}/>
 			</View>
 		)
-	}
-	
-	bannerTurn(ref){
-		console.log('setTimout')
-		let a = pxToDp(750);
-		let x = pxToDp(ref.nativeEvent.contentOffset.x) 
-		let y = ref.nativeEvent.contentOffset.y
-		// console.log(x,deviceWidthDp)
-		// this._setTime(x)
-	}
-
-	_setTime(now_x){
-		let move_x = now_x + pxToDp(750);
-		setTimeout(()=>{
-			console.log('setTimin')
-			_scrollView.scrollTo({x: move_x, animated: true})
-		},1000)
 	}
 
   //快捷按钮功能
@@ -124,19 +98,19 @@ export default class Home extends Component {
 					</TouchableOpacity>
 
 					<View style={{width: pxToDp(366)}}>
-						<TouchableOpacity style={{marginBottom: pxToDp(10), backgroundColor:'#bb5966', alignItems:'center', justifyContent:'center', flexDirection:'row'}} onPress={() => this._nimbleBtn('invite')}>
+						<TouchableOpacity style={{marginBottom: pxToDp(10), backgroundColor:'#bb5966', alignItems:'center', justifyContent:'center', flexDirection:'row'}} onPress={() => this._nimbleBtn('addvisitor')}>
 							<Image style={{height:pxToDp(120), width: pxToDp(366),justifyContent: 'center', alignItems:'flex-start'}} resizeMode='stretch' source={{uri: peruri+ data[1].icon}}>
 							</Image>
 						</TouchableOpacity>
 
 						<View style={{height:pxToDp(110), flexDirection: 'row'}}>
-							<TouchableOpacity style={{ backgroundColor:'#c7a76c',  flexDirection: 'row'}} disabled>
+							<TouchableOpacity style={{ backgroundColor:'#c7a76c',  flexDirection: 'row'}} onPress={()=>this.props.backCtrl('lifing_convenient')}>
 								<Image style={{height:pxToDp(110), width: pxToDp(178), }} resizeMode='stretch' source={{uri: peruri+ data[2].icon}}>
 								</Image>
 							</TouchableOpacity>
 							<View style={{width:pxToDp(10)}}></View>
 							<TouchableOpacity style={{ backgroundColor:'#c7a76c', flexDirection: 'row'}} onPress={()=>{this.props.mainRouter('Accumulate')}}>
-								<Image style={{height:pxToDp(110), width: pxToDp(178)}} resizeMode='stretch' source={{uri: peruri+ data[3].icon}}>
+							<Image style={{height:pxToDp(110), width: pxToDp(178)}} resizeMode='stretch' source={{uri: peruri+ data[3].icon}}>
 								</Image>
 							</TouchableOpacity>
 						</View>
@@ -148,49 +122,47 @@ export default class Home extends Component {
 	}
 
 	_nimbleBtn(control){
-		let foo = this.props.router;
+		let foo = this.props.backCtrl;
 		foo(control);
 	}
 
   	//党建天地部分
 	about(){
-		const  data = this.state.funcData;
 		return (
 			<View style={{marginTop:pxToDp(18)}}>
 				<View style={{height:pxToDp(30), backgroundColor: '#dcdcdc', flexDirection:'row'}}></View>
-					{this.aboutContent()}
+				<ListView
+					contentContainerStyle = { styles.logo}
+					dataSource = {this.state.ds.cloneWithRows(this.state.funcData)}
+					enableEmptySections = {true}
+					renderRow = {this._aboutContent.bind(this)}
+					/>
 				<View style={{height: pxToDp(30),backgroundColor:'#dcdcdc'}}></View>
 			</View>
 		)
 	}
 
-	//党建部门内容部分
-	aboutContent(){
-		const  data = this.state.funcData;
-		if(data.length){
+	//党建内容部分
+	_aboutContent(rowData){
+		let type = ''
+		if(rowData.func_id == '5'){
+			type = 'lifing_build'
+		} else if(rowData.func_id == '6'){
+			type = 'lifing_ask'
+		} else if(rowData.func_id == '7'){
+			type = 'lifing_neighbourhood'
+		} 
+		let func_id = rowData.func_id
+		if(func_id == '5' || func_id == '6' || func_id == '7'){
 			return (
-				<View style={styles.logo}>
-					<TouchableOpacity style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-						<View style={{width:pxToDp(164) ,height: pxToDp(142), borderRadius:pxToDp(22), alignItems:'center', justifyContent:'center'}}>
-							<Image resizeMode='stretch' style={{width: pxToDp(164), height: pxToDp(142)}} source={{uri: peruri+ data[4].icon}}/>
-						</View>
-						<Text style={{textAlign:'center', fontSize:pxToDp(26), color: '#525252',paddingTop: pxToDp(10)}}>党建天地</Text>
-					</TouchableOpacity>
-					<TouchableOpacity style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-						<View style={{width:pxToDp(164) ,height: pxToDp(142), borderRadius:pxToDp(22), alignItems:'center', justifyContent:'center'}}>
-							<Image resizeMode='stretch' style={{width: pxToDp(164), height: pxToDp(142)}} source={{uri: peruri+ data[5].icon}}/>
-						</View>
-						<Text style={{textAlign:'center', fontSize:pxToDp(26), color: '#525252',paddingTop: pxToDp(10)}}>问卷调查</Text>
-					</TouchableOpacity>
-					<TouchableOpacity style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-						<View style={{width:pxToDp(164) ,height: pxToDp(142), borderRadius:pxToDp(22), alignItems:'center', justifyContent:'center'}}>
-							<Image resizeMode='contain' style={{width: pxToDp(164), height: pxToDp(142)}} source={{uri: peruri+ data[6].icon}}/>
-						</View>
-						<Text style={{textAlign:'center', fontSize:pxToDp(26), color: '#525252',paddingTop: pxToDp(10)}}>周边商城</Text>
-					</TouchableOpacity>
-				</View>
-			)
-		}
+				<TouchableOpacity style={{flex: 1, alignItems: 'center', justifyContent: 'center'}} onPress={()=>this.props.backCtrl(type)}>
+					<View style={{width:pxToDp(164) ,height: pxToDp(142), borderRadius:pxToDp(22), alignItems:'center', justifyContent:'center'}}>
+						<Image resizeMode='stretch' style={{width: pxToDp(164), height: pxToDp(142)}} source={{uri: peruri+ rowData.icon}}/>
+					</View>
+					<Text style={{textAlign:'center', fontSize:pxToDp(26), color: '#525252',paddingTop: pxToDp(10)}}>{rowData.func_name}</Text>
+				</TouchableOpacity>
+			) 
+		} else return null
 	}
 
   	//党建部门现隐控制
@@ -216,7 +188,7 @@ export default class Home extends Component {
 						</TouchableOpacity>
 					</View>
 					<ListView
-							dataSource={this.state.ds.cloneWithRows(this.state.dataSource)}
+							dataSource={this.state.ds.cloneWithRows(aData)}
 							enableEmptySections = {true}
 							renderRow={this.newsText.bind(this)}
 					/>
@@ -227,31 +199,46 @@ export default class Home extends Component {
 
 	//社区动态 内容部分
 	newsText(rowData){
-		let pic =  rowData.pic_path
-		let ss = pic.split(',')
+		let type = '';
+		let pic =  rowData.pic_path;
+		let ss = pic.split(',');
+		if(rowData.type == '1'){
+			type = '邻里分享'
+		} else if(rowData.type == '2'){
+			type = '社区活动'
+		} else if(rowData.type == '3'){
+			type = '好人好事'
+		} 
 		return(
 			<View style={{ borderTopColor:'#9a9a9a', borderTopWidth:1,}}>
 				<View style={{height: pxToDp(78),flexDirection:'row', alignItems: 'center', paddingLeft: pxToDp(18)}}>
 					<Image style={{height: pxToDp(56),width: pxToDp(56), borderRadius: pxToDp(28),backgroundColor: 'gray'}} source={{uri: peruri + rowData.pic_path_face}}/>
 					<Text style={{fontSize: pxToDp(17), color:'#464646',paddingLeft:pxToDp(15)}}>{rowData.provider_name}</Text>
 					<Text style={{fontSize: pxToDp(14), color:'#9c9c9c', paddingLeft:pxToDp(10),paddingRight:pxToDp(6)}}>来自</Text>
-					<Text style={{fontSize: pxToDp(18), color:'#ffc575'}}>{rowData.type}</Text>
+					<Text style={{fontSize: pxToDp(18), color:'#ffc575'}}>{type}</Text>
 				</View>
 				<View style={{alignItems:'center'}}>
 					<Text style={{textAlign:'justify',width:pxToDp(684), fontSize:pxToDp(21), lineHeight:pxToDp(29)}}>
 							{rowData.detail}
 					</Text>
-					<View style={{flexDirection: 'row', marginVertical:pxToDp(16)}}>
-						<Image style={{width:pxToDp(342), height:pxToDp(212)}} resizeMode="stretch" source={{uri:peruri+ ss[0]}}/>
-						<View style={{width:pxToDp(16)}}></View>
-						<Image style={{width:pxToDp(342), height:pxToDp(212)}} resizeMode="stretch" source={{uri:peruri+ ss[1]}}/>
-					</View>
+					<ListView
+							contentContainerStyle={{flexDirection: 'row', marginVertical:pxToDp(8), }}
+							dataSource={this.state.ds.cloneWithRows(ss)}
+							enableEmptySections = {true}
+							renderRow = {this._imageRow.bind(this)}
+					/>
 				</View>
 				<View style={{paddingBottom:pxToDp(10), flexDirection:'row',justifyContent:'flex-end', paddingRight: pxToDp(18)}}>
 					<Text style={{ textAlign:'right',fontSize:pxToDp(14), color:'#9c9c9c',marginRight:pxToDp(20)}}>热度：{rowData.point}</Text>
 					<Text style={{textAlign:'right',fontSize:pxToDp(14), color:'#9c9c9c'}}>上传时间：{rowData.vld_start}</Text>
 				</View>
 			</View>
+		)
+	}
+
+	_imageRow(rowData){
+		return (
+			<Image style={{width:pxToDp(342), height:pxToDp(212), margin:pxToDp(8)}} resizeMode="stretch"  source={{uri:peruri+rowData}}/>
 		)
 	}
 

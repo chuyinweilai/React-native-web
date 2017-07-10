@@ -29,8 +29,9 @@ export default class open extends Component {
 		this._pulldata()
 		appData._Storage('get','userMess',(data)=>{
 			let json = JSON.parse(data)
+			console.log(json)
 			this.setState({
-				address:json.comm_name,
+				address:json.comm_name + json.apt_info,
 			})
 		})
 	}
@@ -66,6 +67,7 @@ export default class open extends Component {
 
 	//生成二维码
 	_turnNum(cardMess){
+		console.log(cardMess)
 		let num = cardMess[0].toString();
 		let x = Number(num.substr(3,5));
 		let y = Math.floor(Math.random()*400+100);
@@ -103,7 +105,7 @@ export default class open extends Component {
 					<Image style={{height:pxToDp(48), width: pxToDp(48)}} source={require('./../../assets/arrow-left.png')} 	resizeMode="contain"/>
 					<Text style={{fontSize:pxToDp(30)}}>返回</Text>
 				</TouchableOpacity>
-				<View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+				<View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}> 
 					<Text>邀请码</Text>
 				</View>
 				<View style={{width:pxToDp(120), alignItems: 'center', justifyContent: 'center'}}/>
@@ -120,7 +122,10 @@ export default class open extends Component {
 						</View>
 
 						<View style={{height:pxToDp(300)}}>
-							<Image style={{height:pxToDp(56), margin:pxToDp(16)}}/>
+							{/*<Image style={{height:pxToDp(56), margin:pxToDp(16)}}/>*/}
+							<View style={{flexDirection:'row', height: pxToDp(56), alignItems:'center', justifyContent:'center'}}>
+								<Text style={{fontSize:pxToDp(32), color: '#c3d94a'}}>次卡：可在当月内使用一次</Text>
+							</View>
 							<View style={{flexDirection: 'row', alignItems:'baseline', justifyContent:'center', paddingHorizontal: pxToDp(24), paddingBottom:pxToDp(10)}}>
 								<Text style={{fontSize:pxToDp(22), color: '#bbb'}}>有效期至</Text>
 								<View style={{flex: 1}}></View>
