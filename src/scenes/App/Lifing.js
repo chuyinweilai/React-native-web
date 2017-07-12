@@ -6,13 +6,13 @@
 
 import React, { Component } from 'react';
 import {
-  Text,
-  View,
-  Image,
-  Button,
+	Text,
+	View,
+	Image,
+	Button,
 	ScrollView,
-  StyleSheet,
-  ListView,
+	StyleSheet,
+	ListView,
 	TouchableOpacity,
 	Dimensions
 } from 'react-native';
@@ -27,12 +27,13 @@ export default class Lifing extends Component {
 		const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 		this.state = {
 			ds: ds,
+			// wxName:'',
 			headIcons:[],
 			funcData:[],
-			dataSource1: ds.cloneWithRows([]),                      // 星级
 			dataSource2: ds.cloneWithRows([]),                      // 生活服务分栏
 			dataSource3: ds.cloneWithRows([]),                      // 生活服务内容
 		};
+		this.wxName = '';
 		this.star = require('./../../assets/形状-5.png');
 		this.starY = require('./../../assets/形状-7.png');
 		// this.servePic = require('')
@@ -45,7 +46,6 @@ export default class Lifing extends Component {
 
 		appData._Storage('get','userMess',(data)=>{
 			let json  = JSON.parse(data)
-			console.log(json.comm_code)
 			let abody = {
 				"comm_code": json.comm_code,
 				"page_id":"B",
@@ -54,7 +54,13 @@ export default class Lifing extends Component {
 			appData._dataPost('/api/showpic/select',abody,this._getImg.bind(this))
 		})
 	}
-
+	
+	// return true时，进行渲染；false时，不渲染
+	shouldComponentUpdate(props, state){
+		return state.headIcons !== this.state.headIcons ||
+				state.dataSource2 !== this.state.dataSource2 ||
+				state.dataSource3 !== this.state.dataSource3
+	}
   	//内容
 	_getIcon(_data){	
 		let json = _data.funcs;
@@ -92,39 +98,12 @@ export default class Lifing extends Component {
 	}			
 
 	_getImg(data){
-		console.log(data);
+		let arr = data[0]
+		this.wxName = arr[2].info		
 		this.setState({
-			headIcons: data[0]
+			headIcons: arr
 		})
 	}
-
-  	//星级排序
-	/*
-	_rankStar(){
-		let arr =[];
-		arr.push(this.starY);
-		let i = arr.length;
-		for(;i< 5; i++ ){
-		arr.push(this.star)
-		}
-		this.setState({
-		dataSource1:this.state.dataSource1.cloneWithRows(arr)
-		})
-	}
-	*/
-
-  	//插入星级
-	  /*
-	starsShow(rowData,){
-		return(
-		<View>
-			<Image style={{width: pxToDp(45), height: pxToDp(45), marginHorizontal:pxToDp(10)}} 
-			source={rowData}
-			/>
-		</View>
-		)
-	}
-	*/
 
 	//服务列表
 	_serveList(rowData){
@@ -159,16 +138,43 @@ export default class Lifing extends Component {
 	}
 
 	_renderIcon(rowData,rowId , sectionId){
-		console.log(sectionId)
 		if(sectionId == 2){
 			return(
-				<Image style={[styles.headIcon,{width: pxToDp(120), height: pxToDp(120)}]} resizeMode='stretch' source={{uri: peruri + rowData.pic_path}}/>
+				<TouchableOpacity onPress={this._headChange.bind(this,sectionId)}>
+					<Image style={[styles.headIcon,{width: pxToDp(120), height: pxToDp(120)}]} resizeMode='stretch' source={{uri: peruri + rowData.pic_path}}/>
+				</TouchableOpacity>
 			)
 		}else {
 			return(
-				<Image style={styles.headIcon} resizeMode='stretch' source={{uri: peruri + rowData.pic_path}}/>
+				<TouchableOpacity onPress={this._headChange.bind(this,rowData.pic_idx)}>
+					<Image style={styles.headIcon} resizeMode='stretch' source={{uri: peruri + rowData.pic_path}}/>
+				</TouchableOpacity>
 			)
 		}
+	}
+
+	//头像切换
+	_headChange(par){
+		let arr = this.state.headIcons.concat();
+		if(par == 'next'){
+			let last = arr.pop()
+			arr.unshift(last)
+		} else if(par == 'before'){
+			let last = arr.shift()
+			arr.push(last)
+		} else{
+			arr.forEach((index,num) => {
+				if(arr[2].pic_idx != par){
+					let last = arr.shift()
+					arr.push(last)
+				}
+			})
+		}
+		this.wxName = arr[2].info
+		this.setState({
+			headIcons: arr
+		})
+
 	}
 
 	render() {
@@ -182,7 +188,7 @@ export default class Lifing extends Component {
 					<View>
 						<Image style={{height: pxToDp(300),alignItems:'center', justifyContent:'center', flexDirection:'row'}} resizeMode='stretch' source={require('./../../assets/管家背景.png')}>
 							<View style={{flex :1, paddingHorizontal:pxToDp(20), flexDirection: 'row', justifyContent:'center', alignItems:'center'}}>
-								<TouchableOpacity style={{width: pxToDp(60), alignItems:'flex-end'}}>
+								<TouchableOpacity style={{width: pxToDp(60), alignItems:'flex-end'}} onPress={this._headChange.bind(this,'before')}>
 									<Image style={{width: pxToDp(60), height: pxToDp(60), transform:[{rotate:'180deg'}]}} source={require('../../assets/more-white.png')}/>
 								</TouchableOpacity>
 								<ListView
@@ -191,7 +197,7 @@ export default class Lifing extends Component {
 									enableEmptySections = {true}
 									renderRow = {this._renderIcon.bind(this)}
 								/>
-								<TouchableOpacity style={{width: pxToDp(60), }}>
+								<TouchableOpacity style={{width: pxToDp(60), }} onPress={this._headChange.bind(this,'next')}>
 									<Image style={{width:pxToDp(60), height:pxToDp(60)}} source={require('../../assets/more-white.png')}/>
 								</TouchableOpacity>
 							</View>
@@ -202,7 +208,7 @@ export default class Lifing extends Component {
 								enableEmptySections = {true} 
 								contentContainerStyle = {{paddingVertical:pxToDp(15),flexDirection:'row', alignItems:'center', justifyContent: 'center'}}
 								renderRow = {this.starsShow.bind(this)}/>*/}
-							<Text style={{paddingHorizontal: pxToDp(10), fontSize:pxToDp(36),color: '#9a9a9a'}}>微信ID</Text>
+							<Text style={{paddingHorizontal: pxToDp(10), fontSize:pxToDp(36),color: '#9a9a9a'}}>{this.wxName}</Text>
 						</View>
 					</View>
 

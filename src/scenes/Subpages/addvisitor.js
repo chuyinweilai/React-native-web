@@ -162,7 +162,6 @@ export default class invite extends Component{
 
 	//失败返回
 	_fail(mess){
-		// console.log(mess)
 	}
 
 	//页面内容判断
@@ -176,7 +175,6 @@ export default class invite extends Component{
 
 	//当前页内容
 	_nowPage(){
-		console.log(this.userMess)
 		return (
 			<View style={{flex: 1}}>
 				<View style={{height:pxToDp(86), flexDirection:'row', justifyContent:'space-between', borderBottomColor:'#bebebe', borderBottomWidth: pxToDp(2)}}>

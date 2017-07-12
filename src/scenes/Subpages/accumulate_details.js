@@ -110,7 +110,7 @@ export default class details extends Component {
 						<Text style={{fontSize:pxToDp(34), color: '#8d8d8d'}}>添加到收藏</Text>
 						
 						<Switch
-						onTintColor ='#6fc'
+						onTintColor ='#69bdd0'
 						onValueChange={(value) => this.setState({SwitchIsOn: value})}
 						value={this.state.SwitchIsOn} />
 					</View>

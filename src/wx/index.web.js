@@ -94,7 +94,6 @@ var NavigationBarRouteMapper = {
 
 var ReactNativeWebExample = React.createClass({
   componentWillMount() {
-    console.log('init');
     AsyncStorage.removeItem('@fameWebApp:lightsArr');
     AsyncStorage.removeItem('@fameWebApp:airsArr');
     AsyncStorage.removeItem('@fameWebApp:runArr');

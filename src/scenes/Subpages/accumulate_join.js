@@ -70,7 +70,7 @@ export default class accumulate_join extends Component {
 							</View>
 						</View>
 
-						<Image style={{marginTop:pxToDp(20), width:pxToDp(230),height: pxToDp(190), backgroundColor:'#6fc'}}/>
+						<Image style={{marginTop:pxToDp(20), width:pxToDp(230),height: pxToDp(190)}}/>
 					</View>
 				</View>
 			</ScrollView>

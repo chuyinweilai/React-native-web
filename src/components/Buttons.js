@@ -27,7 +27,7 @@ export default class Buttons extends Component {
 		this.styleBtn={}
 		this.styleText = {}
 	}
-//  btnStyle={{width:pxToDp(100), height:pxToDp(100)}} textStyle={{fontSize:pxToDp(24), color:'white'}} text='传入文字' ctext='改变文字' textColor='#6fc' ctextColor='red' btnColor='red' cbtnColor='#6fc'
+	
 	componentWillMount(){
 
 		let a = this.props.onPress

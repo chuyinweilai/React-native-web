@@ -37,6 +37,34 @@ export default class join extends Component {
 		// })
 	}
 
+	_list(){
+		return(
+			<View style={{flex: 1,}}>
+				<View style={{height: pxToDp(78),  justifyContent:'center', backgroundColor:'#999', paddingHorizontal: pxToDp(22)}}>
+					<Text style={{fontSize: pxToDp(36), color: 'white'}}>2017/7/10</Text>
+				</View>
+				<View style={{flex: 1, paddingHorizontal: pxToDp(20)}}>
+					<View style={{flexDirection: 'row' ,height: pxToDp(224),justifyContent:'center',  alignItems: 'center', borderBottomWidth: pxToDp(2)}}>
+						<View style={{width: pxToDp(412), marginRight:pxToDp(30)}}>
+							<Text style={{paddingBottom: pxToDp(42), fontSize: pxToDp(34), color:"#999"}}>
+								维达薄荷味抽纸200抽系列一盒
+							</Text>
+							<View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end'}}>
+								<Text style={{fontSize: pxToDp(44), color: '#999'}}>-10</Text>
+								<Text style={{fontSize: pxToDp(20), color: '#999'}}>2017年7月10日 08:02</Text>
+							</View>
+						</View>
+						<Image style={{width: pxToDp(232), height: pxToDp(190), backgroundColor: '#6fc'}}/>
+						<View>
+							
+						</View>
+					</View>
+				</View>
+
+			</View>
+		)
+	}
+
 	render() {
 		return (
 			<ScrollView style={styles.container}>
@@ -46,13 +74,11 @@ export default class join extends Component {
 						<Text style={{fontSize:pxToDp(30)}}>返回</Text>
 					</TouchableOpacity>
 					<View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-						<Text style={{fontSize: pxToDp(36)}}>积分记录</Text>
+						<Text style={{fontSize: pxToDp(36)}}>兑换历史</Text>
 					</View>
 					<View style={{width:pxToDp(120), alignItems: 'center', justifyContent: 'center'}}/>
 				</View>
-				<View>
-					
-				</View>
+				{this._list()}
 			</ScrollView>
 		);
 	}

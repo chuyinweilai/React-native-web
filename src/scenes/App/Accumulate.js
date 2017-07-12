@@ -191,6 +191,7 @@ export default class Accumulate extends Component {
 						<View style={{flexDirection:'row', alignItems:'center'}}>
 							<Image style={{width: pxToDp(41), height:pxToDp(41), margin:pxToDp(16)}} source={require('./../../assets/公益活动icon@2x.png')}/>
 							<Text style={{color:'#fdac41'}}>#{type}#</Text>
+							<Text style={{color:'#333', marginLeft: pxToDp(32), fontSize:pxToDp(32)}} numberOfLines={1}>{rowData.title}</Text>
 						</View>
 
 						<TouchableOpacity style={{alignItems:'center'}} onPress={() => this.props.backCtrl('accumulate_details',rowData )}>
@@ -224,7 +225,6 @@ export default class Accumulate extends Component {
 	}
 
 	_imageRow(rowData){
-		console.log(peruri+rowData)
 		return (
 			<Image style={{width:pxToDp(342), height:pxToDp(212), margin:pxToDp(8)}} resizeMode="stretch"  source={{uri:peruri+rowData}}/>
 		)

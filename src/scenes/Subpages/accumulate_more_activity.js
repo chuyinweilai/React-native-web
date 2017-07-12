@@ -48,7 +48,6 @@ export default class accumulate_more_activity extends Component {
 		}
 
 		appData._dataPost('/api/volunteer',body,(data)=>{
-			console.log(data)
 			if(data.message){
 				this._setPage(true)
 			}else {

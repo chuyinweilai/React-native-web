@@ -26,26 +26,27 @@ export default class open extends Component {
 	}
 	
 	componentWillMount(){
-		this._pulldata()
 		appData._Storage('get','userMess',(data)=>{
 			let json = JSON.parse(data)
-			console.log(json)
 			this.setState({
 				address:json.comm_name + json.apt_info,
 			})
+		this._pulldata(json)
 		})
 	}
 
 	//提交用户数据
-	_pulldata(){
+	_pulldata(json){
 		let uri = '/api/cards/take';
 		let _data = {
-			"wx_id": "18912342933",		//openId
-			"card_type": '00',		  //00单次，01月卡，02季卡
+			'comm_code': json.comm_code,
+			'apt_code': json.apt_code,
+			'unit_code': json.unit_code,
+			'mobile': json.mobile,
+			"card_type": '00',		  	//00单次，01月卡，02季卡
 			"user_type": '0',			//0本人，1租户，2访客
-			"memo": '一键开门'				       //备注
+			"memo": '一键开门'				    //备注
 		}
-
 		appData._dataPost(uri,_data,(ref)=>{
 			if(ref[1] < 0){
 				this._fail(ref)
@@ -62,12 +63,10 @@ export default class open extends Component {
 
 	//失败返回
 	_fail(mess){
-		// console.log(mess)
 	}
 
 	//生成二维码
 	_turnNum(cardMess){
-		console.log(cardMess)
 		let num = cardMess[0].toString();
 		let x = Number(num.substr(3,5));
 		let y = Math.floor(Math.random()*400+100);

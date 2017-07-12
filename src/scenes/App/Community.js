@@ -85,7 +85,6 @@ export default class Lifing extends Component {
 	}
 
 	_getEvent(json){
-		// console.log(json)
 		this.setState({
     		dataSource: json.data
 		})

@@ -45,15 +45,14 @@ export default class my_invite extends Component{
 		}
 
 		appData._dataPost('/api/cards/list',body,(data)=>{
-			console.log(data)
-			if(data.message){
-				console.log(data)
+			if(data.message !== undefined){
 				this._addvisitor(true)
 			}else {
 				let arr = data.cards;
 				this.setState({
 					visitor: arr,
 				})
+				this._addvisitor(false)
 			}
 		})
 	}
@@ -63,36 +62,40 @@ export default class my_invite extends Component{
 		let userType = rowData.user_type;
 		let type = '';
 		let user = '';
-		if(num == '00'){
-			type = '次卡'
-		} else if(num == '01'){
-			type = '月卡'
-		} else if(num == '02'){
-			type = '季卡'
-		} 
-		if(userType == '0'){
-			user = '业主'
-		} else if(userType == '1'){
-			user = '租客'
-		} else if(userType == '2'){
-			user = '访客'
-		} 
-		return (
-			<View style={{ backgroundColor: 'white', height: pxToDp(170),paddingHorizontal: pxToDp(36), }}>
-				<View style={{flex: 1, flexDirection:'row', borderBottomColor:'#bebebe', borderBottomWidth: pxToDp(2),}}>
-					<View style={{flex: 1, justifyContent:'space-around'}}>
-						<Text style={{fontSize: pxToDp(40), color: '#474747'}}>{rowData.memo ? rowData.memo:rowData.mobile}({user})</Text>
-						<Text style={{fontSize: pxToDp(26), color: '#bbb'}}>申请时间： {rowData.vld_start}</Text>
-						<Text style={{fontSize: pxToDp(26), color: '#bbb'}}>有效期至： {rowData.vld_end}</Text>
-					</View>
-					<View style={{width: pxToDp(120), alignItems:'center', justifyContent:'center'}}>
-						<Text style={{fontSize: pxToDp(38), color:'#c3d94a'}}>
-							{type}
-						</Text>
+		if(num < 89){
+			if(num == '00'){
+				type = '次卡'
+			} else if(num == '01'){
+				type = '月卡'
+			} else if(num == '02'){
+				type = '季卡'
+			}
+			if(userType == '0'){
+				user = '业主'
+			} else if(userType == '1'){
+				user = '租客'
+			} else if(userType == '2'){
+				user = '访客'
+			} 
+			return (
+				<View style={{ backgroundColor: 'white', height: pxToDp(170),paddingHorizontal: pxToDp(36), }}>
+					<View style={{flex: 1, flexDirection:'row', borderBottomColor:'#bebebe', borderBottomWidth: pxToDp(2),}}>
+						<View style={{flex: 1, justifyContent:'space-around'}}>
+							<Text style={{fontSize: pxToDp(40), color: '#474747'}}>{rowData.memo ? rowData.memo:rowData.mobile}({user})</Text>
+							<Text style={{fontSize: pxToDp(26), color: '#bbb'}}>申请时间： {rowData.vld_start}</Text>
+							<Text style={{fontSize: pxToDp(26), color: '#bbb'}}>有效期至： {rowData.vld_end}</Text>
+						</View>
+						<View style={{width: pxToDp(120), alignItems:'center', justifyContent:'center'}}>
+							<Text style={{fontSize: pxToDp(38), color:'#c3d94a'}}>
+								{type}
+							</Text>
+						</View>
 					</View>
 				</View>
-			</View>
-		)
+			)
+		} else {
+			return null
+		}
 	}
 
 	//记录
@@ -127,10 +130,9 @@ export default class my_invite extends Component{
 
 	_choosePage(){
 		if(this.state._page == 'recording'){
-			let page = this.recording();
+			let page = this._recording();
 			return page;
 		} else if(this.state._page == 'noRec'){
-			console.log('noRec')
 			return (
 				<View style={{flex: 1, backgroundColor: '#dbdbdb', alignItems: 'center', justifyContent: 'center'}}>
 					<Text style={{ fontSize: pxToDp(46), color: "#acacac"}}>暂无访问记录</Text>

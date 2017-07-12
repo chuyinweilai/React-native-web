@@ -74,6 +74,25 @@ export default class routers extends Component {
 	componentDidMount(){
 		let data = new Date();
 		this.setPage()
+
+		wx.checkJsApi({
+			jsApiList: ['downloadImage'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+			success: function(res) {
+				wx.downloadImage({
+					serverId: './../../assets/我的灰色.png', // 需要下载的图片的服务器端ID，由uploadImage接口获得
+					isShowProgressTips: 1, // 默认为1，显示进度提示
+					success: function (res) {
+						console.log('success')
+						console.log(res)
+						var localId = res.localId; // 返回图片下载后的本地ID
+					}
+				});
+				// 以键值对的形式返回，可用的api值true，不可用为false
+				// 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
+			}
+			//http://cloudapi.famesmart.com/pic/show/show_a_5.jpg
+
+		});
 	}
 
 	//页面切换
@@ -154,7 +173,6 @@ export default class routers extends Component {
 	
 	//路由控制
 	_RouterCtrl(control, data){
-		console.log(data)
 		if(control){
 			this.HomeRouterPage = control;
 			this.setState({

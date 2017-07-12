@@ -51,7 +51,7 @@ export default class details extends Component {
 					<View style={{width:pxToDp(120), alignItems: 'center', justifyContent: 'center'}}/>
 				</View>
 				<View>
-					<Image style={{height:pxToDp(330), backgroundColor:'#6fc'}}/>
+					<Image style={{height:pxToDp(330)}}/>
 					<View style={{height:pxToDp(206), padding: pxToDp(20)}}>
 						<View style={{flexDirection:'row',flex: 1}}>
 							<View style={{flex: 1}}>

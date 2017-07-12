@@ -49,8 +49,6 @@ export default class accumulate_exchange extends Component {
 		let arrLeft = [];
 		let arrRight = [];
 		Image.getSize(uri, (width, height) => {
-			console.log('Image')
-			console.log(width,height)
 			if(this.leftLefgth >= this.rightLefgth){
 				
 			}
@@ -79,7 +77,7 @@ export default class accumulate_exchange extends Component {
 				</View>
 
 				<ScrollView style={{backgroundColor:'#dbdbdb',}} horizontal={true}>
-					<TouchableOpacity style={{width: deviceWidthDp/2, padding:pxToDp(20), paddingRight:pxToDp(10), backgroundColor:'#6fc'}} onPress={()=>this.props.backCtrl('accumulate_goods_details')}>
+					<TouchableOpacity style={{width: deviceWidthDp/2, padding:pxToDp(20), paddingRight:pxToDp(10)}} onPress={()=>this.props.backCtrl('accumulate_goods_details')}>
 						<View style={{borderRadius:pxToDp(20),backgroundColor:'white'}}>
 							<View style={{padding:pxToDp(24), paddingBottom:0,borderBottomWidth:pxToDp(1), }}>
 								<Image style={{height:pxToDp(400), backgroundColor:'gray', borderRadius:pxToDp(20)}}/>
@@ -101,7 +99,7 @@ export default class accumulate_exchange extends Component {
 						</View>
 					</TouchableOpacity>
 
-					<TouchableOpacity style={{width: deviceWidthDp/2, padding:pxToDp(20), paddingLeft:pxToDp(10), backgroundColor:'#6fc'}} onPress={()=>this.props.backCtrl('accumulate_goods_details')}>
+					<TouchableOpacity style={{width: deviceWidthDp/2, padding:pxToDp(20), paddingLeft:pxToDp(10)}} onPress={()=>this.props.backCtrl('accumulate_goods_details')}>
 						<View style={{borderRadius:pxToDp(20),backgroundColor:'white'}}>
 							<View style={{padding:pxToDp(24), paddingBottom:0,borderBottomWidth:pxToDp(1), }}>
 								<Image style={{height:pxToDp(400), backgroundColor:'gray', borderRadius:pxToDp(20)}}/>

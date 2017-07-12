@@ -67,10 +67,9 @@ export default class accumulate_active extends Component {
 	_render(rowData){
 		let imgUri  = rowData.pic_path;
 		let ss = imgUri.split(',');
-		console.log(peruri + ss[0])
 		return (
 					<TouchableOpacity style={{marginHorizontal:pxToDp(24), flexDirection:'row',alignItems:'center', justifyContent:'center', borderBottomColor:'#999',borderBottomWidth:pxToDp(1), paddingVertical: pxToDp(14)}}>
-						<Image style={{marginTop:pxToDp(20), width:pxToDp(230),height: pxToDp(190), backgroundColor:'#6fc'}} source={{uri: peruri + ss[0]}}/>
+						<Image style={{marginTop:pxToDp(20), width:pxToDp(230),height: pxToDp(190)}} source={{uri: peruri + ss[0]}}/>
 						<View style={{marginHorizontal:pxToDp(30)}}>
 							<Text style={{width:pxToDp(400), fontSize:pxToDp(40), marginBottom:pxToDp(76)}}>{rowData.title}</Text>
 							<View style={{flexDirection:'row', justifyContent:'space-between'}}>

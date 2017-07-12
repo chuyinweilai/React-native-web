@@ -28,7 +28,6 @@ export default class areas_choose extends Component{
 	}
 
 	_render(rowData){
-		console.log(rowData);
 		let id = '';
 		if(rowData.type == 'Z'){
 			id = '租户'

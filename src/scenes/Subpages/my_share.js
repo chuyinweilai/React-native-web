@@ -40,8 +40,8 @@ export default class my_collect extends Component {
 				<View style={{width:pxToDp(120), alignItems: 'center', justifyContent: 'center'}}/>
 			</View>
 			<View style={{height:pxToDp(824), paddingHorizontal: pxToDp(24), paddingVertical: pxToDp(15), backgroundColor:'#f9c'}}>
-				<View style={{backgroundColor:'#6fc'}}>
-					<Image style={{flex: 1, height: pxToDp(512), backgroundColor:'#6fc'}}/>
+				<View style={{}}>
+					<Image style={{flex: 1, height: pxToDp(512), }}/>
 						
 				</View>
 			</View>

@@ -46,7 +46,6 @@ export default class card extends Component {
 		y:100~500
 	*/
 	_turnNum(cardMess){
-		console.log(cardMess)	
 		let num = cardMess[0].toString();
 		let x = Number(num.substr(3,5));
 		let y = Math.floor(Math.random()*400+100);
@@ -74,7 +73,6 @@ export default class card extends Component {
 		let type = this.props.cardMess[3];
 		let mess = '';
 		let typeTips=''
-		console.log(type)
 		if(type == '00'){
 			mess = '剩余次卡';
 			typeTips = '次卡：可在当月内使用一次';

@@ -24,20 +24,28 @@ export default class my_house extends Component {
 			ds: ds,
 			dataSource1:[],
 			dataSource2:[],
+			aChoosed:{}
 		}
 		this.left= 0;
 		this.right = 0;
+		this.arr = [];
 	}
 	
 	componentWillMount(){
 		appData._Storage('get','openId',(data) => {
 			this._login(data)
 		})
+		appData._Storage('get','userMess',(data) => {
+			console.log(data)
+			this.setState({
+				aChoosed: JSON.parse(data),
+			})
+		})
 
 	}
 
 	_login(openId){
-		let afturi = '/api/wxuser/'+ openId
+		let afturi = '/api/wxuser/roomlist/'+ openId
 		appData._dataGet(afturi, (data) => {
 			this._subfield(data)
 		});
@@ -47,6 +55,9 @@ export default class my_house extends Component {
 	_subfield(data){
 		let arr1 = [];
 		let arr2 = [];
+		this.left= 0;
+		this.right = 0;
+		this.arr = data;
 		data.forEach(function(element) {
 			if(this.left <= this.right){
 				arr1.push(element)
@@ -63,7 +74,10 @@ export default class my_house extends Component {
 	}
 
 	_render(rowData){
-		console.log(rowData)
+		let bgColor = '#69bdd000'
+		if(rowData.choosed){
+			bgColor = '#69bdd0ff'
+		}
 		return (
 			<View style={{margin: pxToDp(25),  flex: 1, }}>
 				<View style={{backgroundColor: '#dbdbdb',height: pxToDp(486), borderRadius: pxToDp(20), padding:pxToDp(20), alignItems: 'center'}}>
@@ -72,8 +86,8 @@ export default class my_house extends Component {
 						<Text style={{fontSize: pxToDp(26), height: pxToDp(80), lineHeight: pxToDp(38), color:'#939393'}}>{rowData.comm_name}</Text>
 						<Text style={{fontSize: pxToDp(26), lineHeight: pxToDp(38), color:'#939393'}}>{rowData.apt_info}</Text>
 						<View style={{width: pxToDp(248), height: pxToDp(72), marginTop: pxToDp(24),alignItems: 'flex-end', justifyContent: 'flex-end'}}>
-							<TouchableOpacity>
-								<Image style={{width: pxToDp(72), height: pxToDp(72), borderRadius:'50%', borderColor:'#acacac', borderWidth: pxToDp(2)}}/>
+							<TouchableOpacity onPress={this._choseAddress.bind(this, rowData)}>
+								<Image style={[{width: pxToDp(72), height: pxToDp(72), borderRadius:'50%', borderColor:'#acacac', borderWidth: pxToDp(2)}, {backgroundColor: bgColor}]}/>
 							</TouchableOpacity>
 						</View>
 				</View>
@@ -81,6 +95,26 @@ export default class my_house extends Component {
 		)
 	}
 
+
+	//勾选地址操作
+	_choseAddress(rowData){
+		let arr =  this.arr.concat()
+		this.aChoosed = rowData
+		arr.forEach((json,index)=>{
+			if(json.apt_code == rowData.apt_code &&json.comm_code == rowData.comm_code &&json.unit_code == rowData.unit_code) {
+				if(json.choosed !== 1){
+					json.choosed = 1
+					this.setState({
+						aChoosed:rowData
+					})
+				}
+			} else{
+				json.choosed = 0
+			}
+		})
+		this._subfield(arr)
+	}
+	
 	render() {
 		return (
 		<View style={{flex: 1}}>
@@ -95,8 +129,8 @@ export default class my_house extends Component {
 				<View style={{width:pxToDp(120), alignItems: 'center', justifyContent: 'center'}}/>
 			</View>
 			<View>
-				<View style={{height: pxToDp(126), backgroundColor: '#dbdbdb', paddingHorizontal: pxToDp(24), paddingTop:pxToDp(34)}}>
-					<Text style={{fontSize: pxToDp(30),  height: pxToDp(56)}}>当前房屋位置：上海闵行马桥智慧社区</Text>
+				<View style={{height: pxToDp(176), backgroundColor: '#dbdbdb', paddingHorizontal: pxToDp(24), paddingTop:pxToDp(34)}}>
+					<Text style={{fontSize: pxToDp(30),  height: pxToDp(106)}}>当前房屋位置：{this.state.aChoosed.comm_name}{this.state.aChoosed.apt_info}{this.state.aChoosed.unit_code}</Text>
 					<Text style={{fontSize: pxToDp(18),  height: pxToDp(36), color: '#acacac'}}>点击勾选号进行位置切换</Text>
 				</View>
 			</View>

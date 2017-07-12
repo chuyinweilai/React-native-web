@@ -40,11 +40,9 @@ export default class convenient extends Component {
 		let json = this.userMess ;
 		let body = {
 			"comm_code": json.comm_code, 
-			"type": 9
+			"type": 1
 		}
-
 		appData._dataPost('/api/service',body,(data)=>{
-			console.log(data)
 			if(data.message){
 				this._setPage(true)
 			}else {
@@ -78,7 +76,7 @@ export default class convenient extends Component {
 		return (
 			<View style={{height:pxToDp(824), paddingHorizontal: pxToDp(32), borderBottomColor:'#cecece', borderBottomWidth: pxToDp(1)}}>
 				<View style={{paddingVertical:pxToDp(21)}}>
-					<Image style={{flex: 1, height: pxToDp(386), backgroundColor:'#6fc'}} source={{uri: peruri + rowData.pic_path}}/>
+					<Image style={{flex: 1, height: pxToDp(386), }} source={{uri: peruri + rowData.pic_path}}/>
 					<View style={{height: pxToDp(84), alignItems:'center', justifyContent:'center', borderBottomWidth: pxToDp(1), borderBottomColor: '#cecece'}}>
 						<Text style={{fontSize: pxToDp(36), fontWeight: '600'}}>{rowData.name}</Text>
 					</View>
