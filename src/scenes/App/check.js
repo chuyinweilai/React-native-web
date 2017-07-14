@@ -93,14 +93,8 @@ export default class check extends Component{
 	_pageOut(){
 		let userMess = this.state.userMess
 		if(this.state.pageTurn){
-			if(userMess.length >1){
-				// return <Areas_choose userMess={userMess}/>
-				appData._Storage('set','userMess',userMess[0])
-				return <Routers/>
-			} else {
-				appData._Storage('set','userMess',userMess[0])
-				return <Routers/>
-			}
+			appData._Storage('set','userMess',userMess[0])
+			return <Routers/>
 		} else {
 			return <Regist/>
 		}

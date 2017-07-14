@@ -36,7 +36,6 @@ export default class my_house extends Component {
 			this._login(data)
 		})
 		appData._Storage('get','userMess',(data) => {
-			console.log(data)
 			this.setState({
 				aChoosed: JSON.parse(data),
 			})
@@ -53,6 +52,7 @@ export default class my_house extends Component {
 
 	//左右分栏
 	_subfield(data){
+		console.log(data)
 		let arr1 = [];
 		let arr2 = [];
 		this.left= 0;
@@ -74,8 +74,9 @@ export default class my_house extends Component {
 	}
 
 	_render(rowData){
+		let json = this.state.aChoosed
 		let bgColor = '#69bdd000'
-		if(rowData.choosed){
+		if(json.apt_code == rowData.apt_code &&json.comm_code == rowData.comm_code &&json.unit_code == rowData.unit_code) {
 			bgColor = '#69bdd0ff'
 		}
 		return (
@@ -98,21 +99,33 @@ export default class my_house extends Component {
 
 	//勾选地址操作
 	_choseAddress(rowData){
-		let arr =  this.arr.concat()
-		this.aChoosed = rowData
-		arr.forEach((json,index)=>{
-			if(json.apt_code == rowData.apt_code &&json.comm_code == rowData.comm_code &&json.unit_code == rowData.unit_code) {
-				if(json.choosed !== 1){
-					json.choosed = 1
-					this.setState({
-						aChoosed:rowData
-					})
-				}
-			} else{
-				json.choosed = 0
+		let data = {
+			"wx_id": rowData.wx_id,
+			"comm_code": rowData.comm_code,
+			"apt_code": rowData.apt_code,
+			"unit_code": rowData.unit_code,
+		}
+		appData._dataPost('/api/wxuser/roomswitch',data,(res)=>{
+			if(res){
+				this.setState({
+					aChoosed: rowData
+				})
+				this._login(rowData.wx_id)
 			}
 		})
-		this._subfield(arr)
+		// arr.forEach((json,index)=>{
+		// 	if(json.apt_code == rowData.apt_code &&json.comm_code == rowData.comm_code &&json.unit_code == rowData.unit_code) {
+		// 		if(json.choosed !== 1){
+		// 			json.choosed = 1
+		// 			this.setState({
+		// 				aChoosed:rowData
+		// 			})
+		// 		}
+		// 	} else{
+		// 		json.choosed = 0
+		// 	}
+		// })
+		// this._subfield(arr)
 	}
 	
 	render() {
@@ -124,9 +137,13 @@ export default class my_house extends Component {
 					<Text style={{fontSize:pxToDp(30)}}>返回</Text>
 				</TouchableOpacity>
 				<View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-					<Text>我的房屋</Text>
+					<Text style={{fontSize: pxToDp(32)}}>我的房屋</Text>
 				</View>
-				<View style={{width:pxToDp(120), alignItems: 'center', justifyContent: 'center'}}/>
+				<View style={{width:pxToDp(120), alignItems: 'center', justifyContent: 'center'}}>
+					<TouchableOpacity onPress={() => this.props.backCtrl('regist')}>
+						<Text style={{fontSize: pxToDp(48)}}>+</Text>
+					</TouchableOpacity>
+				</View>
 			</View>
 			<View>
 				<View style={{height: pxToDp(176), backgroundColor: '#dbdbdb', paddingHorizontal: pxToDp(24), paddingTop:pxToDp(34)}}>

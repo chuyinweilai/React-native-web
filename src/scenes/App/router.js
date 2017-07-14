@@ -21,6 +21,7 @@ const Lifing =require('./Lifing');
 const Community =require('./Community');
 const Mypage =require('./Mypage');
 const appData = require('./../../components/Ajax')
+const Regist  = require( './regist');
 
 //首页 子页面
 const Open = require('./../Subpages/open');
@@ -129,6 +130,7 @@ export default class routers extends Component {
 			)
 		} else {
 			const name = this.HomeRouterPage;
+			if(name == 'regist'){return <Regist mess={true} backCtrl = {(bol)=> this._RouterCtrl(bol)}/>} 
 			//首页--一键开门
 			if(name == 'open'){return <Open backCtrl = {(bol)=> this._RouterCtrl(bol)}/>} 
 			//首页--访问邀请
