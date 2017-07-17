@@ -9,7 +9,8 @@ import {
 	Text,
 	View,
 	Image,
-  	Button,
+	Button,
+	ListView,
 	ScrollView,
 	StyleSheet,
 	TouchableOpacity,
@@ -22,22 +23,58 @@ const pxToDp =require('../responsive/px');
 
 export default class accumulate_join extends Component {
 	constructor(props) {
+		const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
 		super(props);
 		this.state = {
+			ds:ds,
+			dataSource1:[],
 		};
+		this.date = ''
 	}
 
 	componentWillMount(){
-		appData._dataGet('/api/events', this._getEvent.bind(this));
+		appData._Storage('get','userMess',(data)=>{
+			let json = JSON.parse(data);
+			let  body ={
+				"wx_id": json.wx_id,
+				"comm_code": json.comm_code
+			}
+			appData._dataPost('/api/volunteer/mine', body,this._getEvent.bind(this));
+		});
 	}
 
-	_getEvent(json){
-		// this.setState({
-    	// 	dataSource: json.data
-		// })
+	_getEvent(data){
+		this.setState({
+			dataSource1: data
+		})
+	}
+	
+	_render(rowData){
+		let imgUri  = rowData.pic_path;
+		let ss = imgUri.split(',');
+		return(
+			<TouchableOpacity style={{height:pxToDp(224), flexDirection:'row',alignItems:'center', justifyContent:'center', borderBottomColor:'#999',borderBottomWidth:pxToDp(1)}} onPress={() => this.props.backCtrl('accumulate_details',rowData )}>
+				<View style={{marginHorizontal:pxToDp(30)}}>
+					<Text style={{width:pxToDp(400), fontSize:pxToDp(40), marginVertical:pxToDp(26), color:'#999'}}>{rowData.title}</Text>
+					<View style={{paddingVertical:pxToDp(11),flexDirection:'row', justifyContent:'space-between'}}>
+						<View style={{flexDirection:'row', justifyContent:'center'}}>
+							<Text style={{fontSize:pxToDp(38)}}>+</Text>
+							<Text style={{fontSize:pxToDp(38), color:'#999'}}>{rowData.score}分</Text>
+						</View>
+						<View style={{justifyContent:'flex-end'}}>
+							<Text style={{fontSize:pxToDp(14), color:'#999'}}>{rowData.open_date}</Text>
+						</View>
+					</View>
+				</View>
+
+				<Image style={{marginVertical:pxToDp(20), width:pxToDp(230),height: pxToDp(190)}} source = {{uri: peruri +ss[0]}}/>
+			</TouchableOpacity>
+		)
 	}
 
 	render() {
+		let dataSource1  = this.state.dataSource1;
 		return (
 			<ScrollView style={styles.container}>
 				<View style={{height:pxToDp(86), flexDirection:'row',backgroundColor:'#f2f2f2',  justifyContent:'space-between'}}>
@@ -51,32 +88,23 @@ export default class accumulate_join extends Component {
 					<View style={{width:pxToDp(120), alignItems: 'center', justifyContent: 'center'}}/>
 				</View>
 				<View>
-					<View style={{height:pxToDp(70),paddingLeft:pxToDp(24), backgroundColor:'#999', justifyContent:'center'}}>
+					{/* <View style={{height:pxToDp(70),paddingLeft:pxToDp(24), backgroundColor:'#999', justifyContent:'center'}}>
 						<Text style={{color:'white', fontSize:pxToDp(34)}}>
 							2017年6月
 						</Text>
-					</View>
-					<View style={{marginHorizontal:pxToDp(24), flexDirection:'row',alignItems:'center', justifyContent:'center', borderBottomColor:'#999',borderBottomWidth:pxToDp(1)}}>
-						<View style={{marginHorizontal:pxToDp(30)}}>
-							<Text style={{width:pxToDp(400), fontSize:pxToDp(40), marginVertical:pxToDp(26), color:'#999'}}>上海市闵行区马桥镇镇政府</Text>
-							<View style={{paddingVertical:pxToDp(11),flexDirection:'row', justifyContent:'space-between'}}>
-								<View style={{flexDirection:'row', justifyContent:'center'}}>
-									<Text style={{fontSize:pxToDp(38)}}>+</Text>
-									<Text style={{fontSize:pxToDp(38), color:'#999'}}>10分</Text>
-								</View>
-								<View style={{justifyContent:'flex-end'}}>
-									<Text style={{fontSize:pxToDp(14), color:'#999'}}>2017年06月31日 09:02</Text>
-								</View>
-							</View>
-						</View>
-
-						<Image style={{marginTop:pxToDp(20), width:pxToDp(230),height: pxToDp(190)}}/>
+					</View> */}
+					<View style={{height: pxToDp(224*dataSource1.length)}}>
+						<ListView 
+							dataSource={this.state.ds.cloneWithRows(dataSource1)}
+							enableEmptySections = {true}
+							renderRow = {this._render.bind(this)}
+						></ListView>
 					</View>
 				</View>
 			</ScrollView>
 		);
 	}
-	}
+}
 
 const styles = StyleSheet.create({
 	container: {

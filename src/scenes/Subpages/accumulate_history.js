@@ -9,7 +9,8 @@ import {
 	Text,
 	View,
 	Image,
-  	Button,
+	Button,
+	ListView,
 	ScrollView,
 	StyleSheet,
 	TouchableOpacity,
@@ -22,27 +23,38 @@ const pxToDp =require('../responsive/px');
 
 export default class join extends Component {
 	constructor(props) {
+		const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 		super(props);
 		this.state = {
+			ds: ds,
+			dataSource1: [],
 		};
 	}
 
 	componentWillMount(){
-		appData._dataGet('/api/events', this._getEvent.bind(this));
+		appData._Storage('get','userMess',(data)=>{
+			let json = JSON.parse(data);
+			let  body ={
+				"wx_id": json.wx_id,
+				"comm_code": json.comm_code
+			}
+			appData._dataPost('/api/gift/mine', body,this._getEvent.bind(this));
+		});
 	}
 
 	_getEvent(json){
-		// this.setState({
-    	// 	dataSource: json.data
-		// })
+		this.setState({
+			dataSource1: json
+		})
 	}
 
-	_list(){
+	_render(rowData){
+		console.log(rowData)
 		return(
 			<View style={{flex: 1,}}>
-				<View style={{height: pxToDp(78),  justifyContent:'center', backgroundColor:'#999', paddingHorizontal: pxToDp(22)}}>
+				{/* <View style={{height: pxToDp(78),  justifyContent:'center', backgroundColor:'#999', paddingHorizontal: pxToDp(22)}}>
 					<Text style={{fontSize: pxToDp(36), color: 'white'}}>2017/7/10</Text>
-				</View>
+				</View> */}
 				<View style={{flex: 1, paddingHorizontal: pxToDp(20)}}>
 					<View style={{flexDirection: 'row' ,height: pxToDp(224),justifyContent:'center',  alignItems: 'center', borderBottomWidth: pxToDp(2)}}>
 						<View style={{width: pxToDp(412), marginRight:pxToDp(30)}}>
@@ -78,7 +90,11 @@ export default class join extends Component {
 					</View>
 					<View style={{width:pxToDp(120), alignItems: 'center', justifyContent: 'center'}}/>
 				</View>
-				{this._list()}
+				<ListView
+					dataSource = {this.state.ds.cloneWithRows(this.state.dataSource1)}
+					enableEmptySections ={true}
+					renderRow = {this._render.bind(this)}
+				/>
 			</ScrollView>
 		);
 	}

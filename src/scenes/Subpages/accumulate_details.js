@@ -28,12 +28,32 @@ export default class details extends Component {
 		const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 		this.state = {
 			ds:ds,
-			joinColor:'#d0d0d0',
+			joinState:1,
 			SwitchIsOn:false,
 		};
+		this.userMess = {}
 	}
 
 	componentWillMount(){
+		this._joinState()
+	}
+
+	_joinState(){
+		appData._Storage('get','userMess',(data)=>{
+			let json = JSON.parse(data)
+			this.userMess = json;
+			let body = {
+				"wx_id": json.wx_id,
+				"comm_code": json.comm_code,
+				"activity_no": this.props.mess.activity_no
+			}
+			appData._dataPost('/api/volunteer/status',body,(data) => {
+				console.log(data)
+				this.setState({
+					joinState:data
+				})
+			})
+		})
 	}
 
 	_imageRow(rowData){
@@ -45,8 +65,11 @@ export default class details extends Component {
 	_details(){
 		let rowData = this.props.mess;
 		let imgUri  = rowData.pic_path;
+		let joinColor = '#d0d0d0';
 		let ss = imgUri.split(',');
 		let type='';
+		let atext='报名';
+		let adisable= false;
 		let title='';
 		if(rowData.type == 1) {
 			type='社区服务'
@@ -55,9 +78,27 @@ export default class details extends Component {
 		} else if(rowData.type == 3) {
 			type='其他'
 		} 
+
+		if(this.state.joinState == 0){
+			atext = '取消';
+			joinColor = 'red'
+			adisable= false;
+		} else if(this.state.joinState == 1){
+			jsonColor =  '#d0d0d0';
+			atext = '取消';
+			adisable= true;
+		} else if(this.state.joinState == 2){
+			jsonColor =  '#69bdd0';
+			atext = '报名';
+			adisable= false;
+		}else if(this.state.joinState == 9){
+			jsonColor =  '#d0d0d0';
+			atext = '报名';
+			adisable= true;
+		} 
+
 		return (
 			<View>
-
 				<View style={{height:pxToDp(86), flexDirection:'row',backgroundColor:'#f2f2f2',  justifyContent:'space-between'}}>
 					<TouchableOpacity style={{flexDirection:'row',width:pxToDp(120), alignItems: 'center', justifyContent: 'center'}} onPress={()=>this.props.backCtrl(false)}>
 						<Image style={{height:pxToDp(48), width: pxToDp(48)}} source={require('./../../assets/arrow-left.png')} 	resizeMode="contain"/>
@@ -102,8 +143,8 @@ export default class details extends Component {
 				<View style={styles.container}>
 					<View style={{height: pxToDp(86), marginHorizontal:pxToDp(20), flexDirection:'row', borderBottomColor:'#b6b6b6', borderBottomWidth: pxToDp(2), alignItems:'center', justifyContent:'space-between'}}>
 						<Text style={{fontSize:pxToDp(32), color: '#69bdd0'}}>已有{rowData.join_cnt}人报名</Text>
-						<TouchableOpacity style={[{width: pxToDp(164), height: pxToDp(64),borderRadius:pxToDp(20), alignItems:'center', justifyContent:'center'},{ backgroundColor:this.state.joinColor, }]}>
-							<Text style={{fontSize:pxToDp(40), color: 'white'}}>报名</Text>
+						<TouchableOpacity style={[{width: pxToDp(164), height: pxToDp(64),borderRadius:pxToDp(20), alignItems:'center', justifyContent:'center'},{ backgroundColor: jsonColor, }]} onPress={()=> this._join(rowData,this.state.joinState)} disabled={adisable}>
+							<Text style={{fontSize:pxToDp(40), color: 'white'}}>{atext}</Text>
 						</TouchableOpacity>
 					</View>
 					<View style={{height: pxToDp(86), marginHorizontal:pxToDp(20), flexDirection:'row', borderBottomColor:'#b6b6b6', borderBottomWidth: pxToDp(2), alignItems:'center', justifyContent:'space-between'}}>
@@ -117,6 +158,25 @@ export default class details extends Component {
 				</View>
 			</View>
 		)
+	}
+
+	//报名参加
+	_join(rowData,state){
+		let	body={
+			"wx_id": this.userMess.wx_id,
+			"comm_code": this.userMess.comm_code,
+			"activity_no":rowData.activity_no
+		}
+		let uri = ''
+		console.log(body)
+		if(state == 0){
+			uri = '/api/volunteer/cancel'
+		}  else if(state == 2){
+			uri = '/api/volunteer/register'
+		}
+		appData._dataPost(uri,body,(data)=>{
+			this._joinState()
+		})
 	}
 
 	render() {

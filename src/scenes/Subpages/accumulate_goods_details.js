@@ -25,10 +25,15 @@ export default class details extends Component {
 		super(props);
 		this.state = {
 		};
+		this.mess = {};
+		this.userMess = {};
 	}
 
 	componentWillMount(){
-		appData._dataGet('/api/events', this._getEvent.bind(this));
+		this.mess = this.props.mess
+		appData._Storage('get','userMess',(data) =>{
+			this.userMess = JSON.parse(data)
+		})
 	}
 
 	_getEvent(json){
@@ -41,7 +46,7 @@ export default class details extends Component {
 		return (
 			<View style={styles.container}>
 				<View style={{height:pxToDp(86), flexDirection:'row',backgroundColor:'#f2f2f2',  justifyContent:'space-between'}}>
-					<TouchableOpacity style={{flexDirection:'row',width:pxToDp(120), alignItems: 'center', justifyContent: 'center'}} onPress={()=>this.props.backCtrl(false)}>
+					<TouchableOpacity style={{flexDirection:'row',width:pxToDp(120), alignItems: 'center', justifyContent: 'center'}} onPress={()=>this.props.backCtrl('accumulate_exchange')}>
 						<Image style={{height:pxToDp(48), width: pxToDp(48)}} source={require('./../../assets/arrow-left.png')} 	resizeMode="contain"/>
 						<Text style={{fontSize:pxToDp(30)}}>返回</Text>
 					</TouchableOpacity>
@@ -51,24 +56,24 @@ export default class details extends Component {
 					<View style={{width:pxToDp(120), alignItems: 'center', justifyContent: 'center'}}/>
 				</View>
 				<View>
-					<Image style={{height:pxToDp(330)}}/>
-					<View style={{height:pxToDp(206), padding: pxToDp(20)}}>
+					<Image style={{height:pxToDp(350)}} resizeMode='contain' source={{uri: peruri+ this.mess.pic_path}}/>
+					<View style={{height:pxToDp(166), padding: pxToDp(20)}}>
 						<View style={{flexDirection:'row',flex: 1}}>
 							<View style={{flex: 1}}>
-								<Text style={{fontSize:pxToDp(48)}}>海尔智能冰箱</Text>
+								<Text style={{fontSize:pxToDp(48)}}>{this.mess.gift_name}</Text>
 							</View>
-							<TouchableOpacity style={{width: pxToDp(34),height:pxToDp(34), backgroundColor:'#f9c'}}>
+							{/* <TouchableOpacity style={{width: pxToDp(34),height:pxToDp(34), backgroundColor:'#f9c'}}>
 								<Image/>
-							</TouchableOpacity>
+							</TouchableOpacity> */}
 						</View>
 						<View style={{flexDirection:'row',justifyContent:'space-between'}}>
-							<Text style={{fontSize:pxToDp(28), color:'#999'}}>兑换积分： 300</Text>
-							<Text style={{fontSize:pxToDp(28), color:'#fd9840'}}>所需积分： 120</Text>
+							<Text style={{fontSize:pxToDp(28), color:'#999'}}>兑换积分： {this.mess.change_score}</Text>
+							<Text style={{fontSize:pxToDp(28), color:'#fd9840'}}>当前积分： {this.userMess.score}</Text>
 						</View>
 					</View>
 					<View style={{height:pxToDp(56), backgroundColor:'#ededed', paddingHorizontal: pxToDp(20), flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
-						<Text style={{fontSize:pxToDp(20), color:'#a9a9a9'}}>当前已兑换：12人</Text>
-						<Text style={{fontSize:pxToDp(20), color:'#a9a9a9'}}>兑换截止日期：2017/6/31</Text>
+						<Text style={{fontSize:pxToDp(20), color:'#a9a9a9'}}>当前已兑换：{this.mess.change_cnt}人</Text>
+						<Text style={{fontSize:pxToDp(20), color:'#a9a9a9'}}>兑换截止日期：{this.mess.vld_end}</Text>
 					</View>
 				</View>
 				<View>
@@ -76,12 +81,12 @@ export default class details extends Component {
 						<View>
 							<Text style={{fontSize: pxToDp(30), color:'#69bdd0'}}>推荐活动</Text>
 						</View>
-						<TouchableOpacity>
+						<TouchableOpacity disabled>
 							<Text style={{fontSize: pxToDp(30), color:'#69bdd0'}}>更多</Text>
 						</TouchableOpacity>
 					</View>
 					<View style={{height: pxToDp(70), flexDirection:'row', justifyContent:'space-between', paddingHorizontal:pxToDp(20), paddingVertical:pxToDp(16),borderBottomWidth:pxToDp(1)}}>
-						<TouchableOpacity>
+						<TouchableOpacity disabled>
 							<Text style={{fontSize: pxToDp(32)}}>社区养老院周末公益清洁志愿活动征集 >></Text>
 						</TouchableOpacity>
 					</View>

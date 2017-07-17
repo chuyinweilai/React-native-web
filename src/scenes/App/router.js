@@ -41,6 +41,7 @@ const Accumulate_Exchange = require('./../Subpages/accumulate_exchange');
 const Accumulate_Goods_Details = require('./../Subpages/accumulate_goods_details');
 const Accumulate_Details = require('./../Subpages/accumulate_details');
 const Accumulate_History = require('./../Subpages/accumulate_history');
+const Accumulate_Regist = require('./../Subpages/accumulate_regist');
 const Accumulate_More_activity = require('./../Subpages/accumulate_more_activity');
 
 //我的 子页面
@@ -130,46 +131,48 @@ export default class routers extends Component {
 			)
 		} else {
 			const name = this.HomeRouterPage;
-			if(name == 'regist'){return <Regist mess={true} backCtrl = {(bol)=> this._RouterCtrl(bol)}/>} 
+			if(name == 'regist'){return <Regist mess={true} backCtrl = {(bol,message)=> this._RouterCtrl(bol,message)}/>} 
 			//首页--一键开门
-			if(name == 'open'){return <Open backCtrl = {(bol)=> this._RouterCtrl(bol)}/>} 
+			if(name == 'open'){return <Open backCtrl = {(bol,message)=> this._RouterCtrl(bol,message)}/>} 
 			//首页--访问邀请
-			else if(name == 'addvisitor'){return <Addvisitor backCtrl = {(bol)=> this._RouterCtrl(bol)}/>}
+			else if(name == 'addvisitor'){return <Addvisitor backCtrl = {(bol,message)=> this._RouterCtrl(bol,message)}/>}
 			//首页--便民服务
-			else if(name == 'lifing_convenient'){return <Lifing_Convenient backCtrl = {(bol)=> this._RouterCtrl(bol)}/>}
+			else if(name == 'lifing_convenient'){return <Lifing_Convenient backCtrl = {(bol,message)=> this._RouterCtrl(bol,message)}/>}
 			
 			//生活--党建天地
-			else if(name == 'lifing_build') {return <Lifing_Build backCtrl={(bol) => this._RouterCtrl(bol)}/>}
+			else if(name == 'lifing_build') {return <Lifing_Build backCtrl={(bol,message) => this._RouterCtrl(bol,message)}/>}
 			//生活--党建天地
-			else if(name == 'lifing_ask') {return <Lifing_Ask backCtrl={(bol) => this._RouterCtrl(bol)}/>} 
+			else if(name == 'lifing_ask') {return <Lifing_Ask backCtrl={(bol,message) => this._RouterCtrl(bol,message)}/>} 
 			//生活--党建天地
-			else if(name == 'lifing_neighbourhood') {return <Lifing_Neighbourhood backCtrl={(bol) => this._RouterCtrl(bol)}/>}  
+			else if(name == 'lifing_neighbourhood') {return <Lifing_Neighbourhood backCtrl={(bol,message) => this._RouterCtrl(bol,message)}/>}  
 
 			//志愿者--规则
-			else if(name == 'accumulate_ruler') {return <Accumulate_Ruler backCtrl={(bol) => this._RouterCtrl(bol)}/>} 
+			else if(name == 'accumulate_ruler') {return <Accumulate_Ruler backCtrl={(bol,message) => this._RouterCtrl(bol,message)}/>} 
+			//志愿者--注册
+			else if(name == 'accumulate_regist') {return <Accumulate_Regist backCtrl={(bol,message) => this._RouterCtrl(bol,message)}/>} 
 			//志愿者--我的参与
-			else if(name == 'accumulate_join') {return <Accumulate_Join backCtrl={(bol) => this._RouterCtrl(bol)}/>} 
+			else if(name == 'accumulate_join') {return <Accumulate_Join mess={this.sendMess}  backCtrl={(bol,message) => this._RouterCtrl(bol,message)}/>} 
 			//志愿者--往期活动
-			else if(name == 'accumulate_active') {return <Accumulate_Active backCtrl={(bol) => this._RouterCtrl(bol)}/>} 
+			else if(name == 'accumulate_active') {return <Accumulate_Active backCtrl={(bol,message) => this._RouterCtrl(bol,message)}/>} 
 			//志愿者--积分兑换
-			else if(name == 'accumulate_exchange') {return <Accumulate_Exchange backCtrl={(bol) => this._RouterCtrl(bol)}/>} 
+			else if(name == 'accumulate_exchange') {return <Accumulate_Exchange backCtrl={(bol,message) => this._RouterCtrl(bol,message)}/>} 
 			//志愿者--兑换详情
-			else if(name == 'accumulate_goods_details') {return <Accumulate_Goods_Details backCtrl={(bol) => this._RouterCtrl(bol)}/>}
+			else if(name == 'accumulate_goods_details') {return <Accumulate_Goods_Details mess={this.sendMess} backCtrl={(bol,message) => this._RouterCtrl(bol,message)}/>}
 			//志愿者--活动详情
-			else if(name == 'accumulate_details'){return <Accumulate_Details backCtrl={(bol) => this._RouterCtrl(bol)} mess={this.sendMess}/>}
-			//志愿者--活动详情
-			else if(name == 'accumulate_history'){return <Accumulate_History backCtrl={(bol) => this._RouterCtrl(bol)}/>}
+			else if(name == 'accumulate_details'){return <Accumulate_Details mess={this.sendMess}  backCtrl={(bol,message) => this._RouterCtrl(bol,message)} mess={this.sendMess}/>}
+			//志愿者--活动历史
+			else if(name == 'accumulate_history'){return <Accumulate_History mess={this.sendMess}  backCtrl={(bol,message) => this._RouterCtrl(bol,message)}/>}
 			//志愿者--最新活动
-			else if(name == 'accumulate_more_activity'){return <Accumulate_More_activity backCtrl={(bol,message) => this._RouterCtrl(bol,message)}/>}
+			else if(name == 'accumulate_more_activity'){return <Accumulate_More_activity mess={this.sendMess}  backCtrl={(bol,message) => this._RouterCtrl(bol,message)}/>}
 		
 			//我的--访问记录
-			else if(name == 'my_invite'){return <My_Invite backCtrl = {(bol)=> this._RouterCtrl(bol)}/>}
+			else if(name == 'my_invite'){return <My_Invite backCtrl = {(bol,message)=> this._RouterCtrl(bol,message)}/>}
 			//我的--房屋
-			else if(name == 'my_house'){return <My_House backCtrl = {(bol)=> this._RouterCtrl(bol)}/>}
+			else if(name == 'my_house'){return <My_House backCtrl = {(bol,message)=> this._RouterCtrl(bol,message)}/>}
 			//我的--分享
-			else if(name == 'my_share'){return <My_Share backCtrl = {(bol)=> this._RouterCtrl(bol)}/>}
+			else if(name == 'my_share'){return <My_Share backCtrl = {(bol,message)=> this._RouterCtrl(bol,message)}/>}
 			//我的--收藏
-			else if(name == 'my_collect'){return <My_Collect backCtrl = {(bol)=> this._RouterCtrl(bol)}/>}
+			else if(name == 'my_collect'){return <My_Collect backCtrl = {(bol,message)=> this._RouterCtrl(bol,message)}/>}
 		}
 	}
 	

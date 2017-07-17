@@ -28,7 +28,9 @@ export default class accumulate_exchange extends Component {
 		super(props);
 		const ds = new ListView.DataSource({rowHasChanged:(r1,r2) => r1 !== r2});
 		this.state = {
-			dataSourceL:[],
+			ds:ds ,
+			dataSource:[],
+			dataSourceL:[],  
 			dataSourceR:[],
 		};
 		this.leftLefgth = 0;
@@ -36,25 +38,86 @@ export default class accumulate_exchange extends Component {
 	}
 
 	componentWillMount(){
-		appData._dataGet('/api/events', this._getEvent.bind(this));
-	}
-
-	_getEvent(json){
-		// this.setState({
-    	// 	dataSource: json.data
-		// })
-	}
-
-	_waterFall(uri){
-		let arrLeft = [];
-		let arrRight = [];
-		Image.getSize(uri, (width, height) => {
-			if(this.leftLefgth >= this.rightLefgth){
-				
+		appData._Storage('get','userMess',(data)=>{
+			let json = JSON.parse(data);
+			let  body ={
+				"wx_id": json.wx_id,
+				"comm_code": json.comm_code
 			}
+			appData._dataPost('/api/gift/list', body,this._getEvent.bind(this));
 		});
 	}
 
+	_getEvent(json){
+		this.setState({
+			dataSource: json
+		})
+		return null
+		this.leftLefgth = 0;
+		this.rightLefgth = 0;
+		let arrLeft = [];
+		let arrRight = [];
+		json.forEach((data,index) => {
+			if(this.leftLefgth <= this.rightLefgth){
+				arrLeft.push(data);
+				this.leftLefgth ++;
+			} else {
+				arrRight.push(data);
+				this.rightLefgth ++;
+			}
+		})
+		this.setState({
+			dataSourceL:arrLeft,  
+			dataSourceR:arrRight,
+		})
+	}
+
+	_waterFall (json){
+		json.forEach((data,index) => {
+			if(this.leftLefgth <= this.rightLefgth){
+				arrLeft.push(data);
+				this.leftLefgth += data.height;
+			} else {
+				arrRight.push(data);
+				this.rightLefgth += data.height;
+			}
+		})
+	}
+
+
+	_render(rowData){
+		console.log(rowData)
+		let Imguri = '';
+		Imguri  = peruri + rowData.pic_path;
+		return (
+			<TouchableOpacity style={{width: deviceWidthDp/2, padding:pxToDp(20), paddingRight:pxToDp(10)}} onPress={()=>this.props.backCtrl('accumulate_goods_details',rowData)}>
+				<View style={{borderRadius:pxToDp(20),backgroundColor:'white'}}>
+					<View style={{padding:pxToDp(24), paddingBottom:0,borderBottomWidth:pxToDp(1), }}>
+						<Image style={{height:pxToDp(450), width: pxToDp(300), borderRadius:pxToDp(20)}} resizeMode='contain' source ={{uri: Imguri}}/>
+						<Text style={{fontSize:pxToDp(30), marginBottom:pxToDp(10)}} numberOfLines={1}>
+							{rowData.gift_name}
+						</Text>
+						<View style={{ paddingBottom:pxToDp(10)}}>
+							<Text style={{fontSize:pxToDp(18), color:'#c9c9c9'}}>
+								截止时间： 
+							</Text>
+							<Text style={{fontSize:pxToDp(18), color:'#c9c9c9'}}>
+								 {rowData.vld_end}
+							</Text>
+						</View>
+						<View style={{ alignItems:'flex-end', justifyContent:'space-between', paddingBottom:pxToDp(10)}}>
+							<View>
+								<Text style={{fontSize:pxToDp(18), color:'#c9c9c9'}}>{rowData.change_cnt}/{rowData.change_limit}</Text>
+							</View>
+						</View>
+					</View>
+					<View style={{height:pxToDp(80), alignItems:'center', justifyContent:'center'}}>
+						<Text style={{fontSize:pxToDp(32), color:'#fd9840'}}>{rowData.change_score}积分可兑换</Text>
+					</View>
+				</View>
+			</TouchableOpacity>
+		)
+	}
 	render() {
 		return (
 			<View style={styles.container}>
@@ -75,52 +138,15 @@ export default class accumulate_exchange extends Component {
 					</View>
 					<View style={{width:pxToDp(120), alignItems: 'center', justifyContent: 'center'}}/>
 				</View>
-
-				<ScrollView style={{backgroundColor:'#dbdbdb',}} horizontal={true}>
-					<TouchableOpacity style={{width: deviceWidthDp/2, padding:pxToDp(20), paddingRight:pxToDp(10)}} onPress={()=>this.props.backCtrl('accumulate_goods_details')}>
-						<View style={{borderRadius:pxToDp(20),backgroundColor:'white'}}>
-							<View style={{padding:pxToDp(24), paddingBottom:0,borderBottomWidth:pxToDp(1), }}>
-								<Image style={{height:pxToDp(400), backgroundColor:'gray', borderRadius:pxToDp(20)}}/>
-								<Text style={{fontSize:pxToDp(34), marginBottom:pxToDp(10)}} numberOfLines={1}>
-									海尔智能冰箱 双柜门使用 平均耗电仅……平均耗电仅平均耗电仅平均耗电仅
-								</Text>
-								<View style={{flexDirection:'row', alignItems:'flex-end', justifyContent:'space-between', paddingBottom:pxToDp(10)}}>
-									<Text style={{fontSize:pxToDp(18), color:'#c9c9c9'}}>
-										截止时间： 17/7/1
-									</Text>
-									<View>
-										<Text style={{fontSize:pxToDp(18), color:'#c9c9c9'}}>20</Text>
-									</View>
-								</View>
-							</View>
-							<View style={{height:pxToDp(80), alignItems:'center', justifyContent:'center'}}>
-								<Text style={{fontSize:pxToDp(32), color:'#fd9840'}}>300积分可兑换</Text>
-							</View>
-						</View>
-					</TouchableOpacity>
-
-					<TouchableOpacity style={{width: deviceWidthDp/2, padding:pxToDp(20), paddingLeft:pxToDp(10)}} onPress={()=>this.props.backCtrl('accumulate_goods_details')}>
-						<View style={{borderRadius:pxToDp(20),backgroundColor:'white'}}>
-							<View style={{padding:pxToDp(24), paddingBottom:0,borderBottomWidth:pxToDp(1), }}>
-								<Image style={{height:pxToDp(400), backgroundColor:'gray', borderRadius:pxToDp(20)}}/>
-								<Text style={{fontSize:pxToDp(34), marginBottom:pxToDp(10)}} numberOfLines={1}>
-									海尔智能冰箱 双柜门使用 平均耗电仅……平均耗电仅平均耗电仅平均耗电仅
-								</Text>
-								<View style={{flexDirection:'row', alignItems:'flex-end', justifyContent:'space-between', paddingBottom:pxToDp(10)}}>
-									<Text style={{fontSize:pxToDp(18), color:'#c9c9c9'}}>
-										截止时间： 17/7/1
-									</Text>
-									<View>
-										<Text style={{fontSize:pxToDp(18), color:'#c9c9c9'}}>20</Text>
-									</View>
-								</View>
-							</View>
-							<View style={{height:pxToDp(80), alignItems:'center', justifyContent:'center'}}>
-								<Text style={{fontSize:pxToDp(32), color:'#fd9840'}}>300积分可兑换</Text>
-							</View>
-						</View>
-					</TouchableOpacity>
-				</ScrollView>
+					<View style={{backgroundColor:'#dbdbdb',}} horizontal={true}>
+						<ListView
+							contentContainerStyle = {{flexDirection: 'row', flexWrap: 'wrap'}}
+							dataSource ={this.state.ds.cloneWithRows(this.state.dataSource)}
+							enableEmptySections = {true}
+							renderRow = {this._render.bind(this)}
+						/>
+					</View>
+				{/* </ScrollView> */}
 			</View>
 		);
 	}

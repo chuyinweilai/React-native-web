@@ -176,9 +176,10 @@ export default class Home extends Component {
 	//社区动态
 	news(){
 		const aData = this.state.dataSource;
+		let hei = pxToDp(aData.length*420);
 		if(aData.length){
 			return(
-				<View style={{marginTop:pxToDp(20), marginBottom:pxToDp(118)}}>
+				<View style={{flex: 1, marginTop:pxToDp(20), marginBottom:pxToDp(118)}}>
 					<View style={{paddingHorizontal:pxToDp(19), borderBottomColor:'#4b4b4b', borderBottomWidth:1, flexDirection:'row',     
 					justifyContent:'space-between'}}>
 						<Text style={{lineHeight:pxToDp(48), fontSize:pxToDp(32)}}>社区动态</Text>
@@ -187,11 +188,14 @@ export default class Home extends Component {
 							<Image style={{width:pxToDp(28), height:pxToDp(32), margin:0, marginTop: pxToDp(8)}} resizeMode='stretch'  source={require('../../assets/more.png')}/>
 						</TouchableOpacity>
 					</View>
-					<ListView
-							dataSource={this.state.ds.cloneWithRows(aData)}
-							enableEmptySections = {true}
-							renderRow={this.newsText.bind(this)}
-					/>
+					 <View style = {{height: hei}}> 
+						<ListView
+								dataSource={this.state.ds.cloneWithRows(aData)}
+								enableEmptySections = {true}
+								removeClippedSubviews={false}
+								renderRow={this.newsText.bind(this)}
+						/>
+					 </View> 
 				</View>
 			)
 		}
@@ -210,7 +214,7 @@ export default class Home extends Component {
 			type = '好人好事'
 		} 
 		return(
-			<View style={{ borderTopColor:'#9a9a9a', borderTopWidth:1,}}>
+			<View style={{height: pxToDp(420), borderBottomColor:'#9a9a9a', borderBottomWidth:1,}}>
 				<View style={{height: pxToDp(78),flexDirection:'row', alignItems: 'center', paddingLeft: pxToDp(18)}}>
 					<Image style={{height: pxToDp(56),width: pxToDp(56), borderRadius: pxToDp(28),backgroundColor: 'gray'}} source={{uri: peruri + rowData.pic_path_face}}/>
 					<Text style={{fontSize: pxToDp(17), color:'#464646',paddingLeft:pxToDp(15)}}>{rowData.provider_name}</Text>
@@ -221,12 +225,10 @@ export default class Home extends Component {
 					<Text style={{textAlign:'justify',width:pxToDp(684), fontSize:pxToDp(21), lineHeight:pxToDp(29)}}>
 							{rowData.detail}
 					</Text>
-					<ListView
-							contentContainerStyle={{flexDirection: 'row', marginVertical:pxToDp(8), }}
-							dataSource={this.state.ds.cloneWithRows(ss)}
-							enableEmptySections = {true}
-							renderRow = {this._imageRow.bind(this)}
-					/>
+					<View style={{height:pxToDp(240), flexDirection: 'row'}}>
+						<Image style={{width:pxToDp(342), height:pxToDp(212), margin:pxToDp(8)}} resizeMode="stretch"  source={{uri:peruri+ss[0]}}/>
+						<Image style={{width:pxToDp(342), height:pxToDp(212), margin:pxToDp(8)}} resizeMode="stretch"  source={{uri:peruri+ss[1]}}/>
+					</View>
 				</View>
 				<View style={{paddingBottom:pxToDp(10), flexDirection:'row',justifyContent:'flex-end', paddingRight: pxToDp(18)}}>
 					<Text style={{ textAlign:'right',fontSize:pxToDp(14), color:'#9c9c9c',marginRight:pxToDp(20)}}>热度：{rowData.point}</Text>
@@ -236,15 +238,14 @@ export default class Home extends Component {
 		)
 	}
 
-	_imageRow(rowData){
-		return (
-			<Image style={{width:pxToDp(342), height:pxToDp(212), margin:pxToDp(8)}} resizeMode="stretch"  source={{uri:peruri+rowData}}/>
-		)
-	}
+	// _imageRow(rowData){
+	// 	return (
+	// 	)
+	// }
 
 	render() {
 		return (
-				<ScrollView style={styles.container}>
+				<ScrollView style={styles.container} removeClippedSubviews={false}>
 					{this.bannerPart()}
 					<View  style={{height: pxToDp(240),}}>	
 						{this.buttonPart()}

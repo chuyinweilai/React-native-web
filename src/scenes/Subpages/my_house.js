@@ -110,22 +110,15 @@ export default class my_house extends Component {
 				this.setState({
 					aChoosed: rowData
 				})
-				this._login(rowData.wx_id)
+				this._login(rowData.wx_id);
+				appData._Storage('get','openId',(openId) =>{
+					let afturi = '/api/wxuser/'+ openId
+					appData._dataGet(afturi, (data) => {
+						appData._Storage('set','userMess',data[0])
+					});
+				})
 			}
 		})
-		// arr.forEach((json,index)=>{
-		// 	if(json.apt_code == rowData.apt_code &&json.comm_code == rowData.comm_code &&json.unit_code == rowData.unit_code) {
-		// 		if(json.choosed !== 1){
-		// 			json.choosed = 1
-		// 			this.setState({
-		// 				aChoosed:rowData
-		// 			})
-		// 		}
-		// 	} else{
-		// 		json.choosed = 0
-		// 	}
-		// })
-		// this._subfield(arr)
 	}
 	
 	render() {

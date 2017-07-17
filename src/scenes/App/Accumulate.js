@@ -21,12 +21,6 @@ const peruri = "http://cloudapi.famesmart.com";
 const appData = require('./../../components/Ajax');
 const pxToDp =require('../responsive/px');
 
-/*
-const Join = require('./../Subpages/join');
-const Active = require('./../Subpages/active');
-const Exchange = require('./../Subpages/exchange');
-const Details = require('./../Subpages/active_details');
-*/
 export default class Accumulate extends Component {
 	constructor() {
 		super();
@@ -56,7 +50,7 @@ export default class Accumulate extends Component {
 
 		appData._dataPost('/api/volunteer',body,(data)=>{
 			if(data.message){
-				Alert('暂无活动')
+				alert('暂无活动')
 			}else {
 				this.setState({
 					eventsData: data,
@@ -72,6 +66,16 @@ export default class Accumulate extends Component {
 	}
 
 	_nowPage() {
+		let source = this.userMess.score;
+		let rank = Math.floor((source-10)/20);
+		let stars = [];
+		for (let i = 0;  i < 5; i++){
+			if(i < rank){
+				stars.push(1)
+			} else {
+				stars.push(0)
+			}
+		}
 		return (
 			<View style={{flex: 1}}>
 					<View style={{height: pxToDp(80),flexDirection:'row', alignItems: 'center', justifyContent:'center', backgroundColor:'#f2f2f2', borderBottomColor:'#B4B4B4', borderBottomWidth:pxToDp(2)}}>
@@ -93,42 +97,24 @@ export default class Accumulate extends Component {
 										当前积分
 									</Text>
 									<Text style={{fontSize:pxToDp(48), fontWeight:'600', color: 'white'}}>
-										260
+										{source}
 									</Text>
 								</Image>
 								<View style={{flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
 									<Text style={{fontSize: pxToDp(36), fontWeight:'600', color:'#69dbcf'}}>
-										LV3
+										LV{rank}
 									</Text>
 									<View>
-										<Image></Image>
+										<ListView
+											contentContainerStyle={{ flexDirection: 'row'}}
+											enableEmptySections = {true}
+											dataSource={this.state.ds.cloneWithRows(stars)}
+											renderRow={this._starsImg.bind(this)}
+										/>
 									</View>
 								</View>
 							</View>
-
-							<View>
-								<View style={{justifyContent:'center'}}>
-									<Text style={{width: pxToDp(380), fontSize: pxToDp(32),marginVertical:pxToDp(10)}}>
-										还差10积分可领取自行车
-									</Text>
-								</View>
-								<View style={{justifyContent:'center'}}>
-									<Text style={{width: pxToDp(380), fontSize: pxToDp(32),marginVertical:pxToDp(10)}}>
-										当前积分可领取食用油一瓶
-									</Text>
-								</View>
-								<View style={{ justifyContent:'center'}}>
-									<Text style={{width: pxToDp(380), fontSize: pxToDp(32),marginVertical:pxToDp(10)}}>
-										……
-									</Text>
-								</View>
-								<View style={{flex: 1, flexDirection:'row', alignItems:'center'}}>
-									<View style={{flex: 1}}></View>
-									<TouchableOpacity onPress={() => this.props.backCtrl('accumulate_history')}>
-										<Text style={{fontSize: pxToDp(24), color:'#ccc'}}>查看更多>></Text>
-									</TouchableOpacity>
-								</View>
-							</View>
+							{this.userMess.volunteer ? this._HasRegistVol():this._NoRegistVol()}
 						</View>
 
 						<View style={{height: pxToDp(118), flexDirection:'row', backgroundColor:'#e6e6e6',paddingBottom:pxToDp(26)}}>
@@ -154,8 +140,55 @@ export default class Accumulate extends Component {
 		);
 	}
 	
+	_starsImg(rowData){
+		if(rowData)	return <Image style={{width: pxToDp(36), height: pxToDp(36)}} resizeMode='stretch' source={require('./../../assets/形状-7.png')}/>
+		else  return <Image style={{width: pxToDp(36), height: pxToDp(36)}} resizeMode='stretch'  source={require('./../../assets/形状-5.png')}/>
+	}
+
+	_HasRegistVol(){
+		return (
+			<View>
+				<View style={{justifyContent:'center'}}>
+					<Text style={{width: pxToDp(380), fontSize: pxToDp(32),marginVertical:pxToDp(10)}}>
+						还差10积分可领取自行车
+					</Text>
+				</View>
+				<View style={{justifyContent:'center'}}>
+					<Text style={{width: pxToDp(380), fontSize: pxToDp(32),marginVertical:pxToDp(10)}}>
+						当前积分可领取食用油一瓶
+					</Text>
+				</View>
+				<View style={{ justifyContent:'center'}}>
+					<Text style={{width: pxToDp(380), fontSize: pxToDp(32),marginVertical:pxToDp(10)}}>
+						……
+					</Text>
+				</View>
+				<View style={{flex: 1, flexDirection:'row', alignItems:'center'}}>
+					<View style={{flex: 1}}></View>
+					<TouchableOpacity onPress={() => this.props.backCtrl('accumulate_history')}>
+						<Text style={{fontSize: pxToDp(24), color:'#ccc'}}>查看更多>></Text>
+					</TouchableOpacity>
+				</View>
+			</View>
+		)
+	}
+
+	_NoRegistVol(){
+		return (
+			<View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+				<View style={{  height: pxToDp(120)}}>
+					<Button 
+						title="成为志愿者"
+						 onPress={()=>this.props.backCtrl('accumulate_regist')}
+					/>
+				</View>
+			</View>
+		)
+	}
+
 	// 最新活动列表
 	_newActivity(){
+		let eventsData = this.state.eventsData
 		return (
 				<View>
 					<View style={{paddingHorizontal:pxToDp(18), borderBottomColor:'#4b4b4b', borderBottomWidth:1, flexDirection:'row',justifyContent:'space-between'}}>
@@ -165,13 +198,17 @@ export default class Accumulate extends Component {
 							<Image style={{width:pxToDp(28), height:pxToDp(32), margin:0, marginTop: pxToDp(8)}} resizeMode='stretch'  source={require('../../assets/more.png')}/>
 						</TouchableOpacity>
 					</View>
-					<ListView
-							dataSource = {this.state.ds.cloneWithRows(this.state.eventsData)}
-							enableEmptySections = {true}
-							renderRow = {this._render.bind(this)}
-					/>
+					<View style={{height: pxToDp(405*eventsData.length)}}>
+						<ListView
+						 		style={{height: pxToDp(400*eventsData.length)}}
+								dataSource = {this.state.ds.cloneWithRows(eventsData)}
+								enableEmptySections = {true}
+								renderRow = {this._render.bind(this)}
+						/>
+					</View>
 				</View>
 		)
+				//41 32 212
 	}
 
 	_render(rowData,rowId,sectionId){
@@ -229,22 +266,6 @@ export default class Accumulate extends Component {
 			<Image style={{width:pxToDp(342), height:pxToDp(212), margin:pxToDp(8)}} resizeMode="stretch"  source={{uri:peruri+rowData}}/>
 		)
 	}
-	/*
-	_choosePage(name){
-		if(this.state.changePage == 'home'){
-			appData._dataGet('/api/events', this._getEvent.bind(this));
-			return this._nowPage()
-		} else if(this.state.changePage == 'join') {
-			return <Join backCtrl={(ctrl) => this._RouterCtrl(ctrl)}/>
-		} else if(this.state.changePage == 'active') {
-			return <Active backCtrl={(ctrl) => this._RouterCtrl(ctrl)}/>
-		} else if(this.state.changePage == 'exchange') {
-			return <Exchange backCtrl={(ctrl) => this._RouterCtrl(ctrl)}/>
-		} else if(this.state.changePage == 'details') {
-			return <Details backCtrl={(ctrl) => this._RouterCtrl(ctrl)}/>
-		}
-	}
-	*/
 
 	render(){
 		return this._nowPage()
